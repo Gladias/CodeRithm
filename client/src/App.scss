@@ -17,3 +17,8 @@
       width: 100vw;
       height: 100vh;
 }
+
+/*Disable autocompletion background color change*/
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+      transition-delay: 5000s;
+}

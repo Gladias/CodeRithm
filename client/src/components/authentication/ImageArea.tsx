@@ -1,6 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import profile from '../../assets/images/profile.svg';
+
+type Props = {
+  caption: string;
+  image: string;
+}
 
 const StyledImageArea = styled.div`
   height: 100%;
@@ -35,18 +39,16 @@ const StyledImageArea = styled.div`
   }
 `;
 
-const ImageArea: React.FC = () => (
+const ImageArea: React.FC<Props> = ({ caption, image }) => (
   <StyledImageArea>
     <div className="center">
       <div className="caption">
         <span>
-          Account
-          <br />
-          Creation
+          { caption }
         </span>
       </div>
       <div className="image">
-        <img src={profile} alt="Account creation icon" />
+        <img src={image} alt="Account creation icon" />
       </div>
     </div>
   </StyledImageArea>

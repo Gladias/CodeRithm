@@ -1,3 +1,4 @@
 import Register from './Register';
+import Login from './Login';
 
-export default Register;
+export { Login, Register };

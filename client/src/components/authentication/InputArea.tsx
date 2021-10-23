@@ -4,8 +4,13 @@ import {
 import React from 'react';
 import styled from 'styled-components';
 import { CommonButton } from '../common';
+import { RegisterSpecificVariables, LoginSpecificVariables } from '../../utils';
 
-const StyledInputArea = styled.div`
+type Props = {
+  purpose: 'register' | 'login';
+}
+
+const StyledInputArea = styled.div<{ columnHeight: string }>`
   width: calc(100% / 3 * 2);
   background-color: #252728;
   display: flex;
@@ -22,7 +27,7 @@ const StyledInputArea = styled.div`
     color: #EDEFEC;
 
     .column {
-      height: 40%;
+      height: ${(props) => props.columnHeight || '40%'};
       width: 80%;
       display: flex;
       flex-direction: column;
@@ -52,7 +57,7 @@ const StyledInputArea = styled.div`
         border-bottom: 4px dotted #EDEFEC;
       }
 
-      .registration-link {
+      .redirection-link {
         height: 20%;
         align-self: center;
         display: flex;
@@ -65,7 +70,7 @@ const StyledInputArea = styled.div`
     }
 
     .second-column {
-      height: 40%;
+      height: ${(props) => props.columnHeight || '40%'};
       width: 80%;
       display: flex;
       flex-direction: column;
@@ -107,45 +112,52 @@ const StyledInputArea = styled.div`
   }
 `;
 
-const InputArea: React.FC = () => (
-  <StyledInputArea>
-    <div className="outer-layer">
-      <div className="column">
-        <span className="welcome">
-          welcome to
-        </span>
-        <span className="coderithm">
-          COdeRithM
-        </span>
-        <span className="description">
-          Choose from more that 50 programming challenges,
-          and complete them in Your favorite programming language.
-        </span>
-        <span className="registration-link">
-          <a href="/login">
-            Already have an account?
-          </a>
-        </span>
+const InputArea: React.FC<Props> = ({ purpose }: Props) => {
+  const usedVariables = purpose === 'register' ? RegisterSpecificVariables : LoginSpecificVariables;
+  const {
+    welcome, description, link, checkboxCaption, submitCaption,
+  } = usedVariables;
+
+  return (
+    <StyledInputArea columnHeight={purpose === 'register' ? '40%' : '25%'}>
+      <div className="outer-layer">
+        <div className="column">
+          <span className="welcome">
+            {welcome}
+          </span>
+          <span className="coderithm">
+            COdeRithM
+          </span>
+          <span className="description">
+            {description}
+          </span>
+          <span className="redirection-link">
+            <a href={purpose === 'register' ? '/login' : 'register'}>
+              {link}
+            </a>
+          </span>
+        </div>
       </div>
-    </div>
-    <div className="outer-layer">
-      <div className="second-column">
-        <FormGroup className="form">
-          <TextField id="login" label="Login" type="text" variant="outlined" required />
-          <TextField id="password" label="Password" type="password" variant="outlined" required />
-          <TextField id="confirmPassword" label="Confirm password" type="password" variant="outlined" required />
-          <FormControlLabel
-            control={
-              <Checkbox className="terms-checkbox" />
+      <div className="outer-layer">
+        <div className="second-column">
+          <FormGroup className="form">
+            <TextField id="login" label="Login" type="text" variant="outlined" required />
+            <TextField id="password" label="Password" type="password" variant="outlined" required />
+            {purpose === 'register'
+              && <TextField id="confirmPassword" label="Confirm password" type="password" variant="outlined" required />}
+            <FormControlLabel
+              control={
+                <Checkbox className="terms-checkbox" />
           }
-            label="I agree to the terms of service"
-            labelPlacement="start"
-          />
-          <CommonButton text="Sign UP" />
-        </FormGroup>
+              label={checkboxCaption}
+              labelPlacement="start"
+            />
+            <CommonButton text={submitCaption} />
+          </FormGroup>
+        </div>
       </div>
-    </div>
-  </StyledInputArea>
-);
+    </StyledInputArea>
+  );
+};
 
 export default InputArea;
