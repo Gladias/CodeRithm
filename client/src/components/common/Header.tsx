@@ -21,10 +21,7 @@ const StyledHeader = styled.header`
       padding-top: 1rem;
       text-decoration: none;
       color: #6AA31C;
-
-      span {
-        font-size: 3.2rem;
-      }
+      font-size: 3.2rem;
 
       &:hover {
         color: #517C15;
@@ -47,7 +44,7 @@ const Header: React.FC = () => (
   <StyledHeader>
     <div className="logo">
       <a href="/login">
-        <span>COdeRithM</span>
+        COdeRithM
       </a>
     </div>
     <div className="navigation-buttons">
