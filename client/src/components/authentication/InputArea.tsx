@@ -5,6 +5,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { CommonButton } from '../common';
 import { RegisterSpecificVariables, LoginSpecificVariables } from '../../utils';
+import TextWithHeader from '../common/TextWithHeader';
 
 type Props = {
   purpose: 'register' | 'login';
@@ -25,49 +26,6 @@ const StyledInputArea = styled.div<{ columnHeight: string }>`
     font-size: 1.5rem;
     font-family: 'Meeralnimai RE';
     color: #EDEFEC;
-
-    .column {
-      height: ${(props) => props.columnHeight || '40%'};
-      width: 80%;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-
-      .welcome {
-        height: 10%;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-      }
-
-      .coderithm {
-        height: 20%;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-
-        color: #6AA31C;
-        font-size: 3.2rem;
-        font-family: 'Meedori BO';
-      }
-
-      .description {
-        height: 40%;
-        line-height: 130%;
-        border-bottom: 4px dotted #EDEFEC;
-      }
-
-      .redirection-link {
-        height: 20%;
-        align-self: center;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-        a {
-            color: #EDEFEC;
-        }
-      }
-    }
 
     .second-column {
       height: ${(props) => props.columnHeight || '40%'};
@@ -115,28 +73,19 @@ const StyledInputArea = styled.div<{ columnHeight: string }>`
 const InputArea: React.FC<Props> = ({ purpose }: Props) => {
   const usedVariables = purpose === 'register' ? RegisterSpecificVariables : LoginSpecificVariables;
   const {
-    welcome, description, link, checkboxCaption, submitCaption,
+    welcome, description, link, checkboxCaption, submitCaption, columnHeight,
   } = usedVariables;
 
   return (
-    <StyledInputArea columnHeight={purpose === 'register' ? '40%' : '25%'}>
+    <StyledInputArea columnHeight={columnHeight}>
       <div className="outer-layer">
-        <div className="column">
-          <span className="welcome">
-            {welcome}
-          </span>
-          <span className="coderithm">
-            COdeRithM
-          </span>
-          <span className="description">
-            {description}
-          </span>
-          <span className="redirection-link">
-            <a href={purpose === 'register' ? '/login' : 'register'}>
-              {link}
-            </a>
-          </span>
-        </div>
+        <TextWithHeader
+          welcome={welcome}
+          header="COdeRithM"
+          description={description}
+          link={link}
+          columnHeight={columnHeight}
+        />
       </div>
       <div className="outer-layer">
         <div className="second-column">
