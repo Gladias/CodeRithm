@@ -1,3 +1,3 @@
-import { RegisterSpecificVariables, LoginSpecificVariables } from './constants/auth';
+import { RegisterSpecificVariables, LoginSpecificVariables, NotFoundSpecificVariables } from './constants/auth';
 
-export { RegisterSpecificVariables, LoginSpecificVariables };
+export { RegisterSpecificVariables, LoginSpecificVariables, NotFoundSpecificVariables };
