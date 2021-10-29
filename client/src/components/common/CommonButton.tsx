@@ -4,6 +4,8 @@ import { Button } from '@mui/material';
 
 type Props = {
     text: string;
+    type?: 'button' | 'submit';
+    onClick?: React.MouseEventHandler<HTMLButtonElement>;
 };
 
 const StyledButton = styled(Button)`
@@ -16,8 +18,13 @@ const StyledButton = styled(Button)`
     }
 `;
 
-const CommonButton: React.FC<Props> = ({ text }) => (
-  <StyledButton size="large" variant="contained">{text}</StyledButton>
+const CommonButton: React.FC<Props> = ({ text, type, onClick }) => (
+  <StyledButton size="large" variant="contained" type={type} onClick={onClick}>{text}</StyledButton>
 );
+
+CommonButton.defaultProps = {
+  type: 'button',
+  onClick: undefined,
+};
 
 export default CommonButton;

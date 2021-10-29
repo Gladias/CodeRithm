@@ -1,9 +1,6 @@
-import {
-  Checkbox, FormControlLabel, FormGroup, TextField,
-} from '@mui/material';
+/* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import styled from 'styled-components';
-import { CommonButton } from '../common';
 import { RegisterSpecificVariables, LoginSpecificVariables } from '../../utils';
 import TextWithHeader from '../common/TextWithHeader';
 
@@ -70,10 +67,10 @@ const StyledInputArea = styled.div<{ columnHeight: string }>`
   }
 `;
 
-const InputArea: React.FC<Props> = ({ purpose }: Props) => {
+const InputArea: React.FC<Props> = ({ purpose, children }) => {
   const usedVariables = purpose === 'register' ? RegisterSpecificVariables : LoginSpecificVariables;
   const {
-    welcome, description, link, checkboxCaption, submitCaption, columnHeight,
+    welcome, description, link, columnHeight,
   } = usedVariables;
 
   return (
@@ -89,20 +86,9 @@ const InputArea: React.FC<Props> = ({ purpose }: Props) => {
       </div>
       <div className="outer-layer">
         <div className="second-column">
-          <FormGroup className="form">
-            <TextField id="login" label="Login" type="text" variant="outlined" required />
-            <TextField id="password" label="Password" type="password" variant="outlined" required />
-            {purpose === 'register'
-              && <TextField id="confirmPassword" label="Confirm password" type="password" variant="outlined" required />}
-            <FormControlLabel
-              control={
-                <Checkbox className="terms-checkbox" />
-          }
-              label={checkboxCaption}
-              labelPlacement="start"
-            />
-            <CommonButton text={submitCaption} />
-          </FormGroup>
+          <form className="form">
+            {children}
+          </form>
         </div>
       </div>
     </StyledInputArea>

@@ -2,12 +2,12 @@ const RegisterSpecificVariables = {
   welcome: 'welcome to',
   description: 'Choose from more that 50 programming challenges,\nand complete them in Your favorite programming language.',
   link: {
-    value: '/register',
+    value: '/login',
     caption: 'Already have an account?',
   },
   checkboxCaption: 'I agree to the terms of service',
   submitCaption: 'Sign Up',
-  columnHeight: '40%',
+  columnHeight: '60%',
 };
 
 const LoginSpecificVariables = {
@@ -19,7 +19,7 @@ const LoginSpecificVariables = {
   },
   checkboxCaption: 'Remember me',
   submitCaption: 'Sign In',
-  columnHeight: '25%',
+  columnHeight: '40%',
 };
 
 const NotFoundSpecificVariables = {
