@@ -1,4 +1,4 @@
-package java.com.gladias.coderithm.security;
+package com.gladias.coderithm.security;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,10 +6,9 @@ import lombok.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.com.gladias.coderithm.model.UserEntity;
+import com.gladias.coderithm.model.UserEntity;
 import java.util.Collection;
 
-@Data
 @AllArgsConstructor
 public class UserPrincipal implements UserDetails {
     private Long id;

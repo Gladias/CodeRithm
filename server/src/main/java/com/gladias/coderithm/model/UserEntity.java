@@ -1,4 +1,4 @@
-package java.com.gladias.coderithm.model;
+package com.gladias.coderithm.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

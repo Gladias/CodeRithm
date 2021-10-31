@@ -1,4 +1,4 @@
-package java.com.gladias.coderithm.security;
+package com.gladias.coderithm.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

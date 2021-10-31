@@ -1,4 +1,4 @@
-package java.com.gladias.coderithm.payload;
+package com.gladias.coderithm.payload;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

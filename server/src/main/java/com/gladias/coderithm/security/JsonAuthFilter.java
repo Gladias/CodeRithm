@@ -1,4 +1,4 @@
-package java.com.gladias.coderithm.security;
+package com.gladias.coderithm.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -7,7 +7,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.com.gladias.coderithm.payload.LoginRequest;
+import com.gladias.coderithm.payload.LoginRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
 

@@ -1,4 +1,4 @@
-package java.com.gladias.coderithm.exception;
+package com.gladias.coderithm.exception;
 
 public class NoPasswordMatchException extends Exception {
     public NoPasswordMatchException() {

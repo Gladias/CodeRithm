@@ -1,4 +1,4 @@
-package java.com.gladias.coderithm.service;
+package com.gladias.coderithm.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -7,12 +7,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
-import java.com.gladias.coderithm.exception.NoPasswordMatchException;
-import java.com.gladias.coderithm.exception.UserAlreadyExistsException;
-import java.com.gladias.coderithm.model.UserEntity;
-import java.com.gladias.coderithm.payload.RegisterRequest;
-import java.com.gladias.coderithm.payload.UserDto;
-import java.com.gladias.coderithm.repository.UserRepository;
+import com.gladias.coderithm.exception.NoPasswordMatchException;
+import com.gladias.coderithm.exception.UserAlreadyExistsException;
+import com.gladias.coderithm.model.UserEntity;
+import com.gladias.coderithm.payload.RegisterRequest;
+import com.gladias.coderithm.payload.UserDto;
+import com.gladias.coderithm.repository.UserRepository;
 
 @RequiredArgsConstructor
 @Service

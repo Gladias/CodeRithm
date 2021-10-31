@@ -1,4 +1,4 @@
-package java.com.gladias.coderithm.security;
+package com.gladias.coderithm.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -6,8 +6,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.com.gladias.coderithm.model.UserEntity;
-import java.com.gladias.coderithm.repository.UserRepository;
+import com.gladias.coderithm.model.UserEntity;
+import com.gladias.coderithm.repository.UserRepository;
 
 @Service
 @RequiredArgsConstructor

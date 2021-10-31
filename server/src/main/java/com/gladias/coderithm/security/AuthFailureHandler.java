@@ -1,4 +1,4 @@
-package java.com.gladias.coderithm.security;
+package com.gladias.coderithm.security;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;

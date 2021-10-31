@@ -1,4 +1,4 @@
-package java.com.gladias.coderithm.controller;
+package com.gladias.coderithm.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
-import java.com.gladias.coderithm.exception.NoPasswordMatchException;
-import java.com.gladias.coderithm.exception.UserAlreadyExistsException;
-import java.com.gladias.coderithm.payload.RegisterRequest;
-import java.com.gladias.coderithm.payload.UserDto;
-import java.com.gladias.coderithm.service.UserService;
+import com.gladias.coderithm.exception.NoPasswordMatchException;
+import com.gladias.coderithm.exception.UserAlreadyExistsException;
+import com.gladias.coderithm.payload.RegisterRequest;
+import com.gladias.coderithm.payload.UserDto;
+import com.gladias.coderithm.service.UserService;
 
 @RequiredArgsConstructor
 @RestController
