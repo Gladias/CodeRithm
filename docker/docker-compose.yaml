@@ -10,8 +10,6 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: coderithm
-    volumes:
-      - ./_data/postgres:/var/lib/postgres
     ports:
       - "5432:5432"
     networks:
