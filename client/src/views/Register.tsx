@@ -31,7 +31,7 @@ const RegistarionValidationSchema = yup.object().shape({
   acceptTerms: yup.bool().oneOf([true], 'You must accept terms of service'),
 });
 
-interface IValidationErrors {
+type IValidationErrors = {
   [key: string]: string[];
   login: string[],
   password: string[],
