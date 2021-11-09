@@ -16,25 +16,21 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "users")
-public class UserEntity {
+@Entity(name = "challenge")
+public class ChallengeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String login;
+    private String title;
+    private String description;
 
-    private String password;
-
-    private String email;
-
-    public UserEntity(String login, String password, String email) {
-        this.login = login;
-        this.password = password;
-        this.email = email;
+    public ChallengeEntity(String title, String description) {
+        this.title = title;
+        this.description = description;
     }
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "challenge")
     private Set<SolutionEntity> solutions;
 }
