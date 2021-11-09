@@ -18,36 +18,32 @@ import com.gladias.coderithm.repository.UserRepository;
 @Service
 public class UserService {
 
-    private final UserRepository repository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     public UserDto getUserData(String username) {
-        UserEntity user = repository.findByLogin(username).get();
+        UserEntity user = userRepository.findByLogin(username).get();
 
-        return UserDto.builder()
-                .id(user.getId())
-                .login(user.getLogin())
-                .email(user.getEmail())
-                .build();
+        return new UserDto(user.getId(), user.getLogin(), user.getEmail());
     }
 
     public void registerUserAccount(@NotNull RegisterRequest registerRequest) throws UserAlreadyExistsException,
             NoPasswordMatchException {
-        if (repository.existsByLogin(registerRequest.getLogin())) {
-            throw new UserAlreadyExistsException("There is an account with login: " + registerRequest.getLogin());
-        } else if (repository.existsByEmail(registerRequest.getEmail())) {
-            throw new UserAlreadyExistsException("There is an account with email: " + registerRequest.getEmail());
-        } else if (!registerRequest.getPassword().equals(registerRequest.getPasswordConfirm())) {
+        if (userRepository.existsByLogin(registerRequest.login())) {
+            throw new UserAlreadyExistsException("There is an account with login: " + registerRequest.login());
+        } else if (userRepository.existsByEmail(registerRequest.email())) {
+            throw new UserAlreadyExistsException("There is an account with email: " + registerRequest.email());
+        } else if (!registerRequest.password().equals(registerRequest.passwordConfirm())) {
             throw new NoPasswordMatchException("Provided passwords do not match");
         }
 
         UserEntity user = UserEntity.builder()
-                .login(registerRequest.getLogin())
-                .password(passwordEncoder.encode(registerRequest.getPassword()))
-                .email(registerRequest.getEmail())
+                .login(registerRequest.login())
+                .password(passwordEncoder.encode(registerRequest.password()))
+                .email(registerRequest.email())
                 .build();
 
-        repository.save(user);
+        userRepository.save(user);
     }
 
     public static String getUsernameFromToken(String jwtToken) {

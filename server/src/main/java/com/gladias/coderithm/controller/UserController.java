@@ -19,20 +19,20 @@ import com.gladias.coderithm.service.UserService;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/auth")
 public class UserController {
 
-    private final UserService service;
+    private final UserService userService;
 
-    @GetMapping("/auth/userData")
+    @GetMapping("/userData")
     public UserDto getUserData(@CookieValue("token") String token) {
-        return service.getUserData(UserService.getUsernameFromToken(token));
+        return userService.getUserData(UserService.getUsernameFromToken(token));
     }
 
-    @PostMapping("/auth/register")
+    @PostMapping("/register")
     public void registerUserAccount(@RequestBody @Valid RegisterRequest registerRequest) {
         try {
-            service.registerUserAccount(registerRequest);
+            userService.registerUserAccount(registerRequest);
         } catch (UserAlreadyExistsException | NoPasswordMatchException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
