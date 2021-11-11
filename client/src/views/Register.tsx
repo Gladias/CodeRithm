@@ -70,7 +70,7 @@ const Register: React.FC = () => {
     updateCredentials(id, value);
   };
 
-  const updateCredentials = (id: any, value: any) => {
+  const updateCredentials = (id: string, value: string | boolean) => {
     setCredentials((prevState) => ({
       ...prevState,
       [id]: value,

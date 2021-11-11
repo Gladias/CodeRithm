@@ -23,18 +23,19 @@ import SearchIcon from '@mui/icons-material/Search';
 import ChallengeCard from './ChallengeCard';
 
 type Props = {
-
+  challenges: IChallenge[];
 };
 
-type IChallange = {
+type IChallenge = {
   [key: string]: string | number,
+  id: number,
   title: string,
   description: string,
   author: string,
-  rating: string,
-  comments: number,
-  difficulty: 'Easy' | 'Medium' | 'Hard' | 'Challenging',
-  status: 'New' | 'In Progress' | 'Completed',
+  averageRating: number,
+  commentsNumber: number,
+  difficultyLevel: 'EASY' | 'MEDIUM' | 'HARD' | 'CHALLENGING',
+  solutionStatus: 'New' | 'In Progress' | 'Completed',
 }
 
 const StyledChallengesSection = styled.div`
@@ -62,55 +63,21 @@ const StyledChallengesSection = styled.div`
   }
 `;
 
-const ChallengesSection: React.FC<Props> = () => {
-  const exampleChallange1: IChallange = {
-    title: 'Find the odd int',
-    description: 'Given an array of integers, find the one that appears an odd number of times. There will always be only one integer that appears an odd number of times.',
-    author: 'Gladias',
-    rating: '4.76',
-    comments: 34,
-    difficulty: 'Easy',
-    status: 'New',
-  };
-
-  const exampleChallange2: IChallange = {
-    title: 'Stack implementation',
-    description: 'Given an array of integers, find the one that appears an odd number of times. There will always be only one integer that appears an odd number of times.',
-    author: 'Maras',
-    rating: '4.76',
-    comments: 34,
-    difficulty: 'Hard',
-    status: 'Completed',
-  };
-
-  const exampleChallange3: IChallange = {
-    title: 'Bubble sort',
-    description: 'Given an array of integers, find the one that appears an odd number of times. There will always be only one integer that appears an odd number of times.',
-    author: 'Myszek',
-    rating: '2.76',
-    comments: 55,
-    difficulty: 'Medium',
-    status: 'In Progress',
-  };
-
-  const [challanges, setChallanges] = React.useState<IChallange[]>(
-    [exampleChallange1, exampleChallange2, exampleChallange3],
-  );
-
+const ChallengesSection: React.FC<Props> = ({ challenges }) => {
   return (
     <StyledChallengesSection>
       <div className="header">
         <span>
           Found
           {' '}
-          {challanges.length}
+          {challenges.length}
           {' '}
           challenges
         </span>
       </div>
       <div className="body">
-        {challanges.map((challenge) => (
-          <ChallengeCard {...challenge} />
+        {challenges.map((challenge) => (
+          <ChallengeCard {...challenge} key={challenge.id} />
         ))}
       </div>
     </StyledChallengesSection>

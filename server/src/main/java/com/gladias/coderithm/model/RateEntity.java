@@ -10,7 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 
 @Data
 @Builder
@@ -29,11 +29,11 @@ public class RateEntity {
         this.rate = rate;
     }
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "challenge_id")
     private ChallengeEntity challenge;
 }

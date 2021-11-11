@@ -9,13 +9,15 @@ import CommentIcon from '@mui/icons-material/Comment';
 import StarTwoToneIcon from '@mui/icons-material/StarTwoTone';
 
 type Props = {
+  [key: string]: string | number,
+  id: number,
   title: string,
   description: string,
   author: string,
-  rating: string,
-  comments: number,
-  difficulty: 'Easy' | 'Medium' | 'Hard' | 'Challenging',
-  status: 'New' | 'In Progress' | 'Completed',
+  averageRating: number,
+  commentsNumber: number,
+  difficultyLevel: 'EASY' | 'MEDIUM' | 'HARD' | 'CHALLENGING',
+  solutionStatus: 'New' | 'In Progress' | 'Completed',
 };
 
 const StyledChallengeCard = styled.div`
@@ -119,19 +121,19 @@ const StyledChallengeCard = styled.div`
       background-color: #EDEDED;
     }
 
-    .green, .Easy {
+    .green, .easy {
       background-color: #6AA31C;
     }
 
-    .Medium {
+    .medium {
       background-color: #FFC53A;
     }
 
-    .Hard {
+    .hard {
       background-color: #CA3C25;
     }
 
-    .Challenging {
+    .challenging {
       background-color: #985F99;
     }
 `;
@@ -148,16 +150,16 @@ const getStatusColor = (status: string) => {
 };
 
 const ChallengeCard: React.FC<Props> = ({
-  title, description, author, rating, comments, difficulty, status,
+  title, description, author, averageRating, commentsNumber, difficultyLevel, solutionStatus,
 }) => {
-  const statusColor = getStatusColor(status);
+  const statusColor = getStatusColor(solutionStatus);
 
   return (
     <StyledChallengeCard>
       <div className="main">
         <div className="difficulty-level">
-          <div className={`${difficulty} level`}>
-            {difficulty}
+          <div className={`${difficultyLevel.toLowerCase()} level`}>
+            {difficultyLevel}
           </div>
         </div>
         <div className="details-section">
@@ -176,13 +178,13 @@ const ChallengeCard: React.FC<Props> = ({
               <StarTwoToneIcon />
             </div>
             <div>
-              {rating}
+              {averageRating}
             </div>
           </div>
           <div className="column comments">
             <CommentIcon />
             <div>
-              {comments}
+              {commentsNumber}
             </div>
           </div>
         </div>
@@ -194,7 +196,7 @@ const ChallengeCard: React.FC<Props> = ({
         </div>
       </div>
       <div className={`${statusColor} status`}>
-        {status}
+        {solutionStatus}
       </div>
     </StyledChallengeCard>
   );
