@@ -46,7 +46,6 @@ const StyledFilterSection = styled.div`
       background-color: #C2CFB2;
       border-radius: 0.5rem;
       color: black;
-      
     }
 
     .MuiInputAdornment-root {

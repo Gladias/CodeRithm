@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 /* eslint-disable no-undef */
 /* eslint-disable max-len */
 /* eslint-disable react/prop-types */
@@ -6,11 +7,15 @@
 /* eslint-disable react/no-unused-prop-types */
 import React from 'react';
 import styled from 'styled-components';
-import { Button, MenuItem, TextField } from '@mui/material';
-import PersonIcon from '@mui/icons-material/Person';
-import CommentIcon from '@mui/icons-material/Comment';
-import StarTwoToneIcon from '@mui/icons-material/StarTwoTone';
+import { MenuItem, TextField } from '@mui/material';
+import { Controlled as CodeMirror } from 'react-codemirror2';
 import { CommonButton } from '../common';
+
+require('codemirror/lib/codemirror.css');
+require('codemirror/theme/material.css');
+require('codemirror/mode/python/python');
+require('codemirror/addon/hint/show-hint.css');
+require('codemirror/keymap/sublime');
 
 const StyledSolutionWindow = styled.div`
     width: 60%;
@@ -72,6 +77,24 @@ const StyledSolutionWindow = styled.div`
       width: 95%;
 
       background-color: #35373B;
+
+      .react-codemirror2 {
+        font-size: 1.1rem;
+
+        flex: 1 1 auto;
+        margin-top: 0;
+        height: 100%;
+        position: relative;
+      }
+
+      .CodeMirror {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+      }
     }
 `;
 
@@ -90,6 +113,8 @@ const SolutionWindow: React.FC = () => {
       value: 'Java',
     },
   ];
+
+  const [code, setCode] = React.useState('print(3)');
 
   return (
     <StyledSolutionWindow>
@@ -119,6 +144,25 @@ const SolutionWindow: React.FC = () => {
         </div>
       </div>
       <div className="solution">
+        <CodeMirror
+          value={code}
+          options={{
+            mode: 'python',
+            theme: 'material',
+            lineNumbers: true,
+            lineWrapping: true,
+            smartIndent: true,
+            keyMap: 'sublime',
+            extraKeys: {
+              'Ctrl-Space': 'autocomplete',
+            },
+          }}
+          autoScroll
+          onBeforeChange={(editor, data, value) => {
+            setCode(value);
+          }}
+          onChange={(editor, data, value) => {}}
+        />
       </div>
     </StyledSolutionWindow>
   );
