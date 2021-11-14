@@ -4,7 +4,7 @@ import './App.scss';
 import { StyledEngineProvider } from '@mui/material/styles';
 import { Header } from './components/common';
 import {
-  BrowseChallenges, Login, Register, NotFound,
+  BrowseChallenges, Challenge, Login, Register, NotFound,
 } from './views';
 
 const App: React.FC = () => (
@@ -15,7 +15,8 @@ const App: React.FC = () => (
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
         <Route path="/browseChallenges" component={BrowseChallenges} />
-        <Route path="/404" component={NotFound} />
+        <Route path="/challenge" component={Challenge} />
+        <Route path="*" component={NotFound} />
       </Switch>
     </Router>
   </StyledEngineProvider>

@@ -12,7 +12,7 @@ const NotFound: React.FC = () => {
   } = NotFoundSpecificVariables;
 
   return (
-    <div className="container">
+    <div className="notfound-container">
       <div className="column">
         <TextWithHeader
           header={header}

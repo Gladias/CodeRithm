@@ -119,7 +119,7 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="container">
+    <div className="register-container">
       <ImageArea caption="Account Creation" image={profile} />
       <InputArea purpose="register">
         <TextField id="login" label="Login" type="text" variant="outlined" onChange={handleChange} required value={credentials.login} error={validationErrors.login.length > 0} helperText={validationErrors.login.join('. ')} />

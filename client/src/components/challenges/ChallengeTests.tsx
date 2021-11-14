@@ -1,0 +1,184 @@
+/* eslint-disable no-undef */
+/* eslint-disable max-len */
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/self-closing-comp */
+/* eslint-disable react/no-unused-prop-types */
+import React from 'react';
+import styled from 'styled-components';
+import { Button, MenuItem, TextField } from '@mui/material';
+import TimerIcon from '@mui/icons-material/Timer';
+import CodeIcon from '@mui/icons-material/Code';
+import AssignmentTurnedInOutlinedIcon from '@mui/icons-material/AssignmentTurnedInOutlined';
+import { CommonButton } from '../common';
+
+const StyledChallengeTests = styled.div`
+    height: 100%;
+    width: 60%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+
+    background-color: #35373B;
+    border: 1px solid black;
+    border-radius: 0.5rem;
+
+    font-family: 'Meedori BO';
+
+    .title {
+      height: 10%;
+
+      display: flex;
+      align-items: center;
+      text-align: center;
+
+      font-size: 2rem;
+      -webkit-text-fill-color: #EDEDED;
+      -webkit-text-stroke-width: 0.1rem;
+      -webkit-text-stroke-color: black;
+      text-shadow: 4px 4px 6px rgba(0, 0, 0, 1);
+    }
+
+    .table {
+      width: 90%;
+      height: 85%;
+      display: flex;
+      justify-content: space-evenly;
+
+      .column {
+        width: calc(100%/3);
+
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        text-align: center;
+
+        color: #EDEFEC;
+        font-size: 1.5rem;
+        font-family: 'Meeralnimai RE';
+
+        .header {
+          height: 15%;
+          font-size: 1.5rem;
+          font-family: 'Meedori BO';
+        }
+
+        .row {
+          height: 15%;
+          color: black;
+          display: flex;
+          justify-content: flex-start;
+          width: 100%;
+        }
+      }
+
+      .line-number {
+        color: #C2CFB2;
+      }
+    }
+`;
+
+const ChallengeTests: React.FC = () => {
+  const languages = 1;
+
+  return (
+    <StyledChallengeTests>
+      <div className="title">
+        Sample tests
+      </div>
+      <div className="table">
+        <div className="column input">
+          <div className="header">
+            Input
+          </div>
+          <div className="row">
+            <span className="line-number">
+              1.
+            </span>
+            <span>
+              OPSS
+            </span>
+          </div>
+          <div className="row">
+            <span className="line-number">
+              2.
+            </span>
+            <span>
+              OPSS
+            </span>
+          </div>
+          <div className="row">
+            <span className="line-number">
+              3.
+            </span>
+            <span>
+              OPSS
+            </span>
+          </div>
+        </div>
+        <div className="column expected-output">
+          <div className="header">
+            Expected output
+          </div>
+          <div className="row">
+            <span className="line-number">
+              1.
+            </span>
+            <span>
+              OPSS
+            </span>
+          </div>
+          <div className="row">
+            <span className="line-number">
+              2.
+            </span>
+            <span>
+              OPSS
+            </span>
+          </div>
+          <div className="row">
+            <span className="line-number">
+              3.
+            </span>
+            <span>
+              OPSS
+            </span>
+          </div>
+        </div>
+        <div className="column yours-output">
+          <div className="header">
+            {'Your\'s output'}
+          </div>
+          <div className="row">
+            <span className="line-number">
+              1.
+            </span>
+            <span>
+              OPSS
+            </span>
+          </div>
+          <div className="row">
+            <span className="line-number">
+              2.
+            </span>
+            <span>
+              OPSS
+            </span>
+          </div>
+          <div className="row">
+            <span className="line-number">
+              3.
+            </span>
+            <span>
+              OPSS
+            </span>
+          </div>
+        </div>
+      </div>
+    </StyledChallengeTests>
+  );
+};
+
+export default ChallengeTests;

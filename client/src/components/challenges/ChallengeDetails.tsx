@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable max-len */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
@@ -9,9 +10,11 @@ import { Button } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import CommentIcon from '@mui/icons-material/Comment';
 import StarTwoToneIcon from '@mui/icons-material/StarTwoTone';
+import { CommonButton } from '../common';
 
 type Props = {
   [key: string]: string[] | string | number | boolean | undefined,
+
   id: number,
   title: string,
   description: string,
@@ -24,35 +27,24 @@ type Props = {
 };
 
 const StyledChallengeCard = styled.div`
-    height: 25rem;
-    width: 25rem;
+    height: 100%;
+    width: 34%;
 
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
 
     font-family: 'Meedori BO';
 
-    .main {
-      width: 100%;
-      height: 100%;
-
-      display: flex;
-      flex-direction: column;
-      justify-content: space-around;
-
-      color: #EDEDED;
-      background-color: #35373B;
-      border-width: 2px 2px 2px 2px;
-      border-color: black;
-      border-style: solid;
-      border-radius: 0.5rem 0.5rem 0 0;
-    }
+    color: #EDEDED;
+    background-color: #35373B;
+    border: 1px solid black;
+    border-radius: 0.5rem;
 
     .difficulty-level {
       width: 100%;
-      height: 10%;
+      height: 5%;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -74,16 +66,23 @@ const StyledChallengeCard = styled.div`
     .details-section {
       display: flex;
       width: 100%;
+      height: 15%;
       justify-content: center;
 
       .column {
         width: calc(100%/3);
+
         display: flex;
         flex-direction: column;
         align-items: center;
+        font-size: 1.4rem;
 
         & > div {
           font-family: 'Meedori BO';
+        }
+
+        .MuiSvgIcon-root {
+          font-size: 1.8rem;
         }
       }
 
@@ -92,8 +91,30 @@ const StyledChallengeCard = styled.div`
       }
     }
 
+    .tags {
+      display: flex;
+      justify-content: space-evenly;
+      width: 90%;
+      height: 5%;
+
+      & > div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 25%;
+        height: 100%;
+        background-color: #C2CFB2;
+        color: black;
+        border: 1px solid black;
+        border-radius: 0.5rem;
+      }
+    }
+
     .title {
-      font-size: 2.2rem;
+      height: 15%;
+      font-size: 3rem;
+      display: flex;
+      align-items: center;
       text-align: center;
       -webkit-text-fill-color: #EDEDED;
       -webkit-text-stroke-width: 0.1rem;
@@ -102,33 +123,15 @@ const StyledChallengeCard = styled.div`
     }
 
     .description {
+      height: 30%;
+      font-size: 1.4rem;
+      display: flex;
+      align-items: center;
       text-align: center;
       overflow: hidden;
     }
 
-    .status {
-      width: 100%;
-      height: 15%;
-      border: 2px solid black;
-      border-radius: 0 0 0.5rem 0.5rem;
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      font-size: 1.5rem;
-      color: black;
-    }
-
-    .blue {
-      background-color: #3DA5D9;
-    }
-
-    .white {
-      background-color: #EDEDED;
-    }
-
-    .green, .easy {
+    .easy {
       background-color: #6AA31C;
     }
 
@@ -145,68 +148,66 @@ const StyledChallengeCard = styled.div`
     }
 `;
 
-const getStatusColor = (status: string | undefined) => {
-  switch (status) {
-    case 'Completed':
-      return 'green';
-    case 'In Progress':
-      return 'blue';
-    default:
-      return 'white';
-  }
-};
-
-const ChallengeCard: React.FC<Props> = ({
+const ChallengeDetails: React.FC<Props> = ({
   title, description, author, averageRating, commentsNumber, difficultyLevel, solutionStatus,
 }) => {
-  const statusColor = getStatusColor(solutionStatus);
+  const a = 'a';
 
   return (
     <StyledChallengeCard>
-      <div className="main">
-        <div className="difficulty-level">
-          <div className={`${difficultyLevel.toLowerCase()} level`}>
-            {difficultyLevel}
-          </div>
-        </div>
-        <div className="details-section">
-          <div className="column author">
-            <PersonIcon />
-            <div>
-              {author}
-            </div>
-          </div>
-          <div className="column rating">
-            <div className="stars">
-              <StarTwoToneIcon />
-              <StarTwoToneIcon />
-              <StarTwoToneIcon />
-              <StarTwoToneIcon />
-              <StarTwoToneIcon />
-            </div>
-            <div>
-              {averageRating}
-            </div>
-          </div>
-          <div className="column comments">
-            <CommentIcon />
-            <div>
-              {commentsNumber}
-            </div>
-          </div>
-        </div>
-        <div className="title">
-          {title}
-        </div>
-        <div className="description">
-          {description}
+      <div className="difficulty-level">
+        <div className={`${difficultyLevel.toLowerCase()} level`}>
+          {difficultyLevel}
         </div>
       </div>
-      <div className={`${statusColor} status`}>
-        {solutionStatus}
+      <div className="details-section">
+        <div className="column author">
+          <PersonIcon />
+          <div>
+            {author}
+          </div>
+        </div>
+        <div className="column rating">
+          <div className="stars">
+            <StarTwoToneIcon />
+            <StarTwoToneIcon />
+            <StarTwoToneIcon />
+            <StarTwoToneIcon />
+            <StarTwoToneIcon />
+          </div>
+          <div>
+            {averageRating}
+          </div>
+        </div>
+        <div className="column comments">
+          <CommentIcon />
+          <div>
+            {commentsNumber}
+          </div>
+        </div>
+      </div>
+      <div className="tags">
+        <div>
+          Sorting
+        </div>
+        <div>
+          Lists
+        </div>
+        <div>
+          Arrays
+        </div>
+      </div>
+      <div className="title">
+        {title}
+      </div>
+      <div className="description">
+        {description}
+      </div>
+      <div className="comments">
+        <CommonButton text="Switch to comments" backgroundcolor="#FFC53A" hovercolor="#7a6c23" />
       </div>
     </StyledChallengeCard>
   );
 };
 
-export default ChallengeCard;
+export default ChallengeDetails;

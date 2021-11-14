@@ -27,7 +27,7 @@ type Props = {
 };
 
 type IChallenge = {
-  [key: string]: string | number,
+  [key: string]: string[] | string | number,
   id: number,
   title: string,
   description: string,
@@ -36,6 +36,7 @@ type IChallenge = {
   commentsNumber: number,
   difficultyLevel: 'EASY' | 'MEDIUM' | 'HARD' | 'CHALLENGING',
   solutionStatus: 'New' | 'In Progress' | 'Completed',
+  tags: string[],
 }
 
 const StyledChallengesSection = styled.div`

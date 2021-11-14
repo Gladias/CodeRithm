@@ -1,0 +1,20 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    background-color: #252728;
+    height: 92%;
+
+    .row {
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+    .row:nth-child(1) {
+        height: 65%;
+    }
+
+    .row:nth-child(2) {
+        height: 30%;
+    }
+}

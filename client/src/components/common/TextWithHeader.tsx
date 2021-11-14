@@ -12,7 +12,7 @@ type Props = {
     columnHeight: string
 }
 
-const StyledTextWithHeader = styled.div<{ columnHeight: string }>`
+const StyledTextWithHeader = styled.div<{ columnHeight?: string }>`
     height: ${(props) => props.columnHeight || '40%'};
     width: 80%;
     display: flex;
