@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable prefer-const */
 /* eslint-disable no-undef */
 /* eslint-disable max-len */
@@ -9,13 +10,13 @@ import React from 'react';
 import styled from 'styled-components';
 import { MenuItem, TextField } from '@mui/material';
 import { Controlled as CodeMirror } from 'react-codemirror2';
+import AceEditor from 'react-ace';
 import { CommonButton } from '../common';
 
-require('codemirror/lib/codemirror.css');
-require('codemirror/theme/material.css');
-require('codemirror/mode/python/python');
-require('codemirror/addon/hint/show-hint.css');
-require('codemirror/keymap/sublime');
+import 'ace-builds/src-noconflict/mode-python';
+import 'ace-builds/src-noconflict/theme-monokai';
+import 'ace-builds/src-noconflict/snippets/python';
+import 'ace-builds/src-noconflict/ext-language_tools';
 
 const StyledSolutionWindow = styled.div`
     width: 60%;
@@ -30,6 +31,12 @@ const StyledSolutionWindow = styled.div`
     border-radius: 0.5rem;
 
     font-family: 'Meedori BO';
+
+    #aceEditor {
+        width: 100% !important;
+        height: 100% !important;
+        font-size: 1.2rem !important;
+    }
 
     .MuiOutlinedInput-root {
       background-color: #C2CFB2;
@@ -77,24 +84,6 @@ const StyledSolutionWindow = styled.div`
       width: 95%;
 
       background-color: #35373B;
-
-      .react-codemirror2 {
-        font-size: 1.1rem;
-
-        flex: 1 1 auto;
-        margin-top: 0;
-        height: 100%;
-        position: relative;
-      }
-
-      .CodeMirror {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 100%;
-      }
     }
 `;
 
@@ -144,24 +133,24 @@ const SolutionWindow: React.FC = () => {
         </div>
       </div>
       <div className="solution">
-        <CodeMirror
-          value={code}
-          options={{
-            mode: 'python',
-            theme: 'material',
-            lineNumbers: true,
-            lineWrapping: true,
-            smartIndent: true,
-            keyMap: 'sublime',
-            extraKeys: {
-              'Ctrl-Space': 'autocomplete',
-            },
+        <AceEditor
+          placeholder="Placeholder Text"
+          mode="python"
+          theme="monokai"
+          name="aceEditor"
+          showPrintMargin
+          showGutter
+          highlightActiveLine
+          value={`function onLoad(editor) {
+  console.log("i've loaded");
+}`}
+          setOptions={{
+            enableBasicAutocompletion: true,
+            enableLiveAutocompletion: true,
+            enableSnippets: true,
+            showLineNumbers: true,
+            tabSize: 2,
           }}
-          autoScroll
-          onBeforeChange={(editor, data, value) => {
-            setCode(value);
-          }}
-          onChange={(editor, data, value) => {}}
         />
       </div>
     </StyledSolutionWindow>
