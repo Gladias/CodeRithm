@@ -1,10 +1,12 @@
+/* eslint-disable max-len */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/jsx-tag-spacing */
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import '../assets/styles/Challenge.scss';
 import {
-  ChallengeDetails, ChallengeTests, SolutionStatistics, SolutionWindow,
+  AddComment,
+  ChallengeDetails, ChallengeTests, CommentSection, SolutionStatistics, SolutionWindow,
 } from '../components/challenges';
 
 type IChallenge = {
@@ -22,6 +24,8 @@ type IChallenge = {
 
 const Challenge: React.FC = () => {
   // const [challenge, setChallenge] = React.useState<IChallenge>({
+  const [showComments, setShowComments] = React.useState(false);
+
   const challenge:IChallenge = {
     id: 123,
     title: 'Find the odd int',
@@ -34,14 +38,18 @@ const Challenge: React.FC = () => {
     tags: ['sorting', 'lists'],
   };
 
+  const handleSwitchClick = () => {
+    setShowComments(!showComments);
+  };
+
   return (
     <div className="container">
       <div className="row">
-        <ChallengeDetails {...challenge} />
+        { showComments ? <CommentSection onSwitchClick={handleSwitchClick} /> : <ChallengeDetails onSwitchClick={handleSwitchClick} {...challenge} /> }
         <SolutionWindow />
       </div>
       <div className="row">
-        <SolutionStatistics />
+        { showComments ? <AddComment /> : <SolutionStatistics /> }
         <ChallengeTests />
       </div>
     </div>

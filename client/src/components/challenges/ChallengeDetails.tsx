@@ -13,7 +13,7 @@ import StarTwoToneIcon from '@mui/icons-material/StarTwoTone';
 import { CommonButton } from '../common';
 
 type Props = {
-  [key: string]: string[] | string | number | boolean | undefined,
+  onSwitchClick: React.MouseEventHandler<HTMLButtonElement>;
 
   id: number,
   title: string,
@@ -149,7 +149,7 @@ const StyledChallengeCard = styled.div`
 `;
 
 const ChallengeDetails: React.FC<Props> = ({
-  title, description, author, averageRating, commentsNumber, difficultyLevel, solutionStatus,
+  title, description, author, averageRating, commentsNumber, difficultyLevel, onSwitchClick,
 }) => {
   const a = 'a';
 
@@ -204,7 +204,7 @@ const ChallengeDetails: React.FC<Props> = ({
         {description}
       </div>
       <div className="comments">
-        <CommonButton text="Switch to comments" backgroundcolor="#FFC53A" hovercolor="#7a6c23" />
+        <CommonButton onClick={onSwitchClick} text="Switch to comments" backgroundcolor="#FFC53A" hovercolor="#7a6c23" />
       </div>
     </StyledChallengeCard>
   );
