@@ -27,7 +27,7 @@ public class SolutionEntity {
     private Long id;
 
     private String content;
-    private Enum<SolutionStatus> status;
+    private Enum<SolutionStatus> status = SolutionStatus.New;
 
     public SolutionEntity(String content, Enum<SolutionStatus> status) {
         this.content = content;
@@ -35,8 +35,12 @@ public class SolutionEntity {
     }
 
     @ManyToOne
+    @JoinColumn(name = "language_id")
+    private LanguageEntity language;
+
+    @ManyToOne
     @JoinColumn(name = "user_id")
-    private UserEntity user;
+    private UserEntity author;
 
     @ManyToOne
     @JoinColumn(name = "challenge_id")
