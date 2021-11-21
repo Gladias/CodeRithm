@@ -38,8 +38,11 @@ public class UserEntity {
     @OneToMany(mappedBy = "author")
     private Set<ChallengeEntity> createdChallenges;
 
-    @OneToMany(mappedBy = "user")
-    private Set<SolutionEntity> solutions;
+    @OneToMany(mappedBy = "author")
+    private Set<SolutionEntity> createdSolutions;
+
+    @OneToMany(mappedBy = "author")
+    private Set<CommentEntity> createdComments;
 
     @OneToMany(mappedBy = "user")
     private Set<RateEntity> rates;

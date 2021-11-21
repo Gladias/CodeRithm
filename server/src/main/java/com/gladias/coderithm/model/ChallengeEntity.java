@@ -10,9 +10,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -32,16 +32,21 @@ public class ChallengeEntity {
     private DifficultyLevel difficultyLevel;
     private SolutionStatus solutionStatus = SolutionStatus.New;
 
-    public ChallengeEntity(String title, String description, DifficultyLevel difficultyLevel, SolutionStatus solutionStatus) {
+    public ChallengeEntity(String title, String description, DifficultyLevel difficultyLevel) {
         this.title = title;
         this.description = description;
         this.difficultyLevel = difficultyLevel;
-        this.solutionStatus = solutionStatus;
     }
 
     @ManyToOne
     @JoinColumn(name = "author_id")
     private UserEntity author;
+
+    @ManyToMany
+    private Set<LanguageEntity> availableLanguages;
+
+    @OneToMany(mappedBy = "challenge")
+    private Set<TestCaseEntity> tests;
 
     @OneToMany(mappedBy = "challenge")
     private Set<SolutionEntity> solutions;
@@ -51,6 +56,13 @@ public class ChallengeEntity {
 
     @OneToMany(mappedBy = "challenge")
     private Set<CommentEntity> comments;
+
+    @ManyToMany
+    private Set<TagEntity> tags;
+
+    public Set<String> getTagsValues() {
+        return tags.stream().map(TagEntity::getValue).collect(Collectors.toSet());
+    }
 
     public int getCommentsNumber() {
         return comments != null ? comments.size() : 0;
@@ -66,5 +78,5 @@ public class ChallengeEntity {
 
     /*
     TODO: look through solutions to generate status of challenge for logged user
-     */
+    */
 }
