@@ -1,4 +1,4 @@
-package com.gladias.coderithm.payload;
+package com.gladias.coderithm.payload.auth;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
