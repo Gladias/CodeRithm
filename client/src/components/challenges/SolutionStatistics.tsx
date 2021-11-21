@@ -11,6 +11,7 @@ import TimerIcon from '@mui/icons-material/Timer';
 import CodeIcon from '@mui/icons-material/Code';
 import AssignmentTurnedInOutlinedIcon from '@mui/icons-material/AssignmentTurnedInOutlined';
 import { CommonButton } from '../common';
+import { ISolutionStatistics } from '../types/types';
 
 const StyledSolutionStatistics = styled.div`
     height: 100%;
@@ -69,15 +70,24 @@ const StyledSolutionStatistics = styled.div`
         }
 
         .value {
+          font-size: 1.5rem;
+        }
+
+        .satisfied {
           color: #6AA31C;
-          font-size: 1.2rem;
+        }
+
+        .not-satisfied {
+          color: #CA3C25;
         }
       }
     }
 `;
 
-const SolutionStatistics: React.FC = () => {
-  const languages = 1;
+const SolutionStatistics: React.FC<ISolutionStatistics> = ({ tests, lines, executionTime }) => {
+  const validateTests = () => (tests.actual < tests.limit ? 'not-satisfied' : 'satisfied');
+  const validateLines = () => (lines.actual < lines.limit ? 'satisfied' : 'not-satisfied');
+  const validateExecutionTime = () => (executionTime.actual < executionTime.limit ? 'not-satisfied' : 'satisfied');
 
   return (
     <StyledSolutionStatistics>
@@ -90,8 +100,12 @@ const SolutionStatistics: React.FC = () => {
             Tests passed
           </div>
           <AssignmentTurnedInOutlinedIcon />
-          <div className="value">
-            3 / 5
+          <div className={`${validateTests()} value`}>
+            {tests.actual}
+            {' '}
+            /
+            {' '}
+            {tests.limit}
           </div>
         </div>
         <div className="column lines">
@@ -99,8 +113,12 @@ const SolutionStatistics: React.FC = () => {
             Code lines
           </div>
           <CodeIcon />
-          <div className="value">
-            108 / 120
+          <div className={`${validateLines()} value`}>
+            {lines.actual}
+            {' '}
+            /
+            {' '}
+            {lines.limit}
           </div>
         </div>
         <div className="column time">
@@ -108,8 +126,12 @@ const SolutionStatistics: React.FC = () => {
             Execution time
           </div>
           <TimerIcon />
-          <div className="value">
-            12.3 / 30 s
+          <div className={`${validateExecutionTime()} value`}>
+            {executionTime.actual}
+            {' '}
+            /
+            {' '}
+            {`${executionTime.limit} s`}
           </div>
         </div>
       </div>

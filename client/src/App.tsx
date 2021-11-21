@@ -15,7 +15,7 @@ const App: React.FC = () => (
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
         <Route path="/browseChallenges" component={BrowseChallenges} />
-        <Route path="/challenge" component={Challenge} />
+        <Route path="/challenge/:id" render={({ match }) => <Challenge id={match.params.id} />} />
         <Route path="*" component={NotFound} />
       </Switch>
     </Router>

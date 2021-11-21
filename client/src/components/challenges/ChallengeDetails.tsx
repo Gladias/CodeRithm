@@ -11,19 +11,11 @@ import PersonIcon from '@mui/icons-material/Person';
 import CommentIcon from '@mui/icons-material/Comment';
 import StarTwoToneIcon from '@mui/icons-material/StarTwoTone';
 import { CommonButton } from '../common';
+import { IChallenge } from '../types/types';
 
 type Props = {
   onSwitchClick: React.MouseEventHandler<HTMLButtonElement>;
-
-  id: number,
-  title: string,
-  description: string,
-  author: string,
-  averageRating: number,
-  commentsNumber: number,
-  difficultyLevel: 'EASY' | 'MEDIUM' | 'HARD' | 'CHALLENGING',
-  solutionStatus: 'New' | 'In Progress' | 'Completed',
-  tags: string[];
+  challenge: IChallenge;
 };
 
 const StyledChallengeCard = styled.div`
@@ -149,7 +141,9 @@ const StyledChallengeCard = styled.div`
 `;
 
 const ChallengeDetails: React.FC<Props> = ({
-  title, description, author, averageRating, commentsNumber, difficultyLevel, onSwitchClick,
+  challenge: {
+    title, description, author, averageRating, commentsNumber, difficultyLevel, tags,
+  }, onSwitchClick,
 }) => {
   const a = 'a';
 
@@ -187,15 +181,9 @@ const ChallengeDetails: React.FC<Props> = ({
         </div>
       </div>
       <div className="tags">
-        <div>
-          Sorting
-        </div>
-        <div>
-          Lists
-        </div>
-        <div>
-          Arrays
-        </div>
+        {tags.map((tag) => (
+          <div key={tag}>{tag}</div>
+        ))}
       </div>
       <div className="title">
         {title}

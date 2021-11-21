@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable no-unused-vars */
 /* eslint-disable arrow-body-style */
@@ -5,39 +7,13 @@
 /* eslint-disable no-undef */
 import React from 'react';
 import styled from 'styled-components';
-import {
-  Box,
-  Button,
-  Card,
-  Checkbox,
-  Chip,
-  FormControlLabel,
-  InputAdornment,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  SelectChangeEvent,
-  TextField,
-} from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
+import { useHistory } from 'react-router';
 import ChallengeCard from './ChallengeCard';
+import { IChallenge } from '../types/types';
 
 type Props = {
   challenges: IChallenge[];
 };
-
-type IChallenge = {
-  [key: string]: string[] | string | number,
-  id: number,
-  title: string,
-  description: string,
-  author: string,
-  averageRating: number,
-  commentsNumber: number,
-  difficultyLevel: 'EASY' | 'MEDIUM' | 'HARD' | 'CHALLENGING',
-  solutionStatus: 'New' | 'In Progress' | 'Completed',
-  tags: string[],
-}
 
 const StyledChallengesSection = styled.div`
   background-color: #252728;
@@ -61,10 +37,18 @@ const StyledChallengesSection = styled.div`
     width: 90%;
     display: flex;
     justify-content: space-around;
+    flex-wrap: wrap;
+    overflow: auto;
   }
 `;
 
 const ChallengesSection: React.FC<Props> = ({ challenges }) => {
+  const history = useHistory();
+
+  const handleCardClick = (challengeId: number) => {
+    history.push(`/challenge/${challengeId}`);
+  };
+
   return (
     <StyledChallengesSection>
       <div className="header">
@@ -78,7 +62,7 @@ const ChallengesSection: React.FC<Props> = ({ challenges }) => {
       </div>
       <div className="body">
         {challenges.map((challenge) => (
-          <ChallengeCard {...challenge} key={challenge.id} />
+          <ChallengeCard clickHandler={() => handleCardClick(challenge.id)} challenge={challenge} key={challenge.id} />
         ))}
       </div>
     </StyledChallengesSection>

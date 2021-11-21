@@ -36,7 +36,7 @@ const Login: React.FC = () => {
   };
 
   const sendForm = () => {
-    axios.post('http://127.0.0.1:3000/api/auth/login', credentials)
+    axios.post('http://127.0.0.1:8080/api/auth/login', credentials)
       .then(() => {
         history.push('/');
       });

@@ -9,18 +9,11 @@ import { Button } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import CommentIcon from '@mui/icons-material/Comment';
 import StarTwoToneIcon from '@mui/icons-material/StarTwoTone';
+import { IChallenge } from '../types/types';
 
 type Props = {
-  [key: string]: string[] | string | number | boolean | undefined,
-  id: number,
-  title: string,
-  description: string,
-  author: string,
-  averageRating: number,
-  commentsNumber: number,
-  difficultyLevel: 'EASY' | 'MEDIUM' | 'HARD' | 'CHALLENGING',
-  solutionStatus: 'New' | 'In Progress' | 'Completed',
-  tags: string[];
+  clickHandler: React.MouseEventHandler<HTMLDivElement>;
+  challenge: IChallenge;
 };
 
 const StyledChallengeCard = styled.div`
@@ -33,6 +26,11 @@ const StyledChallengeCard = styled.div`
     align-items: center;
 
     font-family: 'Meedori BO';
+
+    :hover {
+      filter: brightness(70%);
+      cursor: pointer;
+    }
 
     .main {
       width: 100%;
@@ -58,7 +56,7 @@ const StyledChallengeCard = styled.div`
       align-items: center;
       
       .level {
-        width: 25%;
+        width: 35%;
         height: 100%;
 
         color: black;
@@ -149,7 +147,7 @@ const getStatusColor = (status: string | undefined) => {
   switch (status) {
     case 'Completed':
       return 'green';
-    case 'In Progress':
+    case 'InProgress':
       return 'blue';
     default:
       return 'white';
@@ -157,12 +155,14 @@ const getStatusColor = (status: string | undefined) => {
 };
 
 const ChallengeCard: React.FC<Props> = ({
-  title, description, author, averageRating, commentsNumber, difficultyLevel, solutionStatus,
+  challenge: {
+    title, description, author, averageRating, commentsNumber, difficultyLevel, solutionStatus,
+  }, clickHandler,
 }) => {
   const statusColor = getStatusColor(solutionStatus);
 
   return (
-    <StyledChallengeCard>
+    <StyledChallengeCard onClick={clickHandler}>
       <div className="main">
         <div className="difficulty-level">
           <div className={`${difficultyLevel.toLowerCase()} level`}>

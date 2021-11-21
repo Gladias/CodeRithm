@@ -2,54 +2,71 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/jsx-tag-spacing */
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../assets/styles/Challenge.scss';
+import axios from 'axios';
+import { RouteComponentProps } from 'react-router-dom';
 import {
   AddComment,
   ChallengeDetails, ChallengeTests, CommentSection, SolutionStatistics, SolutionWindow,
 } from '../components/challenges';
+import { IChallenge, ISolutionStatistics } from '../components/types/types';
 
-type IChallenge = {
-  [key: string]: string[] | string | number,
-  id: number,
-  title: string,
-  description: string,
-  author: string,
-  averageRating: number,
-  commentsNumber: number,
-  difficultyLevel: 'EASY' | 'MEDIUM' | 'HARD' | 'CHALLENGING',
-  solutionStatus: 'New' | 'In Progress' | 'Completed',
-  tags: string[];
+type Props = {
+  id: string;
 }
 
-const Challenge: React.FC = () => {
-  // const [challenge, setChallenge] = React.useState<IChallenge>({
+const defaultChallenge:IChallenge = {
+  id: 1,
+  title: '',
+  description: '',
+  author: '',
+  averageRating: 0,
+  commentsNumber: 0,
+  difficultyLevel: 'EASY',
+  solutionStatus: 'InProgress',
+  tags: [],
+};
+
+const defaultStatistics:ISolutionStatistics = {
+  tests: {
+    limit: 5,
+    actual: 0,
+  },
+  lines: {
+    limit: 120,
+    actual: 0,
+  },
+  executionTime: {
+    limit: 30,
+    actual: 0,
+  },
+};
+
+const Challenge: React.FC<Props> = ({ id }) => {
+  const [challenge, setChallenge] = React.useState<IChallenge>(defaultChallenge);
   const [showComments, setShowComments] = React.useState(false);
 
-  const challenge:IChallenge = {
-    id: 123,
-    title: 'Find the odd int',
-    description: 'Given an array of integers, find the one that appears an odd number of times. There will always be only one integer that appears an odd number of times.',
-    author: 'Gladias',
-    averageRating: 4.76,
-    commentsNumber: 34,
-    difficultyLevel: 'EASY',
-    solutionStatus: 'New',
-    tags: ['sorting', 'lists'],
-  };
+  useEffect(() => {
+    axios.get(`http://127.0.0.1:8080/api/challenge/getOne?id=${id}`)
+      .then((response) => {
+        setChallenge(response.data);
+      });
+  }, []);
 
   const handleSwitchClick = () => {
     setShowComments(!showComments);
   };
 
+  // <CommentSection onSwitchClick={handleSwitchClick} /> : <ChallengeDetails onSwitchClick={handleSwitchClick} {...challenge} /> }
   return (
     <div className="container">
       <div className="row">
-        { showComments ? <CommentSection onSwitchClick={handleSwitchClick} /> : <ChallengeDetails onSwitchClick={handleSwitchClick} {...challenge} /> }
+        { showComments ? <CommentSection onSwitchClick={handleSwitchClick} /> : <ChallengeDetails onSwitchClick={handleSwitchClick} challenge={challenge!} /> }
         <SolutionWindow />
       </div>
       <div className="row">
-        { showComments ? <AddComment /> : <SolutionStatistics /> }
+        { showComments ? <AddComment /> : <SolutionStatistics {...defaultStatistics} /> }
         <ChallengeTests />
       </div>
     </div>

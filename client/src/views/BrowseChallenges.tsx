@@ -4,19 +4,7 @@ import axios from 'axios';
 import '../assets/styles/BrowseChallenges.scss';
 import { ChallengesSection } from '../components/challenges';
 import FilterSection from '../components/challenges/FilterSection';
-
-type IChallenge = {
-  [key: string]: string[] | string | number,
-  id: number,
-  title: string,
-  description: string,
-  author: string,
-  averageRating: number,
-  commentsNumber: number,
-  difficultyLevel: 'EASY' | 'MEDIUM' | 'HARD' | 'CHALLENGING',
-  solutionStatus: 'New' | 'In Progress' | 'Completed',
-  tags: string[],
-}
+import { IChallenge } from '../components/types/types';
 
 const BrowseChallenges: React.FC = () => {
   const [challenges, setChallenges] = React.useState<IChallenge[]>([]);
@@ -26,7 +14,7 @@ const BrowseChallenges: React.FC = () => {
   }, []);
 
   const fetchChallenges = () => {
-    axios.get('http://127.0.0.1:3000/api/challenge/get')
+    axios.get('http://127.0.0.1:8080/api/challenge/getAll')
       .then((response) => {
         setChallenges(response.data.content);
       });
