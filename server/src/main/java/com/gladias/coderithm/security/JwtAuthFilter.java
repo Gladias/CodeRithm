@@ -45,6 +45,8 @@ public class JwtAuthFilter extends BasicAuthenticationFilter {
 
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
         try {
+            System.out.println(Arrays.toString(request.getCookies()));
+            System.out.println("ASDASDASD");
             Cookie cookie = Arrays
                     .stream(request.getCookies())
                     .filter(c -> c.getName().equals("token"))
@@ -58,6 +60,7 @@ public class JwtAuthFilter extends BasicAuthenticationFilter {
                     .verify(token)
                     .getSubject();
 
+            System.out.println(login);
             UserPrincipal userDetails = (UserPrincipal) customUserDetailsService.loadUserByUsername(login);
             return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
         } catch (Exception e) {

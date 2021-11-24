@@ -27,9 +27,10 @@ public class TestCaseEntity {
     private String input;
     private String output;
 
-    @ManyToOne
-    @JoinColumn(name = "challenge_id")
-    private ChallengeEntity challenge;
+    public TestCaseEntity(String input, String output) {
+        this.input = input;
+        this.output = output;
+    }
 
     public boolean passed() {
         return Objects.equals(input, output);

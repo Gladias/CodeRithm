@@ -44,7 +44,7 @@ public class ChallengeService {
     }
 
     public ChallengeDto getChallengeById(Long id) {
-        ChallengeEntity challengeEntity = challengeRepository.findChallengeEntityById(id);
+        ChallengeEntity challengeEntity = challengeRepository.findById(id).get();
         if (challengeEntity.getTags().isEmpty())
             challengeEntity.setTags(Set.of(tagRepository.findTagEntityById(1L), tagRepository.findTagEntityById(2L)));
 

@@ -1,14 +1,20 @@
 package com.gladias.coderithm.controller;
 
-import com.gladias.coderithm.engine.CodeExecutionEngineManager;
+import com.gladias.coderithm.exception.LanguageNotAvailableException;
 import com.gladias.coderithm.payload.solution.SolutionRequest;
+import com.gladias.coderithm.payload.solution.SolutionResponse;
 import com.gladias.coderithm.service.SolutionService;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONException;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.io.IOException;
 
 @RequiredArgsConstructor
 @RestController
@@ -16,10 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class SolutionController {
 
     private final SolutionService solutionService;
-    private final CodeExecutionEngineManager codeExecutionEngineManager;
     
-    @PostMapping("/add/{challengeId}")
-    public SolutionRequest postSolution(@PathVariable Long challengeId, @RequestBody SolutionRequest request) {
-        return null;
+    @PostMapping("/add")
+    public SolutionResponse postSolution(@RequestBody SolutionRequest request) throws LanguageNotAvailableException, JSONException, IOException, InterruptedException {
+            return solutionService.postSolution(request);
     }
 }

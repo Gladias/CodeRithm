@@ -1,14 +1,23 @@
 package com.gladias.coderithm.controller;
 
+import com.gladias.coderithm.exception.SwearWordInCommentException;
 import com.gladias.coderithm.payload.challenge.ChallengeDto;
 import com.gladias.coderithm.payload.comment.CommentDto;
+import com.gladias.coderithm.payload.comment.CommentRequest;
 import com.gladias.coderithm.service.CommentService;
+import com.gladias.coderithm.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -18,8 +27,24 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @GetMapping("/get")
-    public List<CommentDto> getChallengeComments(@RequestParam("challengeId") Long id) {
-        return commentService.getChallengeComments(id);
+    @GetMapping
+    public List<CommentDto> getComments(@RequestParam("challengeId") Long challengeId) {
+        return commentService.getComments(challengeId);
+    }
+
+    @PostMapping
+    public List<CommentDto> addComment(@CookieValue("token") String token,
+                                       @RequestParam("challengeId") Long challengeId,
+                                       @RequestBody CommentRequest request) {
+        String username = UserService.getUsernameFromToken(token);
+
+        try {
+            commentService.addComment(username, challengeId, request);
+        } catch (Exception e) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Swear words not allowed", e);
+        }
+
+        return commentService.getComments(challengeId);
     }
 }

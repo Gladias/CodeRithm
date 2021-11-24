@@ -17,7 +17,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "language")
+@Entity(name = "programming_language")
 public class LanguageEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,9 +26,11 @@ public class LanguageEntity {
     private String name;
     private String version;
 
+    public LanguageEntity(String name, String version) {
+        this.name = name;
+        this.version = version;
+    }
+
     @ManyToMany(mappedBy = "availableLanguages")
     private Set<ChallengeEntity> challenges;
-
-    @OneToMany(mappedBy = "language")
-    private Set<SolutionEntity> solutions;
 }

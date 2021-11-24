@@ -1,4 +1,6 @@
 package com.gladias.coderithm.payload.solution;
 
-public record SolutionResponse(String stdout, String stderr) {
+import java.util.List;
+
+public record SolutionResponse(List<TestResult> testResults) {
 }

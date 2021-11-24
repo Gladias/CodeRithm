@@ -1,12 +1,11 @@
 package com.gladias.coderithm.security;
 
+import com.gladias.coderithm.model.UserEntity;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.gladias.coderithm.model.UserEntity;
 import java.util.Collection;
 
 @AllArgsConstructor

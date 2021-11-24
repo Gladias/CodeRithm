@@ -3,6 +3,8 @@ package com.gladias.coderithm.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -33,15 +35,16 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
         String token = JWT.create()
                 .withSubject(principal.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + expirationTime))
                 .sign(Algorithm.HMAC256(secret));
 
-        Cookie jwtCookie = new Cookie("token", token);
+        ResponseCookie jwtCookie = ResponseCookie.from("token", token)
+                .maxAge(expirationTime)
+                .sameSite("None")
+                .secure(true)
+                .path("/")
+                .build();
 
         //jwtCookie.setHttpOnly(true);
-        jwtCookie.setMaxAge(expirationTime);
-        jwtCookie.setPath("/");
-
-        response.addCookie(jwtCookie);
+        response.addHeader(HttpHeaders.SET_COOKIE, jwtCookie.toString());
     }
 }

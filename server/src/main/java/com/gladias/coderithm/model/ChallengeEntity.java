@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,7 +31,10 @@ public class ChallengeEntity {
     private String title;
     private String description;
     private DifficultyLevel difficultyLevel;
-    private SolutionStatus solutionStatus = SolutionStatus.New;
+    // TODO: maybe separate this stats to another entity
+    private Integer linesLimit = 120;
+    private Integer executionTimeLimitInSeconds = 3;
+    private SolutionStatus solutionStatus = SolutionStatus.New; //TODO: Change that cuz each user has different
 
     public ChallengeEntity(String title, String description, DifficultyLevel difficultyLevel) {
         this.title = title;
@@ -46,16 +50,18 @@ public class ChallengeEntity {
     private Set<LanguageEntity> availableLanguages;
 
     @OneToMany(mappedBy = "challenge")
-    private Set<TestCaseEntity> tests;
-
-    @OneToMany(mappedBy = "challenge")
     private Set<SolutionEntity> solutions;
 
     @OneToMany(mappedBy = "challenge")
     private Set<RateEntity> rates;
 
-    @OneToMany(mappedBy = "challenge")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "comment_id")
     private Set<CommentEntity> comments;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "testcase_id")
+    private Set<TestCaseEntity> testCases;
 
     @ManyToMany
     private Set<TagEntity> tags;
@@ -64,7 +70,13 @@ public class ChallengeEntity {
         return tags.stream().map(TagEntity::getValue).collect(Collectors.toSet());
     }
 
+    public void addNewComment(CommentEntity commentEntity) {
+        System.out.println(comments.size());
+        comments.add(commentEntity);
+    }
+
     public int getCommentsNumber() {
+        System.out.println(comments);
         return comments != null ? comments.size() : 0;
     }
 
