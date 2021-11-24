@@ -3,9 +3,14 @@ version: "3.8"
 networks:
   coderithm_network:
 
+x-common-variables: &common-variables
+  APP_ENV: local
+
 services:
-  db:
+  # Database: Postgresql
+  postgres_db:
     image: postgres
+    container_name: postgres_db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -14,3 +19,41 @@ services:
       - "5432:5432"
     networks:
       - coderithm_network
+
+  # Java application
+  java_api:
+    image: maven:3.8.3-openjdk-17
+    container_name: spring_boot_application
+    volumes:
+      - ../server:/app
+      - ~/.m2:/root/.m2
+    working_dir: /app
+    networks:
+      - coderithm_network
+    ports:
+      - "8080:8080"
+      - "5005:5005"
+    environment:
+      <<: *common-variables
+      server_port: 8080
+      DB_DATABASE: api
+      JPDA_ADDRESS: "5005"
+      JPDA_SUSPEND: "n"
+      JAVA_OPTS: -agentlib:jdwp=transport=dt_socket,server=y,address=*:5005,suspend=n
+    depends_on:
+      - postgres_db
+    command: "mvn spring-boot:run"
+
+  # Piston - engine for code execution
+  #piston:
+  #  image: ghcr.io/engineer-man/piston
+  #  container_name: code_execution_engine
+  #  networks:
+  #    - coderithm_network
+  #  ports:
+  #    - "2000:2000"
+  #  volumes:
+  #    - ./data/piston:/piston
+  #  tmpfs:
+  #    - /piston/jobs:exec
+  #    - /tmp:exec
