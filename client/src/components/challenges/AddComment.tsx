@@ -12,6 +12,10 @@ import CodeIcon from '@mui/icons-material/Code';
 import AssignmentTurnedInOutlinedIcon from '@mui/icons-material/AssignmentTurnedInOutlined';
 import { CommonButton } from '../common';
 
+type Props = {
+  handleSubmit: (content: string) => void;
+}
+
 const StyledAddComment = styled.div`
     height: 100%;
     width: 34%;
@@ -113,11 +117,20 @@ const StyledAddComment = styled.div`
     }
 `;
 
-const AddComment: React.FC = () => {
+const AddComment: React.FC<Props> = ({ handleSubmit }) => {
   const [comment, setComment] = useState('');
 
   const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setComment(event.target.value);
+  };
+
+  const clearComment = () => {
+    setComment('');
+  };
+
+  const submitAndClear = () => {
+    clearComment();
+    handleSubmit(comment);
   };
 
   return (
@@ -133,10 +146,10 @@ const AddComment: React.FC = () => {
       <div className="comment-section">
         <TextField className="comment" value={comment} onChange={handleCommentChange} multiline rows={5} placeholder="Enter comment" />
         <div className="buttons">
-          <Button className="add" variant="contained" type="button">
+          <Button onClick={submitAndClear} className="add" variant="contained" type="button">
             Add
           </Button>
-          <Button className="clear" variant="contained" type="button">
+          <Button onClick={clearComment} className="clear" variant="contained" type="button">
             Clear
           </Button>
         </div>

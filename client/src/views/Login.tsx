@@ -2,15 +2,20 @@
 import {
   Checkbox, FormControlLabel, TextField,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import { useHistory } from 'react-router';
 import { ImageArea, InputArea } from '../components/authentication';
 import '../assets/styles/Login.scss';
 import signIn from '../assets/images/sign_in.svg';
 import { CommonButton } from '../components/common';
 
-const Login: React.FC = () => {
+type Props = {
+  setToken: Dispatch<SetStateAction<string | undefined>>,
+}
+
+const Login: React.FC<Props> = ({ setToken }) => {
   const [credentials, setCredentials] = useState({
     login: '',
     password: '',
@@ -36,14 +41,16 @@ const Login: React.FC = () => {
   };
 
   const sendForm = () => {
-    axios.post('http://127.0.0.1:8080/api/auth/login', credentials)
+    axios.post('http://localhost:8080/api/auth/login', credentials)
       .then(() => {
+        setToken(Cookies.get('token'));
+        console.log(Cookies.get('token'));
         history.push('/');
       });
   };
 
   return (
-    <div className="container">
+    <div className="login-container">
       <InputArea purpose="login">
         <TextField id="login" label="Login" type="text" variant="outlined" onChange={handleChange} required value={credentials.login} />
         <TextField id="password" label="Password" type="password" variant="outlined" onChange={handleChange} required />

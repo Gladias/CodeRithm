@@ -1,6 +1,14 @@
-import React from 'react';
+/* eslint-disable no-unused-vars */
+import Cookies from 'js-cookie';
+import React, { Dispatch, SetStateAction } from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { CommonButton } from '.';
+
+type Props = {
+  token: string | undefined,
+  setToken: Dispatch<SetStateAction<string | undefined>>
+}
 
 const StyledHeader = styled.header`
   display: flex;
@@ -40,21 +48,44 @@ const StyledHeader = styled.header`
     }
 `;
 
-const Header: React.FC = () => (
-  <StyledHeader>
-    <div className="logo">
-      <a href="/login">
-        COdeRithM
-      </a>
-    </div>
-    <div className="navigation-buttons">
-      <CommonButton text="Browse Challenges" />
-      <CommonButton text="Ranking" />
-    </div>
-    <div className="auth-buttons">
-      <CommonButton text="Sign in" />
-    </div>
-  </StyledHeader>
-);
+const Header: React.FC<Props> = ({ token, setToken }) => {
+  const history = useHistory();
+
+  const redirect = (page: string) => {
+    history.push(page);
+  };
+
+  const logout = () => {
+    Cookies.remove('token');
+    setToken(Cookies.get('token'));
+    redirect('/login');
+  };
+
+  return (
+    <StyledHeader>
+      <div className="logo">
+        <a href="/login">
+          COdeRithM
+        </a>
+      </div>
+      <div className="navigation-buttons">
+        <CommonButton text="Browse Challenges" onClick={() => redirect('/browseChallenges')} />
+        <CommonButton text="Ranking" onClick={() => redirect('/404')} />
+      </div>
+      <div className="auth-buttons">
+        {
+          token
+            ? (
+              <>
+                <CommonButton text="Profile" onClick={() => redirect('/404')} />
+                <CommonButton text="Log out" onClick={logout} />
+              </>
+            )
+            : <CommonButton text="Sign in" onClick={() => redirect('/login')} />
+        }
+      </div>
+    </StyledHeader>
+  );
+};
 
 export default Header;

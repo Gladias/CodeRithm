@@ -10,7 +10,14 @@ type IChallenge = {
     tags: string[];
 }
 
+type IDataSet = {
+    input: string,
+    expectedOutput: string,
+    actualOutput: string,
+}
+
 type ISolutionStatistics = {
+    dataSets: IDataSet[];
     tests: {
         limit: number;
         actual: number;
@@ -25,4 +32,11 @@ type ISolutionStatistics = {
     }
 }
 
-export type { IChallenge, ISolutionStatistics };
+type IComment = {
+    id: number,
+    author: string,
+    content: string,
+    creationTime: string,
+}
+
+export type { IChallenge, IComment, ISolutionStatistics };

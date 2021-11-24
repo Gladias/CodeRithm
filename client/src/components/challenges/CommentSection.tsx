@@ -11,8 +11,10 @@ import PersonIcon from '@mui/icons-material/Person';
 import CommentIcon from '@mui/icons-material/Comment';
 import StarTwoToneIcon from '@mui/icons-material/StarTwoTone';
 import { CommonButton } from '../common';
+import { IComment } from '../types/types';
 
 type Props = {
+  comments: IComment[],
   onSwitchClick: React.MouseEventHandler<HTMLButtonElement>;
 };
 
@@ -42,14 +44,17 @@ const StyledCommentSection = styled.div`
 
     .comment-section {
       height: 80%;
+      width: 100%;
 
       display: flex;
       flex-direction: column;
       align-items: center;
+      overflow: auto;
 
       .comment {
         width: 90%;
-        height: 20%;
+        height: auto;
+        padding: 1rem;
         margin-bottom: 1rem;
 
         display: flex;
@@ -69,7 +74,7 @@ const StyledCommentSection = styled.div`
           justify-content: space-between;
 
           .author {
-            width: 15%;
+            width: 20%;
             font-size: 1rem;
 
             display: flex;
@@ -81,63 +86,57 @@ const StyledCommentSection = styled.div`
               font-size: 1.8rem;
             }
           }
+
           .text {
-            width: 75%;
-            font-size: 0.8rem;
+            width: 70%;
+            font-size: 1.2rem;
             padding: 1rem;
-            overflow: auto;
 
             background-color: #252728;
 
             border: 1px solid black;
             border-radius: 1rem;
+
+            font-family: 'Meeralnimai RE';
           }
         }
       }
     }
 `;
 
-const CommentSection: React.FC<Props> = ({ onSwitchClick }) => {
+const CommentSection: React.FC<Props> = ({ comments, onSwitchClick }) => {
   const commentContent = 'Given an array of integers, find the one that appears an odd number of times. There will always be only one integer that appears an odd number of times.';
+  console.log({ comments });
+
+  const formatDate = (date: Date) => `${date.getDay}/${date.getMonth}/${date.getFullYear}`;
 
   return (
     <StyledCommentSection>
       <div className="title">
-        Posted Comments: 2
+        Posted Comments:
+        {' '}
+        {comments.length}
       </div>
       <div className="comment-section">
-        <div className="comment">
-          <div className="date">
-            16.11.2021
-          </div>
-          <div className="row">
-            <div className="author">
-              <PersonIcon />
-              <div>
-                Gladias
+        {comments.map((comment) => (
+          <div className="comment" key={comment.id}>
+            {console.log(() => formatDate(new Date(comment.creationTime)))}
+            <div className="date">
+              {() => formatDate(new Date(comment.creationTime))}
+            </div>
+            <div className="row">
+              <div className="author">
+                <PersonIcon />
+                <div>
+                  {comment.author}
+                </div>
+              </div>
+              <div className="text">
+                {comment.content}
               </div>
             </div>
-            <div className="text">
-              {commentContent}
-            </div>
           </div>
-        </div>
-        <div className="comment">
-          <div className="date">
-            16.11.2021
-          </div>
-          <div className="row">
-            <div className="author">
-              <PersonIcon />
-              <div>
-                Gladias
-              </div>
-            </div>
-            <div className="text">
-              {commentContent}
-            </div>
-          </div>
-        </div>
+        ))}
       </div>
       <div className="challenge">
         <CommonButton onClick={onSwitchClick} text="Switch to challenge" backgroundcolor="#FFC53A" hovercolor="#7a6c23" />

@@ -10,7 +10,7 @@ import {
   AddComment,
   ChallengeDetails, ChallengeTests, CommentSection, SolutionStatistics, SolutionWindow,
 } from '../components/challenges';
-import { IChallenge, ISolutionStatistics } from '../components/types/types';
+import { IChallenge, IComment, ISolutionStatistics } from '../components/types/types';
 
 type Props = {
   id: string;
@@ -29,6 +29,7 @@ const defaultChallenge:IChallenge = {
 };
 
 const defaultStatistics:ISolutionStatistics = {
+  dataSets: [],
   tests: {
     limit: 5,
     actual: 0,
@@ -45,28 +46,42 @@ const defaultStatistics:ISolutionStatistics = {
 
 const Challenge: React.FC<Props> = ({ id }) => {
   const [challenge, setChallenge] = React.useState<IChallenge>(defaultChallenge);
+  const [comments, setComments] = React.useState<IComment[]>();
   const [showComments, setShowComments] = React.useState(false);
 
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8080/api/challenge/getOne?id=${id}`)
+    axios.get(`http://localhost:8080/api/challenge/getOne?id=${id}`)
       .then((response) => {
         setChallenge(response.data);
       });
+
+    axios.get(`http://localhost:8080/api/comment?challengeId=${id}`)
+      .then((response) => {
+        setComments(response.data);
+      });
   }, []);
+
+  const addNewComment = (content: string) => {
+    axios.post(`http://localhost:8080/api/comment?challengeId=${id}`, {
+      content,
+    })
+      .then((response) => {
+        setComments(response.data);
+      });
+  };
 
   const handleSwitchClick = () => {
     setShowComments(!showComments);
   };
 
-  // <CommentSection onSwitchClick={handleSwitchClick} /> : <ChallengeDetails onSwitchClick={handleSwitchClick} {...challenge} /> }
   return (
     <div className="container">
       <div className="row">
-        { showComments ? <CommentSection onSwitchClick={handleSwitchClick} /> : <ChallengeDetails onSwitchClick={handleSwitchClick} challenge={challenge!} /> }
+        { showComments ? <CommentSection comments={comments!} onSwitchClick={handleSwitchClick} /> : <ChallengeDetails onSwitchClick={handleSwitchClick} challenge={challenge!} /> }
         <SolutionWindow />
       </div>
       <div className="row">
-        { showComments ? <AddComment /> : <SolutionStatistics {...defaultStatistics} /> }
+        { showComments ? <AddComment handleSubmit={addNewComment} /> : <SolutionStatistics {...defaultStatistics} /> }
         <ChallengeTests />
       </div>
     </div>

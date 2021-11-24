@@ -101,7 +101,7 @@ const Register: React.FC = () => {
   };
 
   const sendForm = () => {
-    axios.post('http://127.0.0.1:8080/api/auth/register', credentials)
+    axios.post('http://localhost:8080/api/auth/register', credentials)
       .then(() => {
         history.push('/');
       });

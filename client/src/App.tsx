@@ -1,5 +1,7 @@
-import React from 'react';
+/* eslint-disable no-unused-vars */
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import './App.scss';
 import { StyledEngineProvider } from '@mui/material/styles';
 import { Header } from './components/common';
@@ -7,19 +9,25 @@ import {
   BrowseChallenges, Challenge, Login, Register, NotFound,
 } from './views';
 
-const App: React.FC = () => (
-  <StyledEngineProvider injectFirst>
-    <Router>
-      <Header />
-      <Switch>
-        <Route path="/register" component={Register} />
-        <Route path="/login" component={Login} />
-        <Route path="/browseChallenges" component={BrowseChallenges} />
-        <Route path="/challenge/:id" render={({ match }) => <Challenge id={match.params.id} />} />
-        <Route path="*" component={NotFound} />
-      </Switch>
-    </Router>
-  </StyledEngineProvider>
-);
+const App: React.FC = () => {
+  const [token, setToken] = useState(Cookies.get('token'));
+
+  return (
+    <StyledEngineProvider injectFirst>
+      <Router>
+        <Header token={token} setToken={setToken} />
+        <Switch>
+          <Route path="/register" component={Register} />
+          <Route path="/login">
+            <Login setToken={setToken} />
+          </Route>
+          <Route path="/browseChallenges" component={BrowseChallenges} />
+          <Route path="/challenge/:id" render={({ match }) => <Challenge id={match.params.id} />} />
+          <Route path="*" component={NotFound} />
+        </Switch>
+      </Router>
+    </StyledEngineProvider>
+  );
+};
 
 export default App;
