@@ -1,0 +1,38 @@
+.addChallenge-container {
+    height: 92%;
+    width: 100%;
+    background-color: #252728;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+
+    .control-buttons {
+        width: 20%;
+        display: flex;
+        justify-content: space-between;
+
+        button {
+            color: black;
+            border: 1px solid black;
+            font-family: 'Meedori BO';
+            font-size: 1.1rem;
+            text-transform: none;
+    
+            &:hover {
+                filter: brightness(70%);
+            }
+        }
+    
+        #submit {
+            background-color: #6AA31C;
+        }
+    
+        #cancel {
+            background-color: #CA3C25;
+        }
+    }
+}
+    
+    

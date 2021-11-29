@@ -37,10 +37,6 @@ public class SolutionEntity {
         this.status = status;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "dataset_id")
-    private Set<TestCaseEntity> passedTests;
-
     @ManyToOne
     @JoinColumn(name = "language_id")
     private LanguageEntity language;

@@ -36,9 +36,9 @@ public class SolutionService {
     private final CodeExecutionEngineManager codeExecutionEngineManager;
 
     public SolutionResponse postSolution( SolutionRequest request) throws LanguageNotAvailableException, IOException, InterruptedException, JSONException {
+        System.out.println(request);
         ChallengeEntity challengeEntity = challengeRepository.findById(request.challengeId()).get();
         LanguageEntity languageEntity = languageRepository.findByName(request.languageOption().name());
-        challengeEntity.setAvailableLanguages(Set.of(new LanguageEntity("python", "3.10.0")));
 
         boolean isLanguageValid = isLanguageAvailableToUse(challengeEntity, languageEntity);
 

@@ -14,9 +14,12 @@ import AceEditor from 'react-ace';
 import { CommonButton } from '../common';
 
 import 'ace-builds/src-noconflict/mode-python';
+import 'ace-builds/src-noconflict/mode-java';
 import 'ace-builds/src-noconflict/theme-monokai';
 import 'ace-builds/src-noconflict/snippets/python';
+import 'ace-builds/src-noconflict/snippets/java';
 import 'ace-builds/src-noconflict/ext-language_tools';
+import { ISolutionRequest, ISolutionWindow } from '../types/types';
 
 const StyledSolutionWindow = styled.div`
     width: 60%;
@@ -87,23 +90,28 @@ const StyledSolutionWindow = styled.div`
     }
 `;
 
-const SolutionWindow: React.FC = () => {
-  const languages = [
-    {
-      value: 'Any',
-    },
-    {
-      value: 'Python',
-    },
-    {
-      value: 'C++',
-    },
-    {
-      value: 'Java',
-    },
-  ];
+const SolutionWindow: React.FC<ISolutionWindow> = ({ handleSubmit, availableLanguages }) => {
+  const [code, setCode] = React.useState('');
+  const [language, setLanguage] = React.useState('');
 
-  const [code, setCode] = React.useState('print(3)');
+  const handleLanguageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setLanguage(event.target.value);
+  };
+
+  const handleCodeChange = (value: string, event?: any) => {
+    setCode(value);
+  };
+
+  const javaSnippet = `
+    public static void main (String[] args) {
+      /* code */
+    }
+  `;
+
+  const pythonSnippet = `
+    def main():
+      pass
+  `;
 
   return (
     <StyledSolutionWindow>
@@ -118,32 +126,32 @@ const SolutionWindow: React.FC = () => {
             </span>
             <TextField
               id="language"
-              value="Python"
+              value={language}
               size="small"
               select
+              onChange={handleLanguageChange}
             >
-              {languages.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.value}
+              {availableLanguages.map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
                 </MenuItem>
               ))}
             </TextField>
           </div>
-          <CommonButton text="Submit" />
+          <CommonButton text="Submit" type="submit" onClick={() => handleSubmit(language, code)} />
         </div>
       </div>
       <div className="solution">
         <AceEditor
           placeholder="Placeholder Text"
-          mode="python"
+          mode={language}
           theme="monokai"
           name="aceEditor"
           showPrintMargin
           showGutter
           highlightActiveLine
-          value={`function onLoad(editor) {
-  console.log("i've loaded");
-}`}
+          value={code}
+          onChange={handleCodeChange}
           setOptions={{
             enableBasicAutocompletion: true,
             enableLiveAutocompletion: true,

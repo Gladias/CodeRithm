@@ -11,6 +11,7 @@ import TimerIcon from '@mui/icons-material/Timer';
 import CodeIcon from '@mui/icons-material/Code';
 import AssignmentTurnedInOutlinedIcon from '@mui/icons-material/AssignmentTurnedInOutlined';
 import { CommonButton } from '../common';
+import { IChallengeTests, ISolutionRequest } from '../types/types';
 
 const StyledChallengeTests = styled.div`
     height: 100%;
@@ -46,18 +47,7 @@ const StyledChallengeTests = styled.div`
       height: 85%;
       display: flex;
       justify-content: space-evenly;
-
-      .column {
-        width: calc(100%/3);
-
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        text-align: center;
-
-        color: #EDEFEC;
-        font-size: 1.5rem;
-        font-family: 'Meeralnimai RE';
+      flex-direction: column;
 
         .header {
           height: 15%;
@@ -66,13 +56,17 @@ const StyledChallengeTests = styled.div`
         }
 
         .row {
+          width: 90%;
           height: 15%;
           color: black;
           display: flex;
           justify-content: flex-start;
           width: 100%;
+
+          .cell {
+            width: calc(100%/3);
+          }
         }
-      }
 
       .line-number {
         color: #C2CFB2;
@@ -80,7 +74,7 @@ const StyledChallengeTests = styled.div`
     }
 `;
 
-const ChallengeTests: React.FC = () => {
+const ChallengeTests: React.FC<IChallengeTests> = ({ testCases }) => {
   const languages = 1;
 
   return (
@@ -89,93 +83,30 @@ const ChallengeTests: React.FC = () => {
         Sample tests
       </div>
       <div className="table">
-        <div className="column input">
-          <div className="header">
+        <div className="row">
+          <div className="header cell">
             Input
           </div>
-          <div className="row">
-            <span className="line-number">
-              1.
-            </span>
-            <span>
-              OPSS
-            </span>
-          </div>
-          <div className="row">
-            <span className="line-number">
-              2.
-            </span>
-            <span>
-              OPSS
-            </span>
-          </div>
-          <div className="row">
-            <span className="line-number">
-              3.
-            </span>
-            <span>
-              OPSS
-            </span>
-          </div>
-        </div>
-        <div className="column expected-output">
-          <div className="header">
+          <div className="header cell">
             Expected output
           </div>
-          <div className="row">
-            <span className="line-number">
-              1.
-            </span>
-            <span>
-              OPSS
-            </span>
-          </div>
-          <div className="row">
-            <span className="line-number">
-              2.
-            </span>
-            <span>
-              OPSS
-            </span>
-          </div>
-          <div className="row">
-            <span className="line-number">
-              3.
-            </span>
-            <span>
-              OPSS
-            </span>
-          </div>
-        </div>
-        <div className="column yours-output">
-          <div className="header">
+          <div className="header ">
             {'Your\'s output'}
           </div>
-          <div className="row">
-            <span className="line-number">
-              1.
-            </span>
-            <span>
-              OPSS
-            </span>
-          </div>
-          <div className="row">
-            <span className="line-number">
-              2.
-            </span>
-            <span>
-              OPSS
-            </span>
-          </div>
-          <div className="row">
-            <span className="line-number">
-              3.
-            </span>
-            <span>
-              OPSS
-            </span>
-          </div>
         </div>
+        {testCases.map((test) => (
+          <div className="row">
+            <div className="cell">
+              {test.input}
+            </div>
+            <div className="cell">
+              {test.output}
+            </div>
+            <div className="cell">
+              {test.userOutput}
+            </div>
+          </div>
+        ))}
       </div>
     </StyledChallengeTests>
   );

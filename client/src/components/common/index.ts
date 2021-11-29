@@ -1,4 +1,5 @@
 import CommonButton from './CommonButton';
 import Header from './Header';
+import PageTitle from './PageTitle';
 
-export { CommonButton, Header };
+export { CommonButton, PageTitle, Header };

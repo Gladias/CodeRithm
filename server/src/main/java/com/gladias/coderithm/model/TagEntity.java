@@ -25,6 +25,7 @@ public class TagEntity {
 
     private String value;
 
-    @ManyToMany(mappedBy = "tags")
-    private Set<ChallengeEntity> challenges;
+    public TagEntity(String value) {
+        this.value = value;
+    }
 }

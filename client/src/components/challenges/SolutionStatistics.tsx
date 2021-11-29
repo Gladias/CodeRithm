@@ -11,7 +11,7 @@ import TimerIcon from '@mui/icons-material/Timer';
 import CodeIcon from '@mui/icons-material/Code';
 import AssignmentTurnedInOutlinedIcon from '@mui/icons-material/AssignmentTurnedInOutlined';
 import { CommonButton } from '../common';
-import { ISolutionStatistics } from '../types/types';
+import { ISolutionStatistics, ISolutionStatisticsBase } from '../types/types';
 
 const StyledSolutionStatistics = styled.div`
     height: 100%;
@@ -84,10 +84,11 @@ const StyledSolutionStatistics = styled.div`
     }
 `;
 
-const SolutionStatistics: React.FC<ISolutionStatistics> = ({ tests, lines, executionTime }) => {
-  const validateTests = () => (tests.actual < tests.limit ? 'not-satisfied' : 'satisfied');
-  const validateLines = () => (lines.actual < lines.limit ? 'satisfied' : 'not-satisfied');
-  const validateExecutionTime = () => (executionTime.actual < executionTime.limit ? 'not-satisfied' : 'satisfied');
+const SolutionStatistics: React.FC<ISolutionStatisticsBase> = ({ testCasesNumber, linesLimit, executionTimeLimitInSeconds }) => {
+  // const validateTests = () => (tests.actual < tests.limit ? 'not-satisfied' : 'satisfied');
+  // const validateLines = () => (lines.actual < lines.limit ? 'satisfied' : 'not-satisfied');
+  // const validateExecutionTime = () => (executionTime.actual < executionTime.limit ? 'not-satisfied' : 'satisfied');
+  const a = 'a';
 
   return (
     <StyledSolutionStatistics>
@@ -100,12 +101,12 @@ const SolutionStatistics: React.FC<ISolutionStatistics> = ({ tests, lines, execu
             Tests passed
           </div>
           <AssignmentTurnedInOutlinedIcon />
-          <div className={`${validateTests()} value`}>
-            {tests.actual}
+          <div className="value">
+            {0}
             {' '}
             /
             {' '}
-            {tests.limit}
+            {testCasesNumber}
           </div>
         </div>
         <div className="column lines">
@@ -113,12 +114,12 @@ const SolutionStatistics: React.FC<ISolutionStatistics> = ({ tests, lines, execu
             Code lines
           </div>
           <CodeIcon />
-          <div className={`${validateLines()} value`}>
-            {lines.actual}
+          <div className="value">
+            {0}
             {' '}
             /
             {' '}
-            {lines.limit}
+            {linesLimit}
           </div>
         </div>
         <div className="column time">
@@ -126,12 +127,12 @@ const SolutionStatistics: React.FC<ISolutionStatistics> = ({ tests, lines, execu
             Execution time
           </div>
           <TimerIcon />
-          <div className={`${validateExecutionTime()} value`}>
-            {executionTime.actual}
+          <div className="value">
+            {0}
             {' '}
             /
             {' '}
-            {`${executionTime.limit} s`}
+            {`${executionTimeLimitInSeconds} s`}
           </div>
         </div>
       </div>

@@ -10,7 +10,9 @@ import {
   AddComment,
   ChallengeDetails, ChallengeTests, CommentSection, SolutionStatistics, SolutionWindow,
 } from '../components/challenges';
-import { IChallenge, IComment, ISolutionStatistics } from '../components/types/types';
+import {
+  IChallenge, IComment, ISolutionRequest, ISolutionStatistics,
+} from '../components/types/types';
 
 type Props = {
   id: string;
@@ -26,22 +28,10 @@ const defaultChallenge:IChallenge = {
   difficultyLevel: 'EASY',
   solutionStatus: 'InProgress',
   tags: [],
-};
-
-const defaultStatistics:ISolutionStatistics = {
-  dataSets: [],
-  tests: {
-    limit: 5,
-    actual: 0,
-  },
-  lines: {
-    limit: 120,
-    actual: 0,
-  },
-  executionTime: {
-    limit: 30,
-    actual: 0,
-  },
+  availableLanguages: [],
+  linesLimit: 120,
+  executionTimeLimitInSeconds: 3,
+  testCases: [],
 };
 
 const Challenge: React.FC<Props> = ({ id }) => {
@@ -70,6 +60,24 @@ const Challenge: React.FC<Props> = ({ id }) => {
       });
   };
 
+  const submitSolution = (language: string, code: string) => {
+    const request:ISolutionRequest = {
+      challengeId: challenge.id,
+      content: code,
+      languageOption: {
+        name: language,
+      },
+    };
+
+    axios.post('http://localhost:8080/api/solution/add', request)
+      .then((response) => {
+        console.log({ response });
+        challenge.testCases = response.data;
+        // TODO
+        setChallenge(challenge);
+      });
+  };
+
   const handleSwitchClick = () => {
     setShowComments(!showComments);
   };
@@ -78,11 +86,17 @@ const Challenge: React.FC<Props> = ({ id }) => {
     <div className="container">
       <div className="row">
         { showComments ? <CommentSection comments={comments!} onSwitchClick={handleSwitchClick} /> : <ChallengeDetails onSwitchClick={handleSwitchClick} challenge={challenge!} /> }
-        <SolutionWindow />
+        <SolutionWindow availableLanguages={challenge.availableLanguages} handleSubmit={submitSolution} />
       </div>
       <div className="row">
-        { showComments ? <AddComment handleSubmit={addNewComment} /> : <SolutionStatistics {...defaultStatistics} /> }
-        <ChallengeTests />
+        { showComments ? <AddComment handleSubmit={addNewComment} /> : (
+          <SolutionStatistics
+            linesLimit={challenge.linesLimit}
+            executionTimeLimitInSeconds={challenge.executionTimeLimitInSeconds}
+            testCasesNumber={challenge.testCases.length}
+          />
+        ) }
+        <ChallengeTests testCases={challenge.testCases} />
       </div>
     </div>
   );

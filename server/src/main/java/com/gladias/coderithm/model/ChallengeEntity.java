@@ -2,8 +2,9 @@ package com.gladias.coderithm.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -17,8 +18,9 @@ import javax.persistence.OneToMany;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Data
 @Builder
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "challenge")
@@ -63,7 +65,8 @@ public class ChallengeEntity {
     @JoinColumn(name = "testcase_id")
     private Set<TestCaseEntity> testCases;
 
-    @ManyToMany
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "tag_id")
     private Set<TagEntity> tags;
 
     public Set<String> getTagsValues() {
@@ -86,6 +89,10 @@ public class ChallengeEntity {
         } else {
             return rates.stream().collect(Collectors.averagingDouble(RateEntity::getRate));
         }
+    }
+
+    public String toString() {
+        return "ChallengeEntity(id=" + this.getId() + ", title=" + this.getTitle() + ", description=" + this.getDescription() + ", difficultyLevel=" + this.getDifficultyLevel() + ", linesLimit=" + this.getLinesLimit() + ", executionTimeLimitInSeconds=" + this.getExecutionTimeLimitInSeconds() + ", solutionStatus=" + this.getSolutionStatus() + ", author=" + this.getAuthor() + ", availableLanguages=" + this.getAvailableLanguages() + ", solutions=" + this.getSolutions() + ", rates=" + this.getRates() + ", comments=" + this.getComments() + ", testCases=" + this.getTestCases() + ", tags=" + this.getTags() + ")";
     }
 
     /*

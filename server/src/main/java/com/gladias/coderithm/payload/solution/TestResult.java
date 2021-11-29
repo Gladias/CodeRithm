@@ -1,3 +1,3 @@
 package com.gladias.coderithm.payload.solution;
 
-public record TestResult(String input, String expectedOutput, String userOutput) {}
+public record TestResult(String input, String output, String userOutput) {}

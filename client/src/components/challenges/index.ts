@@ -7,9 +7,10 @@ import CommentSection from './CommentSection';
 import FilterSection from './FilterSection';
 import SolutionStatistics from './SolutionStatistics';
 import SolutionWindow from './SolutionWindow';
+import AddChallengeForm from './AddChallengeForm';
 
 export {
-  AddComment, ChallengeCard, ChallengeTests,
+  AddComment, AddChallengeForm, ChallengeCard, ChallengeTests,
   ChallengeDetails, ChallengesSection, CommentSection,
   FilterSection, SolutionStatistics, SolutionWindow,
 };

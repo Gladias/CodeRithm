@@ -8,6 +8,7 @@ import { Header } from './components/common';
 import {
   BrowseChallenges, Challenge, Login, Register, NotFound,
 } from './views';
+import AddChallenge from './views/AddChallenge';
 
 const App: React.FC = () => {
   const [token, setToken] = useState(Cookies.get('token'));
@@ -22,6 +23,7 @@ const App: React.FC = () => {
             <Login setToken={setToken} />
           </Route>
           <Route path="/browseChallenges" component={BrowseChallenges} />
+          <Route path="/addChallenge" component={AddChallenge} />
           <Route path="/challenge/:id" render={({ match }) => <Challenge id={match.params.id} />} />
           <Route path="*" component={NotFound} />
         </Switch>

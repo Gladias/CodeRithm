@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+/* eslint-disable no-unused-vars */
 type IChallenge = {
     id: number,
     title?: string,
@@ -7,13 +9,34 @@ type IChallenge = {
     commentsNumber?: number,
     difficultyLevel: 'EASY' | 'MEDIUM' | 'HARD' | 'CHALLENGING',
     solutionStatus: 'New' | 'InProgress' | 'Completed',
-    tags: string[];
+    tags: string[],
+    availableLanguages: string[],
+    linesLimit: number,
+    executionTimeLimitInSeconds: number,
+    testCases: IDataSet[],
+}
+
+type ISolutionWindow = {
+    handleSubmit: (language: string, code: string) => void,
+    availableLanguages: string[],
+}
+
+type ISolutionRequest = {
+    challengeId: number,
+    content: string,
+    languageOption: {
+        name: string
+    }
 }
 
 type IDataSet = {
     input: string,
-    expectedOutput: string,
-    actualOutput: string,
+    output: string,
+    userOutput?: string,
+}
+
+type IChallengeTests = {
+    testCases: IDataSet[],
 }
 
 type ISolutionStatistics = {
@@ -32,6 +55,16 @@ type ISolutionStatistics = {
     }
 }
 
+type IMultipleSelectOption = {
+    name: string
+}
+
+type ISolutionStatisticsBase = {
+    linesLimit: number,
+    executionTimeLimitInSeconds: number,
+    testCasesNumber: number,
+}
+
 type IComment = {
     id: number,
     author: string,
@@ -39,4 +72,6 @@ type IComment = {
     creationTime: string,
 }
 
-export type { IChallenge, IComment, ISolutionStatistics };
+export type {
+  ISolutionWindow, ISolutionRequest, IChallengeTests, ISolutionStatisticsBase, IMultipleSelectOption, IChallenge, IComment, ISolutionStatistics,
+};
