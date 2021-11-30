@@ -30,6 +30,7 @@ type ISolutionRequest = {
 }
 
 type IDataSet = {
+    [key: string]: string | number | undefined,
     input: string,
     output: string,
     userOutput?: string,
@@ -55,6 +56,16 @@ type ISolutionStatistics = {
     }
 }
 
+type IAddChallengeInputs = {
+    title: string,
+    description: string,
+    codeLineLimit: number,
+    executionTimeLimit: number,
+    difficultyLevel: string,
+    languages: string[],
+    tags: string[],
+}
+
 type IMultipleSelectOption = {
     name: string
 }
@@ -73,5 +84,5 @@ type IComment = {
 }
 
 export type {
-  ISolutionWindow, ISolutionRequest, IChallengeTests, ISolutionStatisticsBase, IMultipleSelectOption, IChallenge, IComment, ISolutionStatistics,
+  IAddChallengeInputs, IDataSet, ISolutionWindow, ISolutionRequest, IChallengeTests, ISolutionStatisticsBase, IMultipleSelectOption, IChallenge, IComment, ISolutionStatistics,
 };

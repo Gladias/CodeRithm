@@ -38,6 +38,11 @@ public class ChallengeController {
         return challengeService.getFilteredChallenges(request);
     }
 
+    @PostMapping("/add")
+    public Page<ChallengeDto> addChallenge(@RequestBody ChallengesRequest request) {
+        return challengeService.getFilteredChallenges(request);
+    }
+
     @GetMapping("/tagsAndLanguages")
     public LanguagesAndTagsDto getTagsAndLanguages() {
         return challengeService.getAvailableLanguagesAndTags();
