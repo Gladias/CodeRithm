@@ -38,6 +38,7 @@ const Challenge: React.FC<Props> = ({ id }) => {
   const [challenge, setChallenge] = React.useState<IChallenge>(defaultChallenge);
   const [comments, setComments] = React.useState<IComment[]>();
   const [showComments, setShowComments] = React.useState(false);
+  const [commentWarningMessage, setCommentWarningMessage] = React.useState('Rules: 1. Don’t Post spoilers 2. Swear words not allowed');
 
   useEffect(() => {
     axios.get(`http://localhost:8080/api/challenge/getOne?id=${id}`)
@@ -57,6 +58,10 @@ const Challenge: React.FC<Props> = ({ id }) => {
     })
       .then((response) => {
         setComments(response.data);
+        setCommentWarningMessage('Rules: 1. Don’t Post spoilers 2. Swear words not allowed');
+      })
+      .catch((error) => {
+        setCommentWarningMessage(error.response.data.cause);
       });
   };
 
@@ -89,7 +94,7 @@ const Challenge: React.FC<Props> = ({ id }) => {
         <SolutionWindow availableLanguages={challenge.availableLanguages} handleSubmit={submitSolution} />
       </div>
       <div className="row">
-        { showComments ? <AddComment handleSubmit={addNewComment} /> : (
+        { showComments ? <AddComment handleSubmit={addNewComment} warningMessage={commentWarningMessage} /> : (
           <SolutionStatistics
             linesLimit={challenge.linesLimit}
             executionTimeLimitInSeconds={challenge.executionTimeLimitInSeconds}

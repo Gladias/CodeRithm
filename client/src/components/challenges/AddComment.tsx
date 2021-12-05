@@ -14,6 +14,7 @@ import { CommonButton } from '../common';
 
 type Props = {
   handleSubmit: (content: string) => void;
+  warningMessage: string;
 }
 
 const StyledAddComment = styled.div`
@@ -117,7 +118,7 @@ const StyledAddComment = styled.div`
     }
 `;
 
-const AddComment: React.FC<Props> = ({ handleSubmit }) => {
+const AddComment: React.FC<Props> = ({ handleSubmit, warningMessage }) => {
   const [comment, setComment] = useState('');
 
   const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -140,7 +141,7 @@ const AddComment: React.FC<Props> = ({ handleSubmit }) => {
           Add comment
         </div>
         <div className="rules">
-          Rules: 1. Don’t Post spoilers 2. Swear words not allowed
+          {warningMessage}
         </div>
       </div>
       <div className="comment-section">
