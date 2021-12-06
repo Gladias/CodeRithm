@@ -77,7 +77,7 @@ public class CommentService {
         commentContent = removeAdjacentDuplicateCharacters(commentContent);
 
         for (String swearWord : swearWords) {
-            if (commentContent.toLowerCase(Locale.ROOT).contains(swearWord)) {
+            if (commentContent.toLowerCase(Locale.ROOT).contains(removeAdjacentDuplicateCharacters(swearWord))) {
                 detectedSwearWords.add(swearWord);
             }
         }
