@@ -8,7 +8,7 @@ import Cookies from 'js-cookie';
 import { useHistory } from 'react-router';
 import { ImageArea, InputArea } from '../components/authentication';
 import '../assets/styles/Login.scss';
-import signIn from '../assets/images/sign_in.svg';
+import signIn from '../assets/images/login.svg';
 import { CommonButton } from '../components/common';
 
 type Props = {

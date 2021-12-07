@@ -10,7 +10,7 @@ import axios from 'axios';
 import { useHistory } from 'react-router';
 import { ImageArea, InputArea } from '../components/authentication';
 import '../assets/styles/Register.scss';
-import profile from '../assets/images/profile.svg';
+import profile from '../assets/images/register.svg';
 import { CommonButton } from '../components/common';
 
 const RegistarionValidationSchema = yup.object().shape({
