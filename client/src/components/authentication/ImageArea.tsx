@@ -48,7 +48,7 @@ const ImageArea: React.FC<Props> = ({ caption, image }) => (
         </span>
       </div>
       <div className="image">
-        <img src={image} alt="Account creation icon" />
+        <img src={image} alt="" />
       </div>
     </div>
   </StyledImageArea>

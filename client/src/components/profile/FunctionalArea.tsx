@@ -14,6 +14,9 @@ import AddIcon from '@mui/icons-material/Add';
 import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
 import CommentIcon from '@mui/icons-material/Comment';
 import { CommonButton } from '../common';
+import cpp from '../../assets/images/cpp.svg';
+import java from '../../assets/images/java.svg';
+import python from '../../assets/images/python.svg';
 
 const StyledFunctionalArea = styled.div`
     height: 100%;
@@ -36,8 +39,8 @@ const StyledFunctionalArea = styled.div`
     }
 
     .section {
-      width: 80%;
-      height: 10%;
+      width: 90%;
+      height: 15%;
 
       display: flex;
       flex-direction: column;
@@ -58,12 +61,12 @@ const StyledFunctionalArea = styled.div`
         align-items: center;        
         
         .column {
-          height: 70%;
+          height: 90%;
           width: 25%;
           display: flex;
           flex-direction: column;
           align-items: center;
-          justify-content: space-between;
+          justify-content: space-evenly;
           
           .difficulty {
             width: 80%;
@@ -78,13 +81,43 @@ const StyledFunctionalArea = styled.div`
             border-radius: 0.5rem;
           }
 
+          .icon, .text, .quantity {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+          }
+
           .quantity {
             font-size: 1.3rem;
+          }
+
+          .icon {
+            height: 30%;
+            font-size: 1.5rem;
           }
         }
       }
     }
 
+    .changePassword {
+      width: 50%;
+      height: 20%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+
+      .inputs {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        
+        .input {
+          width: 45%;
+          color: white;
+        }
+      }
+    }
 
     .easy {
       background-color: #6AA31C;
@@ -101,6 +134,29 @@ const StyledFunctionalArea = styled.div`
     .challenging {
       background-color: #985F99;
     }
+
+    .MuiInputLabel-root {
+      color: #EDEFEC;
+    }
+
+    .MuiOutlinedInput-root {
+          background-color: #35373B;
+          border-radius: 4;
+          color: #EDEFEC;
+        }
+
+    .MuiOutlinedInput-input {
+      border-color: #6AA31C;
+      font-size: 1.3rem;
+    }
+
+    .Mui-focused {
+      border: 0;
+
+      fieldset {
+        border-color: #6AA31C !important;
+      }
+    }
 `;
 
 const FunctionalArea: React.FC = () => {
@@ -113,7 +169,7 @@ const FunctionalArea: React.FC = () => {
       </div>
       <div className="section difficulties">
         <div className="section-title">
-          Completed challenges
+          Completed challenges by difficulty level
         </div>
         <div className="columns">
           <div className="column">
@@ -194,12 +250,12 @@ const FunctionalArea: React.FC = () => {
       </div>
       <div className="section solutions">
         <div className="section-title">
-          Challenges
+          Most often used languages
         </div>
         <div className="columns">
           <div className="column">
             <div className="icon">
-
+              <img src={python} alt="" />
             </div>
             <div className="text">
               Python
@@ -209,9 +265,7 @@ const FunctionalArea: React.FC = () => {
             </div>
           </div>
           <div className="column">
-            <div className="icon">
-
-            </div>
+            <img className="icon" src={java} alt="" />
             <div className="text">
               Java
             </div>
@@ -220,9 +274,7 @@ const FunctionalArea: React.FC = () => {
             </div>
           </div>
           <div className="column">
-            <div className="icon">
-
-            </div>
+            <img className="icon" src={cpp} alt="" />
             <div className="text">
               C++
             </div>
@@ -237,10 +289,10 @@ const FunctionalArea: React.FC = () => {
       </div>
       <div className="changePassword">
         <div className="inputs">
-          <TextField id="login" label="Current password" type="password" variant="outlined" />
-          <TextField id="login" label="New password" type="password" variant="outlined" />
+          <TextField className="input" id="currentPassword" label="Current password" type="password" variant="outlined" />
+          <TextField className="input" id="newPassword" label="New password" type="password" variant="outlined" />
         </div>
-        <div>
+        <div className="button">
           <CommonButton text="Submit" type="submit" />
         </div>
       </div>

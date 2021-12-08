@@ -1,0 +1,1 @@
+--INSERT INTO users (id, login, password, email) VALUES (1, 'test', 'xdd', 'test.test@example.com');

@@ -8,20 +8,21 @@ import {
 
 import React, { useState } from 'react';
 import { ImageArea, InputArea } from '../components/authentication';
-import '../assets/styles/Profile.scss';
+import '../assets/styles/Register.scss';
 import profile from '../assets/images/profile.svg';
 import { CommonButton } from '../components/common';
 import { FunctionalArea } from '../components/profile';
+import { RankingFilters, RankingSection } from '../components/ranking';
 
-const Profile: React.FC = () => {
+const Ranking: React.FC = () => {
   const a = 'a';
 
   return (
-    <div className="profile-container">
-      <ImageArea caption="hi, gladias!" image={profile} />
-      <FunctionalArea />
+    <div className="ranking-container">
+      <RankingFilters />
+      <RankingSection />
     </div>
   );
 };
 
-export default Profile;
+export default Ranking;
