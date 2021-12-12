@@ -10,7 +10,7 @@ import axios from 'axios';
 import { useHistory } from 'react-router';
 import { ImageArea, InputArea } from '../components/authentication';
 import '../assets/styles/Register.scss';
-import profile from '../assets/images/register.svg';
+import register from '../assets/images/register.svg';
 import { CommonButton } from '../components/common';
 
 const RegistarionValidationSchema = yup.object().shape({
@@ -120,7 +120,7 @@ const Register: React.FC = () => {
 
   return (
     <div className="register-container">
-      <ImageArea caption="Account Creation" image={profile} />
+      <ImageArea caption="Account Creation" image={register} />
       <InputArea purpose="register">
         <TextField id="login" label="Login" type="text" variant="outlined" onChange={handleChange} required value={credentials.login} error={validationErrors.login.length > 0} helperText={validationErrors.login.join('. ')} />
         <TextField id="email" label="E-mail" type="text" variant="outlined" onChange={handleChange} required error={validationErrors.email.length > 0} helperText={validationErrors.email.join('. ')} />

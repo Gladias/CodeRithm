@@ -13,6 +13,7 @@ import profile from '../assets/images/profile.svg';
 import { CommonButton } from '../components/common';
 import { FunctionalArea } from '../components/profile';
 import { RankingFilters, RankingSection } from '../components/ranking';
+import '../assets/styles/Ranking.scss';
 
 const Ranking: React.FC = () => {
   const a = 'a';
