@@ -5,7 +5,8 @@ import BrowseChallenges from './BrowseChallenges';
 import Challenge from './Challenge';
 import Profile from './Profile';
 import Ranking from './Ranking';
+import Study from './Study';
 
 export {
-  BrowseChallenges, Challenge, Login, Register, NotFound, Profile, Ranking,
+  BrowseChallenges, Challenge, Login, Register, NotFound, Profile, Ranking, Study,
 };

@@ -6,7 +6,7 @@ import './App.scss';
 import { StyledEngineProvider } from '@mui/material/styles';
 import { Header } from './components/common';
 import {
-  BrowseChallenges, Challenge, Login, Register, NotFound, Profile, Ranking,
+  BrowseChallenges, Challenge, Login, Register, NotFound, Profile, Ranking, Study,
 } from './views';
 import AddChallenge from './views/AddChallenge';
 
@@ -27,6 +27,7 @@ const App: React.FC = () => {
           <Route path="/challenge/:id" render={({ match }) => <Challenge id={match.params.id} />} />
           <Route path="/profile" component={Profile} />
           <Route path="/ranking" component={Ranking} />
+          <Route path="/study" component={Study} />
           <Route path="*" component={NotFound} />
         </Switch>
       </Router>
