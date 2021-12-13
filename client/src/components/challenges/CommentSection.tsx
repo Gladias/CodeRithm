@@ -139,7 +139,7 @@ const CommentSection: React.FC<Props> = ({ comments, onSwitchClick }) => {
         ))}
       </div>
       <div className="challenge">
-        <CommonButton onClick={onSwitchClick} text="Switch to challenge" backgroundcolor="#FFC53A" hovercolor="#7a6c23" />
+        <CommonButton onClick={onSwitchClick} text="Switch to challenge" backgroundcolor="#FFC53A" />
       </div>
     </StyledCommentSection>
   );

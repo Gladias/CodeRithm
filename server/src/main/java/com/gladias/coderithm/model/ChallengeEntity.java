@@ -1,5 +1,6 @@
 package com.gladias.coderithm.model;
 
+import com.gladias.coderithm.payload.challenge.add.AddChallengeRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -48,7 +49,7 @@ public class ChallengeEntity {
     @JoinColumn(name = "author_id")
     private UserEntity author;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private Set<LanguageEntity> availableLanguages;
 
     @OneToMany(mappedBy = "challenge")
@@ -95,6 +96,18 @@ public class ChallengeEntity {
         return "ChallengeEntity(id=" + this.getId() + ", title=" + this.getTitle() + ", description=" + this.getDescription() + ", difficultyLevel=" + this.getDifficultyLevel() + ", linesLimit=" + this.getLinesLimit() + ", executionTimeLimitInSeconds=" + this.getExecutionTimeLimitInSeconds() + ", solutionStatus=" + this.getSolutionStatus() + ", author=" + this.getAuthor() + ", availableLanguages=" + this.getAvailableLanguages() + ", solutions=" + this.getSolutions() + ", rates=" + this.getRates() + ", comments=" + this.getComments() + ", testCases=" + this.getTestCases() + ", tags=" + this.getTags() + ")";
     }
 
+    public static ChallengeEntity of(AddChallengeRequest request) {
+        return ChallengeEntity.builder()
+                .title(request.title())
+                .description(request.description())
+                .difficultyLevel(request.difficultyLevel())
+                .tags(request.tags().stream().map(TagEntity::of).collect(Collectors.toSet()))
+                .availableLanguages(request.languages().stream().map(LanguageEntity::of).collect(Collectors.toSet()))
+                .linesLimit(request.linesLimit())
+                .executionTimeLimitInSeconds(request.executionTimeLimitInSeconds())
+                .testCases(request.dataSets().stream().map(dataSet -> TestCaseEntity.of(dataSet.input(), dataSet.output())).collect(Collectors.toSet()))
+                .build();
+    }
     /*
     TODO: look through solutions to generate status of challenge for logged user
     */

@@ -192,7 +192,7 @@ const ChallengeDetails: React.FC<Props> = ({
         {description}
       </div>
       <div className="comments">
-        <CommonButton onClick={onSwitchClick} text="Switch to comments" backgroundcolor="#FFC53A" hovercolor="#7a6c23" />
+        <CommonButton onClick={onSwitchClick} text="Switch to comments" backgroundcolor="#FFC53A" />
       </div>
     </StyledChallengeCard>
   );

@@ -1,9 +1,11 @@
 package com.gladias.coderithm.controller;
 
 import com.gladias.coderithm.payload.FiltersDto;
+import com.gladias.coderithm.payload.challenge.add.AddChallengeRequest;
 import com.gladias.coderithm.payload.challenge.ChallengeDto;
 import com.gladias.coderithm.payload.challenge.ChallengesRequest;
 import com.gladias.coderithm.payload.challenge.LanguagesAndTagsDto;
+import com.gladias.coderithm.payload.challenge.add.AddChallengeResponse;
 import com.gladias.coderithm.service.ChallengeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -39,8 +41,10 @@ public class ChallengeController {
     }
 
     @PostMapping("/add")
-    public Page<ChallengeDto> addChallenge(@RequestBody ChallengesRequest request) {
-        return challengeService.getFilteredChallenges(request);
+    public AddChallengeResponse addChallenge(@RequestBody AddChallengeRequest request) {
+        System.out.println(request);
+        Long addedChallengeId = challengeService.addChallenge(request);
+        return new AddChallengeResponse(addedChallengeId);
     }
 
     @GetMapping("/tagsAndLanguages")

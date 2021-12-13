@@ -13,6 +13,7 @@ import com.gladias.coderithm.payload.challenge.ChallengeDto;
 import com.gladias.coderithm.payload.challenge.ChallengesRequest;
 import com.gladias.coderithm.payload.challenge.LanguagesAndTagsDto;
 import com.gladias.coderithm.payload.challenge.TagDto;
+import com.gladias.coderithm.payload.challenge.add.AddChallengeRequest;
 import com.gladias.coderithm.repository.ChallengeRepository;
 import com.gladias.coderithm.repository.LanguageRepository;
 import com.gladias.coderithm.repository.TagRepository;
@@ -24,8 +25,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -57,6 +60,14 @@ public class ChallengeService {
         return ChallengeDto.of(challengeEntity);
     }
 
+    public Long addChallenge(AddChallengeRequest request) {
+        ChallengeEntity requestEntity = ChallengeEntity.of(request);
+        System.out.println(requestEntity);
+        ChallengeEntity savedEntity = challengeRepository.save(requestEntity);
+
+        return savedEntity.getId();
+    }
+
     public Page<ChallengeDto> getFilteredChallenges(ChallengesRequest request) {
         List<ChallengeEntity> allChallenges = challengeRepository.findAll();
 
@@ -78,7 +89,8 @@ public class ChallengeService {
 
     public LanguagesAndTagsDto getAvailableLanguagesAndTags() {
         List<String> tagDtos = tagRepository.findAll().stream().map(TagEntity::getValue).collect(Collectors.toList());
-        List<String> languageDtos = languageRepository.findAll().stream().map(LanguageEntity::getName).collect(Collectors.toList());
+        List<LanguageDto> languageDtos = languageRepository.findAll().stream()
+                .map(LanguageDto::of).collect(Collectors.toList());
 
         return new LanguagesAndTagsDto(languageDtos, tagDtos);
     }
@@ -86,7 +98,7 @@ public class ChallengeService {
     public FiltersDto getAvailableFilterOptions() {
         List<SortingOption> availableSortingOptions = List.of(SortingOption.values());
 
-        return new FiltersDto(new LinkedHashSet<>(Collections.singleton(new LanguageDto("Python"))),
+        return new FiltersDto(new LinkedHashSet<>(Collections.singleton(new LanguageDto("Python", "3.10.0"))),
                 new LinkedHashSet<>(availableSortingOptions));
     }
 }

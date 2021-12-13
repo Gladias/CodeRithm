@@ -22,12 +22,12 @@ const App: React.FC = () => {
           <Route path="/login">
             <Login setToken={setToken} />
           </Route>
-          <Route path="/browseChallenges" component={BrowseChallenges} />
           <Route path="/addChallenge" component={AddChallenge} />
           <Route path="/challenge/:id" render={({ match }) => <Challenge id={match.params.id} />} />
           <Route path="/profile" component={Profile} />
           <Route path="/ranking" component={Ranking} />
           <Route path="/study" component={Study} />
+          <Route exact path={['/browseChallenges', '/']} component={BrowseChallenges} />
           <Route path="*" component={NotFound} />
         </Switch>
       </Router>

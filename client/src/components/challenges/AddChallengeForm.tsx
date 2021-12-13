@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable no-undef */
 /* eslint-disable max-len */
@@ -5,7 +6,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable react/no-unused-prop-types */
-import React, { ChangeEvent, SyntheticEvent } from 'react';
+import React, { ChangeEvent, SyntheticEvent, useEffect } from 'react';
 import styled from 'styled-components';
 import {
   Box, Button, Chip, MenuItem, OutlinedInput, Select, SelectChangeEvent, TextField,
@@ -15,13 +16,15 @@ import PersonIcon from '@mui/icons-material/Person';
 import CommentIcon from '@mui/icons-material/Comment';
 import StarTwoToneIcon from '@mui/icons-material/StarTwoTone';
 import { EditorChangeEvent } from 'react-codemirror2';
+import { useHistory } from 'react-router';
+import axios from 'axios';
 import { CommonButton } from '../common';
 import {
-  IAddChallengeInputs, IChallenge, IDataSet, IMultipleSelectOption,
+  IAddChallengeInputs, IChallenge, IDataSet, ILanguage, IMultipleSelectOption,
 } from '../types/types';
 
 type Props = {
-    availableLanguages: string[],
+    availableLanguages: ILanguage[],
     availableTags: string[],
 }
 
@@ -117,19 +120,23 @@ const StyledAddChallengeForm = styled.div`
     }
 `;
 
+const defaultInputs = () => ({
+  title: '',
+  description: '',
+  difficultyLevel: 'EASY',
+  codeLineLimit: 120,
+  executionTimeLimit: 3,
+  languages: [],
+  tags: [],
+});
+
 const AddChallengeForm: React.FC<Props> = ({ availableLanguages, availableTags }) => {
-  const [inputs, setInputs] = React.useState<IAddChallengeInputs>({
-    title: '',
-    description: '',
-    difficultyLevel: 'EASY',
-    codeLineLimit: 120,
-    executionTimeLimit: 3,
-    languages: [],
-    tags: [],
-  });
+  const [inputs, setInputs] = React.useState<IAddChallengeInputs>(defaultInputs);
   const [dataSets, setDataSets] = React.useState<IDataSet[]>([]);
+  const [formNotFilled, setFormNotFilled] = React.useState(true);
 
   const inputHandler = (inputName:string, inputType: string, e: any) => {
+    console.log(inputs);
     if (inputType === 'text') {
       textInputHandler(inputName, e);
     } else if (inputType === 'chip') {
@@ -183,160 +190,194 @@ const AddChallengeForm: React.FC<Props> = ({ availableLanguages, availableTags }
     dataSetsCopy[dataSetId] = selectedDataSet;
 
     setDataSets([...dataSetsCopy]);
-    console.log({ dataSets });
-  };
-  /*
-  const updateDataSet = (index: number, type: string, e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    dataSets.find(dataset => dataset.{type} === value)
-    setDataSets((prevState) => ({
-      ...prevState,
-      [inputName]: value,
-    }));
-
     console.log(dataSets);
   };
-*/
+
+  useEffect(() => {
+    isFormFilled();
+  }, [inputs, dataSets]);
+
+  const isFormFilled = () => {
+    if (inputs.title.length > 0
+      && inputs.description.length > 0
+      && inputs.languages.length > 0
+      && inputs.tags.length > 0
+      && dataSets.length > 0) {
+      setFormNotFilled(false);
+    } else {
+      setFormNotFilled(true);
+    }
+  };
+
+  const history = useHistory();
+
+  const clearForm = () => {
+    setInputs(defaultInputs);
+    setDataSets([]);
+  };
+
+  const sendForm = () => {
+    if (formNotFilled === false) {
+      const request = {
+        ...inputs,
+        dataSets,
+      };
+
+      console.log(request);
+      console.log(dataSets);
+    }
+  };
+
   return (
-    <StyledAddChallengeForm>
-      <div className="row">
-        <div className="caption">
-          Title
-        </div>
-        <TextField value={inputs.title} onChange={(e) => inputHandler('title', 'text', e)} className="inputField" id="title" type="text" variant="outlined" required />
-      </div>
-      <div className="row">
-        <div className="caption">
-          Description
-        </div>
-        <TextField value={inputs.description} onChange={(e) => inputHandler('description', 'text', e)} className="inputField" id="description" type="text" variant="outlined" multiline rows={4} required />
-      </div>
-      <div className="row">
-        <div className="caption">
-          Difficulty
-        </div>
-        <TextField
-          className="inputField"
-          id="difficulty"
-          size="small"
-          value={inputs.difficultyLevel}
-          onChange={(e) => inputHandler('difficultyLevel', 'select', e)}
-          select
-        >
-          <MenuItem key="easy" value="EASY">
-            Easy
-          </MenuItem>
-          <MenuItem key="medium" value="MEDIUM">
-            Medium
-          </MenuItem>
-          <MenuItem key="hard" value="HARD">
-            Hard
-          </MenuItem>
-          <MenuItem key="challenging" value="CHALLENGING">
-            Challenging
-          </MenuItem>
-        </TextField>
-      </div>
-      <div className="row">
-        <div className="caption">
-          Available Languages
-        </div>
-        <Select
-          className="inputField"
-          id="languages-select"
-          multiple
-          value={inputs.languages}
-          onChange={(e) => inputHandler('languages', 'chip', e)}
-          input={<OutlinedInput id="languages-select-inner" />}
-          renderValue={(selected) => (
-            <Box sx={{ display: 'flex', overflow: 'auto', gap: 0.5 }}>
-              {selected.map((value) => (
-                <Chip id="shuja" key={value} label={value} />
-              ))}
-            </Box>
-          )}
-        >
-          {availableLanguages.map((language) => (
-            <MenuItem
-              key={language}
-              value={language}
-            >
-              {language}
-            </MenuItem>
-          ))}
-        </Select>
-      </div>
-      <div className="row">
-        <div className="caption">
-          Tags
-        </div>
-        <Select
-          className="inputField"
-          id="tags-select"
-          multiple
-          value={inputs.tags}
-          onChange={(e) => inputHandler('tags', 'chip', e)}
-          input={<OutlinedInput id="tags-select-inner" />}
-          renderValue={(selected) => (
-            <Box id="chuj" sx={{ display: 'flex', overflow: 'auto', gap: 0.5 }}>
-              {selected.map((value) => (
-                <Chip key={value} label={value} />
-              ))}
-            </Box>
-          )}
-        >
-          {availableTags.map((tag) => (
-            <MenuItem
-              key={tag}
-              value={tag}
-              id="kurwiszcze"
-            >
-              {tag}
-            </MenuItem>
-          ))}
-        </Select>
-      </div>
-      <div className="row">
-        <div className="caption">
-          Code lines limit
-        </div>
-        <TextField className="shortInputField" value={inputs.codeLineLimit} onChange={(e) => inputHandler('codeLineLimit', 'text', e)} id="codeLineLimit" inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} type="number" variant="outlined" required />
-      </div>
-      <div className="row">
-        <div className="caption">
-          Execution time limit[s]
-        </div>
-        <TextField className="shortInputField" value={inputs.executionTimeLimit} onChange={(e) => inputHandler('executionTimeLimit', 'text', e)} id="executionTimeLimit" inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} type="number" variant="outlined" required />
-      </div>
-      <div className="tests">
-        <div className="caption">
-          Test data sets
-        </div>
-        <div className="tests-row">
-          <div className="input">
-            Input
+    <>
+
+      <StyledAddChallengeForm>
+        <div className="row">
+          <div className="caption">
+            Title
           </div>
-          <div className="output">
-            Output
-          </div>
+          <TextField value={inputs.title} onChange={(e) => inputHandler('title', 'text', e)} className="inputField" id="title" type="text" variant="outlined" required />
         </div>
-        {dataSets.map((dataSet, index) => (
-          <div className="tests-row" key={index}>
+        <div className="row">
+          <div className="caption">
+            Description
+          </div>
+          <TextField value={inputs.description} onChange={(e) => inputHandler('description', 'text', e)} className="inputField" id="description" type="text" variant="outlined" multiline rows={4} required />
+        </div>
+        <div className="row">
+          <div className="caption">
+            Difficulty
+          </div>
+          <TextField
+            className="inputField"
+            id="difficulty"
+            size="small"
+            value={inputs.difficultyLevel}
+            onChange={(e) => inputHandler('difficultyLevel', 'select', e)}
+            select
+          >
+            <MenuItem key="easy" value="EASY">
+              Easy
+            </MenuItem>
+            <MenuItem key="medium" value="MEDIUM">
+              Medium
+            </MenuItem>
+            <MenuItem key="hard" value="HARD">
+              Hard
+            </MenuItem>
+            <MenuItem key="challenging" value="CHALLENGING">
+              Challenging
+            </MenuItem>
+          </TextField>
+        </div>
+        <div className="row">
+          <div className="caption">
+            Available Languages
+          </div>
+          <Select
+            className="inputField"
+            id="languages-select"
+            multiple
+            value={inputs.languages}
+            onChange={(e) => inputHandler('languages', 'chip', e)}
+            input={<OutlinedInput id="languages-select-inner" />}
+            renderValue={(selected) => (
+              <Box sx={{ display: 'flex', overflow: 'auto', gap: 0.5 }}>
+                {selected.map((value) => (
+                  <Chip key={value.name} label={value.name} />
+                ))}
+              </Box>
+            )}
+          >
+            {availableLanguages.map((language) => (
+              <MenuItem
+                key={language.name}
+                value={language.name}
+              >
+                {language.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </div>
+        <div className="row">
+          <div className="caption">
+            Tags
+          </div>
+          <Select
+            className="inputField"
+            id="tags-select"
+            multiple
+            value={inputs.tags}
+            onChange={(e) => inputHandler('tags', 'chip', e)}
+            input={<OutlinedInput id="tags-select-inner" />}
+            renderValue={(selected) => (
+              <Box id="chuj" sx={{ display: 'flex', overflow: 'auto', gap: 0.5 }}>
+                {selected.map((value) => (
+                  <Chip key={value} label={value} />
+                ))}
+              </Box>
+            )}
+          >
+            {availableTags.map((tag) => (
+              <MenuItem
+                key={tag}
+                value={tag}
+              >
+                {tag}
+              </MenuItem>
+            ))}
+          </Select>
+        </div>
+        <div className="row">
+          <div className="caption">
+            Code lines limit
+          </div>
+          <TextField className="shortInputField" value={inputs.codeLineLimit} onChange={(e) => inputHandler('codeLineLimit', 'text', e)} id="codeLineLimit" inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} type="number" variant="outlined" required />
+        </div>
+        <div className="row">
+          <div className="caption">
+            Execution time limit[s]
+          </div>
+          <TextField className="shortInputField" value={inputs.executionTimeLimit} onChange={(e) => inputHandler('executionTimeLimit', 'text', e)} id="executionTimeLimit" inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} type="number" variant="outlined" required />
+        </div>
+        <div className="tests">
+          <div className="caption">
+            Test data sets
+          </div>
+          <div className="tests-row">
             <div className="input">
-              <TextField id={`${index}-test-input`} value={dataSet.input} onChange={updateDataSet} type="text" variant="outlined" required />
+              Input
             </div>
             <div className="output">
-              <TextField id={`${index}-test-output`} value={dataSet.output} onChange={updateDataSet} type="text" variant="outlined" required />
+              Output
             </div>
           </div>
-        ))}
-        <div className="addDiv">
-          <Button id="addTestButton" onClick={addDataSet} variant="outlined" startIcon={<AddIcon />}>
-            Add test
-          </Button>
+          {dataSets.map((dataSet, index) => (
+            <div className="tests-row" key={index}>
+              <div className="input">
+                <TextField id={`${index}-test-input`} value={dataSet.input} onChange={updateDataSet} type="text" variant="outlined" required />
+              </div>
+              <div className="output">
+                <TextField id={`${index}-test-output`} value={dataSet.output} onChange={updateDataSet} type="text" variant="outlined" required />
+              </div>
+            </div>
+          ))}
+          <div className="addDiv">
+            <Button id="addTestButton" onClick={addDataSet} variant="outlined" startIcon={<AddIcon />}>
+              Add test
+            </Button>
+          </div>
         </div>
+      </StyledAddChallengeForm>
+      <div className="control-buttons">
+        <Button id="cancel" variant="contained" type="button" onClick={clearForm}>
+          Clear
+        </Button>
+        <Button disabled={formNotFilled} id="submit" variant="contained" type="button" onClick={sendForm}>
+          Submit
+        </Button>
       </div>
-    </StyledAddChallengeForm>
+    </>
   );
 };
 

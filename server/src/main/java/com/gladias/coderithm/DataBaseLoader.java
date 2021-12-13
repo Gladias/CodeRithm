@@ -28,8 +28,8 @@ public class DataBaseLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Set<LanguageEntity> languages = addLanguages();
-        addChallenges(languages);
+        //Set<LanguageEntity> languages = addLanguages();
+        addChallenges();
     }
 
     private void addUsers() {
@@ -40,15 +40,17 @@ public class DataBaseLoader implements CommandLineRunner {
         //return user;
     }
 
-    private void addChallenges(Set<LanguageEntity> languages) {
-        ChallengeEntity challenge = new ChallengeEntity("Placeholder", "desc desc desc", DifficultyLevel.MEDIUM);
+    private void addChallenges() {
+        ChallengeEntity challenge = new ChallengeEntity( "Placeholder", "desc desc desc", DifficultyLevel.MEDIUM);
         challenge.setTestCases(Set.of(new TestCaseEntity("abc", "def"), new TestCaseEntity("gyh", "jul")));
 
+        LanguageEntity python = new LanguageEntity("python", "3.10.0");
+        LanguageEntity java = new LanguageEntity("java", "15.0.2");
+        challenge.setAvailableLanguages(Set.of(python, java));
 
         TagEntity tag1 = new TagEntity("Arrays");
         TagEntity tag2 = new TagEntity("Sorting");
         challenge.setTags(Set.of(tag1, tag2));
-        challenge.setAvailableLanguages(languages);
 
         UserEntity user = new UserEntity("coderithm", "$2a$10$OUGjnlCtM5se5zf6z41sXeGbN1Gq/.VETWd2JAm.uM7oZu570s8P.", "test.test@test.com");
 

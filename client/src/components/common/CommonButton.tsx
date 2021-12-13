@@ -7,25 +7,26 @@ type Props = {
     text: string;
     type?: 'button' | 'submit';
     backgroundcolor?: string,
-    hovercolor?: string,
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
 };
 
-const StyledButton = styled(Button)<{ backgroundcolor: string, hovercolor: string }>`
+const StyledButton = styled(Button)<{ backgroundcolor: string}>`
     background-color: ${(props) => props.backgroundcolor};
     color: black;
     font-size: 1.1rem;
     font-family: 'Meedori BO';
     text-transform: none;
-    :hover {
-      background-color: ${(props) => props.hovercolor};
+
+    &:hover {
+      background-color: ${(props) => props.backgroundcolor};
+      filter: brightness(65%);
     }
 `;
 
 const CommonButton: React.FC<Props> = ({
-  text, type = 'button', backgroundcolor = '#6AA31C', hovercolor = '#517C15', onClick,
+  text, type = 'button', backgroundcolor = '#6AA31C', onClick,
 }) => (
-  <StyledButton size="large" variant="contained" type={type} backgroundcolor={backgroundcolor} hovercolor={hovercolor} onClick={onClick}>{text}</StyledButton>
+  <StyledButton size="large" variant="contained" type={type} backgroundcolor={backgroundcolor} onClick={onClick}>{text}</StyledButton>
 );
 
 export default CommonButton;

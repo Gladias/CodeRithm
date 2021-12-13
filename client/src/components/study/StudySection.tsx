@@ -101,6 +101,10 @@ const StyledStudySection = styled.div`
         .document {
           display: flex;
           align-items: center;
+
+          .react-pdf__Page__annotations {
+            display: none;
+          }
         }
       }
     }
@@ -147,7 +151,7 @@ const StudySection: React.FC = () => {
             Page number
             <TextField value={pageNumber} onChange={changePageNumber} id="pageNumberInput" inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} type="number" variant="outlined" />
           </div>
-          <Document file={document}>
+          <Document className="document" file={document}>
             <Page height={600} scale={1.5} pageNumber={pageNumber} />
           </Document>
         </div>

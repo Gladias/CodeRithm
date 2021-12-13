@@ -1,5 +1,6 @@
 package com.gladias.coderithm.model;
 
+import com.gladias.coderithm.payload.challenge.LanguageDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,4 +34,11 @@ public class LanguageEntity {
 
     @ManyToMany(mappedBy = "availableLanguages")
     private Set<ChallengeEntity> challenges;
+
+    public static LanguageEntity of(LanguageDto languageDto) {
+        return LanguageEntity.builder()
+                .name(languageDto.name())
+                .version(languageDto.version())
+                .build();
+    }
 }

@@ -16,6 +16,7 @@ const StyledHeader = styled.header`
   justify-content: space-between;
   height: 8%;
   margin: 0 1rem;
+  width: 100%;
 
   font-family: 'Meedori BO';
   border-bottom: 2px solid black;
@@ -23,7 +24,7 @@ const StyledHeader = styled.header`
   .logo {
     display: flex;
     justify-content: center;
-    width: 30%;
+    width: 20%;
 
     a {
       padding-top: 1rem;
@@ -39,12 +40,19 @@ const StyledHeader = styled.header`
   .navigation-buttons {
       display: flex;
       justify-content: space-around;
-      width: 35%;
+      width: 50%;
+      height: 50%;
+      overflow: hidden;
   }
   .auth-buttons {
       display: flex;
       justify-content: flex-end;
-      width: 35%;
+      width: 20%;
+      height: 50%;
+
+      & > button {
+        margin-right: 2rem;
+      }
     }
 `;
 
@@ -69,15 +77,20 @@ const Header: React.FC<Props> = ({ token, setToken }) => {
         </a>
       </div>
       <div className="navigation-buttons">
+        {
+          token
+            && <CommonButton backgroundcolor="#FFC53A" text="Add challenge" onClick={() => redirect('/addChallenge')} />
+        }
         <CommonButton text="Browse Challenges" onClick={() => redirect('/browseChallenges')} />
-        <CommonButton text="Ranking" onClick={() => redirect('/404')} />
+        <CommonButton text="Ranking" onClick={() => redirect('/ranking')} />
+        <CommonButton text="Study" onClick={() => redirect('/study')} />
       </div>
       <div className="auth-buttons">
         {
           token
             ? (
               <>
-                <CommonButton text="Profile" onClick={() => redirect('/404')} />
+                <CommonButton text="Profile" onClick={() => redirect('/profile')} />
                 <CommonButton text="Log out" onClick={logout} />
               </>
             )

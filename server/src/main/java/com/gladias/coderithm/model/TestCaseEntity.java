@@ -35,4 +35,11 @@ public class TestCaseEntity {
     public boolean passed() {
         return Objects.equals(input, output);
     }
+
+    public static TestCaseEntity of(String input, String output) {
+        return TestCaseEntity.builder()
+                .input(input)
+                .output(output)
+                .build();
+    }
 }

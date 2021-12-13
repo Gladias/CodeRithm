@@ -28,4 +28,10 @@ public class TagEntity {
     public TagEntity(String value) {
         this.value = value;
     }
+
+    public static TagEntity of(String tag) {
+        return TagEntity.builder()
+                .value(tag)
+                .build();
+    }
 }
