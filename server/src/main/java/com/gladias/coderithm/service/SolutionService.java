@@ -4,7 +4,10 @@ import com.gladias.coderithm.engine.CodeExecutionEngineManager;
 import com.gladias.coderithm.exception.LanguageNotAvailableException;
 import com.gladias.coderithm.model.ChallengeEntity;
 import com.gladias.coderithm.model.LanguageEntity;
+import com.gladias.coderithm.model.SolutionEntity;
+import com.gladias.coderithm.model.SolutionStatus;
 import com.gladias.coderithm.model.TestCaseEntity;
+import com.gladias.coderithm.model.UserEntity;
 import com.gladias.coderithm.payload.codeexecution.CodeExecutionFile;
 import com.gladias.coderithm.payload.codeexecution.CodeExecutionRequest;
 import com.gladias.coderithm.payload.solution.SolutionRequest;
@@ -19,10 +22,13 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -35,7 +41,7 @@ public class SolutionService {
     private final SolutionRepository solutionRepository;
     private final CodeExecutionEngineManager codeExecutionEngineManager;
 
-    public SolutionResponse postSolution( SolutionRequest request) throws LanguageNotAvailableException, IOException, InterruptedException, JSONException {
+    public SolutionResponse postSolution(SolutionRequest request, UserEntity author) throws LanguageNotAvailableException, IOException, InterruptedException, JSONException {
         System.out.println(request);
         ChallengeEntity challengeEntity = challengeRepository.findById(request.challengeId()).get();
         LanguageEntity languageEntity = languageRepository.findByName(request.languageOption().name());
@@ -54,12 +60,15 @@ public class SolutionService {
 
         List<TestResult> testResults = new ArrayList<>();
 
+        Instant start = Instant.now();
+
         for (Map.Entry<String, String> testCase : testCases.entrySet()) {
+            System.out.println(testCase.getKey());
             CodeExecutionRequest codeExecutionRequest = new CodeExecutionRequest(
                     request.languageOption().name(),
                     languageVersion,
                     List.of(codeToExecute),
-                    testCase.getKey());
+                    List.of(testCase.getKey()));
 
             String output = codeExecutionEngineManager.executeCode(codeExecutionRequest);
             if (output.equals(testCase.getValue())) {
@@ -69,7 +78,26 @@ public class SolutionService {
             testResults.add(new TestResult(testCase.getKey(), testCase.getValue(), output));
         }
 
-        return new SolutionResponse(testResults);
+        Instant finish = Instant.now();
+        double executionTime = Duration.between(start, finish).toMillis() / (1000.0 * testCases.size());
+        long codeLines = codeToExecute.content().chars().filter(ch -> ch == '\n').count() + 1;
+
+        // If tests passed and limits like time not exceeded mark as done
+        if (codeLines <= challengeEntity.getLinesLimit()
+        && executionTime <= challengeEntity.getExecutionTimeLimitInSeconds()
+        && testResults.stream().allMatch(tr -> Objects.equals(tr.output(), tr.userOutput()))) {
+            // TODO: create not only on finished but also on in progress
+            SolutionEntity solution = SolutionEntity.builder()
+                    .content(codeToExecute.content())
+                    .status(SolutionStatus.Completed)
+                    .language(languageEntity)
+                    .challenge(challengeEntity)
+                    .author(author)
+                    .build();
+            solutionRepository.save(solution);
+        }
+
+        return new SolutionResponse(testResults, codeLines, executionTime);
     }
 
     private void executeCodeAndTest() {

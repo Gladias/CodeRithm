@@ -1,5 +1,6 @@
 package com.gladias.coderithm.controller;
 
+import com.gladias.coderithm.model.UserEntity;
 import com.gladias.coderithm.payload.FiltersDto;
 import com.gladias.coderithm.payload.challenge.add.AddChallengeRequest;
 import com.gladias.coderithm.payload.challenge.ChallengeDto;
@@ -7,8 +8,10 @@ import com.gladias.coderithm.payload.challenge.ChallengesRequest;
 import com.gladias.coderithm.payload.challenge.LanguagesAndTagsDto;
 import com.gladias.coderithm.payload.challenge.add.AddChallengeResponse;
 import com.gladias.coderithm.service.ChallengeService;
+import com.gladias.coderithm.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ChallengeController {
 
     private final ChallengeService challengeService;
+    private final UserService userService;
 
     @GetMapping("/getAll")
     public Page<ChallengeDto> getAllChallenges(@RequestParam(defaultValue = "0") Integer page,
@@ -41,9 +45,10 @@ public class ChallengeController {
     }
 
     @PostMapping("/add")
-    public AddChallengeResponse addChallenge(@RequestBody AddChallengeRequest request) {
-        System.out.println(request);
-        Long addedChallengeId = challengeService.addChallenge(request);
+    public AddChallengeResponse addChallenge(@RequestBody AddChallengeRequest request, @CookieValue("token") String token) {
+        UserEntity author = userService.getUserFromToken(token);
+        Long addedChallengeId = challengeService.addChallenge(request, author);
+
         return new AddChallengeResponse(addedChallengeId);
     }
 

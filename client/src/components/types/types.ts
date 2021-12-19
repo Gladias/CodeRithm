@@ -59,8 +59,8 @@ type ISolutionStatistics = {
 type IAddChallengeInputs = {
     title: string,
     description: string,
-    codeLineLimit: number,
-    executionTimeLimit: number,
+    linesLimit: number,
+    executionTimeLimitInSeconds: number,
     difficultyLevel: string,
     languages: string[],
     tags: string[],
@@ -83,6 +83,11 @@ type IComment = {
     creationTime: string,
 }
 
+type ILanguage = {
+    name: string,
+    version: string,
+}
+
 export type {
-  IAddChallengeInputs, IDataSet, ISolutionWindow, ISolutionRequest, IChallengeTests, ISolutionStatisticsBase, IMultipleSelectOption, IChallenge, IComment, ISolutionStatistics,
+  IAddChallengeInputs, IDataSet, ISolutionWindow, ISolutionRequest, IChallengeTests, ISolutionStatisticsBase, ILanguage, IMultipleSelectOption, IChallenge, IComment, ISolutionStatistics,
 };

@@ -10,7 +10,7 @@ public record AddChallengeRequest(String title,
                                   String description,
                                   DifficultyLevel difficultyLevel,
                                   Set<String> tags,
-                                  List<LanguageDto> languages,
+                                  List<String> languages,
                                   Integer linesLimit,
                                   Integer executionTimeLimitInSeconds,
                                   Set<AddChallengeDataSet> dataSets) {

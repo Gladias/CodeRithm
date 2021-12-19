@@ -124,8 +124,8 @@ const defaultInputs = () => ({
   title: '',
   description: '',
   difficultyLevel: 'EASY',
-  codeLineLimit: 120,
-  executionTimeLimit: 3,
+  linesLimit: 120,
+  executionTimeLimitInSeconds: 3,
   languages: [],
   tags: [],
 });
@@ -190,7 +190,6 @@ const AddChallengeForm: React.FC<Props> = ({ availableLanguages, availableTags }
     dataSetsCopy[dataSetId] = selectedDataSet;
 
     setDataSets([...dataSetsCopy]);
-    console.log(dataSets);
   };
 
   useEffect(() => {
@@ -223,14 +222,17 @@ const AddChallengeForm: React.FC<Props> = ({ availableLanguages, availableTags }
         dataSets,
       };
 
-      console.log(request);
-      console.log(dataSets);
+      axios.post('http://localhost:8080/api/challenge/add', {
+        ...request,
+      })
+        .then((response) => {
+          history.push(`/challenge/${response.data.challengeId}`);
+        });
     }
   };
 
   return (
     <>
-
       <StyledAddChallengeForm>
         <div className="row">
           <div className="caption">
@@ -284,7 +286,7 @@ const AddChallengeForm: React.FC<Props> = ({ availableLanguages, availableTags }
             renderValue={(selected) => (
               <Box sx={{ display: 'flex', overflow: 'auto', gap: 0.5 }}>
                 {selected.map((value) => (
-                  <Chip key={value.name} label={value.name} />
+                  <Chip key={value} label={value} />
                 ))}
               </Box>
             )}
@@ -311,7 +313,7 @@ const AddChallengeForm: React.FC<Props> = ({ availableLanguages, availableTags }
             onChange={(e) => inputHandler('tags', 'chip', e)}
             input={<OutlinedInput id="tags-select-inner" />}
             renderValue={(selected) => (
-              <Box id="chuj" sx={{ display: 'flex', overflow: 'auto', gap: 0.5 }}>
+              <Box sx={{ display: 'flex', overflow: 'auto', gap: 0.5 }}>
                 {selected.map((value) => (
                   <Chip key={value} label={value} />
                 ))}
@@ -332,13 +334,13 @@ const AddChallengeForm: React.FC<Props> = ({ availableLanguages, availableTags }
           <div className="caption">
             Code lines limit
           </div>
-          <TextField className="shortInputField" value={inputs.codeLineLimit} onChange={(e) => inputHandler('codeLineLimit', 'text', e)} id="codeLineLimit" inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} type="number" variant="outlined" required />
+          <TextField className="shortInputField" value={inputs.linesLimit} onChange={(e) => inputHandler('linesLimit', 'text', e)} id="linesLimit" inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} type="number" variant="outlined" required />
         </div>
         <div className="row">
           <div className="caption">
             Execution time limit[s]
           </div>
-          <TextField className="shortInputField" value={inputs.executionTimeLimit} onChange={(e) => inputHandler('executionTimeLimit', 'text', e)} id="executionTimeLimit" inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} type="number" variant="outlined" required />
+          <TextField className="shortInputField" value={inputs.executionTimeLimitInSeconds} onChange={(e) => inputHandler('executionTimeLimitInSeconds', 'text', e)} id="executionTimeLimitInSeconds" inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} type="number" variant="outlined" required />
         </div>
         <div className="tests">
           <div className="caption">

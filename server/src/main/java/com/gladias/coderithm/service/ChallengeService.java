@@ -7,6 +7,7 @@ import com.gladias.coderithm.model.ChallengeEntity;
 import com.gladias.coderithm.model.LanguageEntity;
 import com.gladias.coderithm.model.SortingOption;
 import com.gladias.coderithm.model.TagEntity;
+import com.gladias.coderithm.model.UserEntity;
 import com.gladias.coderithm.payload.FiltersDto;
 import com.gladias.coderithm.payload.challenge.LanguageDto;
 import com.gladias.coderithm.payload.challenge.ChallengeDto;
@@ -29,7 +30,9 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -60,9 +63,11 @@ public class ChallengeService {
         return ChallengeDto.of(challengeEntity);
     }
 
-    public Long addChallenge(AddChallengeRequest request) {
-        ChallengeEntity requestEntity = ChallengeEntity.of(request);
-        System.out.println(requestEntity);
+    public Long addChallenge(AddChallengeRequest request, UserEntity author) {
+        System.out.println(request);
+
+        Set<LanguageEntity> languages = request.languages().stream().map(languageRepository::findByName).collect(Collectors.toSet());
+        ChallengeEntity requestEntity = ChallengeEntity.of(request, languages, author);
         ChallengeEntity savedEntity = challengeRepository.save(requestEntity);
 
         return savedEntity.getId();

@@ -10,6 +10,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.Instant;
+
 import org.json.JSONObject;
 
 @Service
@@ -49,7 +51,7 @@ public class CodeExecutionEngineManager {
 
         //TODO: std err
         JSONObject json = new JSONObject(response.body());
-        String output = json.getJSONObject("run").getString("stdout");
+        String output = json.getJSONObject("run").getString("stdout").trim();
         return output;
     }
 }

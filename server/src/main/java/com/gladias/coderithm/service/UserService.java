@@ -21,6 +21,11 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    public UserEntity getUserFromToken(String token) {
+        String login = getUsernameFromToken(token);
+        return userRepository.findByLogin(login).get();
+    }
+
     public UserDto getUserData(String username) {
         UserEntity user = userRepository.findByLogin(username).get();
 

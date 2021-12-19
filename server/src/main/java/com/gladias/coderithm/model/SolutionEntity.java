@@ -9,6 +9,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,6 +32,7 @@ public class SolutionEntity {
     private Long id;
 
     private String content;
+
     private Enum<SolutionStatus> status = SolutionStatus.New;
 
     public SolutionEntity(String content, Enum<SolutionStatus> status) {
