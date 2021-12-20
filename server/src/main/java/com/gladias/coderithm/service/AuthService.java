@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 
 @RequiredArgsConstructor
 @Service
-public class UserService {
+public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -31,6 +31,13 @@ public class UserService {
 
         return new UserDto(user.getId(), user.getLogin(), user.getEmail());
     }
+
+    public UserDto getUserData(Long id) {
+        UserEntity user = userRepository.findById(id).get();
+
+        return new UserDto(user.getId(), user.getLogin(), user.getEmail());
+    }
+
 
     public void registerUserAccount(@NotNull RegisterRequest registerRequest) throws UserAlreadyExistsException,
             NoPasswordMatchException {

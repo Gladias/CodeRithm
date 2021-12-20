@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.CascadeType;
@@ -17,8 +19,9 @@ import javax.persistence.OneToMany;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-@Data
 @Builder
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "users")
@@ -45,6 +48,9 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "author")
     private Set<SolutionEntity> createdSolutions;
+
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "author")
+    private Set<CommentEntity> createdComments;
 
     @OneToMany(mappedBy = "user")
     private Set<RateEntity> rates;

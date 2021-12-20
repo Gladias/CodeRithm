@@ -4,7 +4,7 @@ import com.gladias.coderithm.exception.NoPasswordMatchException;
 import com.gladias.coderithm.exception.UserAlreadyExistsException;
 import com.gladias.coderithm.payload.auth.RegisterRequest;
 import com.gladias.coderithm.payload.auth.UserDto;
-import com.gladias.coderithm.service.UserService;
+import com.gladias.coderithm.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -20,19 +20,19 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/auth")
-public class UserController {
+public class AuthController {
 
-    private final UserService userService;
+    private final AuthService authService;
 
     @GetMapping("/userData")
     public UserDto getUserData(@CookieValue("token") String token) {
-        return userService.getUserData(UserService.getUsernameFromToken(token));
+        return authService.getUserData(AuthService.getUsernameFromToken(token));
     }
 
     @PostMapping("/register")
     public void registerUserAccount(@RequestBody @Valid RegisterRequest registerRequest) {
         try {
-            userService.registerUserAccount(registerRequest);
+            authService.registerUserAccount(registerRequest);
         } catch (UserAlreadyExistsException | NoPasswordMatchException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }

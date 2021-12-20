@@ -12,7 +12,7 @@ public class CommentServiceTest {
 
     @BeforeEach
     void setUp() {
-        commentService = new CommentService(null, null);
+        commentService = new CommentService(null, null, null);
     }
 
     @Test

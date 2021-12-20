@@ -46,7 +46,10 @@ public class DataBaseLoader implements CommandLineRunner {
 
         LanguageEntity python = new LanguageEntity("python", "3.10.0");
         LanguageEntity java = new LanguageEntity("java", "15.0.2");
-        challenge.setAvailableLanguages(Set.of(python, java));
+        LanguageEntity csharp = new LanguageEntity("c#", "6.12.0");
+        LanguageEntity javaScript = new LanguageEntity("javascript", "16.3.0");
+
+        challenge.setAvailableLanguages(Set.of(python, java, csharp, javaScript));
 
         TagEntity tag1 = new TagEntity("Arrays");
         TagEntity tag2 = new TagEntity("Sorting");

@@ -58,8 +58,7 @@ public class ChallengeEntity {
     @OneToMany(mappedBy = "challenge")
     private Set<RateEntity> rates;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "comment_id")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "challenge")
     private Set<CommentEntity> comments;
 
     @OneToMany(cascade = CascadeType.ALL)

@@ -7,7 +7,9 @@ import com.gladias.coderithm.model.UserEntity;
 import com.gladias.coderithm.payload.comment.CommentDto;
 import com.gladias.coderithm.payload.comment.CommentRequest;
 import com.gladias.coderithm.repository.ChallengeRepository;
+import com.gladias.coderithm.repository.CommentRepository;
 import com.gladias.coderithm.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -31,9 +33,12 @@ public class CommentService {
 
     private final UserRepository userRepository;
     private final ChallengeRepository challengeRepository;
+    private final CommentRepository commentRepository;
 
     @SneakyThrows
-    public CommentService(UserRepository userRepository, ChallengeRepository challengeRepository) {
+    public CommentService(UserRepository userRepository,
+                          ChallengeRepository challengeRepository,
+                          CommentRepository commentRepository) {
         Resource swearWordsResource = new ClassPathResource("swearWords.txt");
         List<String> swearWords = Files.readAllLines(Paths.get(swearWordsResource.getURI()),
                 StandardCharsets.UTF_8);
@@ -41,10 +46,13 @@ public class CommentService {
         this.swearWords = swearWords;
         this.userRepository = userRepository;
         this.challengeRepository = challengeRepository;
+        this.commentRepository = commentRepository;
     }
 
     public List<CommentDto> getComments(Long challengeId) {
+        System.out.println("Fetching challenge");
         Set<CommentEntity> commentEntities = challengeRepository.findById(challengeId).get().getComments();
+        System.out.println(commentEntities.size());
         return commentEntities
                 .stream()
                 .map(CommentDto::of)
@@ -63,11 +71,11 @@ public class CommentService {
 
         CommentEntity commentEntity = CommentEntity.builder()
                 .author(userEntity)
+                .challenge(challengeEntity)
                 .content(commentRequest.content())
                 .build();
 
-        challengeEntity.addNewComment(commentEntity);
-        challengeRepository.save(challengeEntity);
+        commentRepository.save(commentEntity);
     }
 
     protected List<String> getSwearWordsInComment(String commentContent) throws IOException {

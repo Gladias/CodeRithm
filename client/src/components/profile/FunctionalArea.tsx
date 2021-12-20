@@ -14,9 +14,11 @@ import AddIcon from '@mui/icons-material/Add';
 import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
 import CommentIcon from '@mui/icons-material/Comment';
 import { CommonButton } from '../common';
-import cpp from '../../assets/images/cpp.svg';
+import csharp from '../../assets/images/csharp.svg';
+import javascript from '../../assets/images/javascript.svg';
 import java from '../../assets/images/java.svg';
 import python from '../../assets/images/python.svg';
+import { IProfile } from '../types/types';
 
 const StyledFunctionalArea = styled.div`
     height: 100%;
@@ -159,7 +161,9 @@ const StyledFunctionalArea = styled.div`
     }
 `;
 
-const FunctionalArea: React.FC = () => {
+const FunctionalArea: React.FC<IProfile> = ({
+  challengesByDifficulty, generalStats, challengesByLanguage,
+}) => {
   const a = 'a';
 
   return (
@@ -177,7 +181,7 @@ const FunctionalArea: React.FC = () => {
               Easy
             </div>
             <div className="quantity">
-              1
+              {challengesByDifficulty.EASY}
             </div>
           </div>
 
@@ -186,7 +190,7 @@ const FunctionalArea: React.FC = () => {
               Medium
             </div>
             <div className="quantity">
-              2
+              {challengesByDifficulty.MEDIUM}
             </div>
           </div>
 
@@ -195,7 +199,7 @@ const FunctionalArea: React.FC = () => {
               Hard
             </div>
             <div className="quantity">
-              3
+              {challengesByDifficulty.HARD}
             </div>
           </div>
           <div className="column">
@@ -203,7 +207,7 @@ const FunctionalArea: React.FC = () => {
               Challenging
             </div>
             <div className="quantity">
-              4
+              {challengesByDifficulty.CHALLENGING}
             </div>
           </div>
         </div>
@@ -221,7 +225,7 @@ const FunctionalArea: React.FC = () => {
               Added
             </div>
             <div className="quantity">
-              1
+              {generalStats.added}
             </div>
           </div>
           <div className="column">
@@ -232,7 +236,7 @@ const FunctionalArea: React.FC = () => {
               Rated
             </div>
             <div className="quantity">
-              2
+              {generalStats.rated}
             </div>
           </div>
           <div className="column">
@@ -243,14 +247,14 @@ const FunctionalArea: React.FC = () => {
               Commented
             </div>
             <div className="quantity">
-              3
+              {generalStats.commented}
             </div>
           </div>
         </div>
       </div>
       <div className="section solutions">
         <div className="section-title">
-          Most often used languages
+          Completed challenges by language
         </div>
         <div className="columns">
           <div className="column">
@@ -261,7 +265,7 @@ const FunctionalArea: React.FC = () => {
               Python
             </div>
             <div className="quantity">
-              1
+              {challengesByLanguage.python}
             </div>
           </div>
           <div className="column">
@@ -270,16 +274,25 @@ const FunctionalArea: React.FC = () => {
               Java
             </div>
             <div className="quantity">
-              2
+              {challengesByLanguage.java}
             </div>
           </div>
           <div className="column">
-            <img className="icon" src={cpp} alt="" />
+            <img className="icon" src={javascript} alt="" />
             <div className="text">
-              C++
+              JavaScript
             </div>
             <div className="quantity">
-              3
+              {challengesByLanguage.javascript}
+            </div>
+          </div>
+          <div className="column">
+            <img className="icon" src={csharp} alt="" />
+            <div className="text">
+              C#
+            </div>
+            <div className="quantity">
+              {challengesByLanguage.csharp}
             </div>
           </div>
         </div>

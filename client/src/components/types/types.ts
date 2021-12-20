@@ -81,6 +81,27 @@ type ILanguage = {
     version: string,
 }
 
+type IProfile = {
+    username: string,
+    challengesByDifficulty: {
+        EASY: number,
+        MEDIUM: number,
+        HARD: number,
+        CHALLENGING: number,
+    }
+    generalStats: {
+        added: number,
+        rated: number,
+        commented: number,
+    }
+    challengesByLanguage: {
+        python: number,
+        java: number,
+        csharp: number,
+        javascript: number
+    }
+}
+
 export type {
-  IAddChallengeInputs, IDataSet, ISolutionWindow, ISolutionRequest, IChallengeTests, ILanguage, IMultipleSelectOption, IChallenge, IComment, ISolutionStatistics,
+  IAddChallengeInputs, IDataSet, ISolutionWindow, ISolutionRequest, IChallengeTests, ILanguage, IMultipleSelectOption, IChallenge, IComment, ISolutionStatistics, IProfile,
 };
