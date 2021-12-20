@@ -9,11 +9,10 @@ import com.gladias.coderithm.model.SortingOption;
 import com.gladias.coderithm.model.TagEntity;
 import com.gladias.coderithm.model.UserEntity;
 import com.gladias.coderithm.payload.FiltersDto;
-import com.gladias.coderithm.payload.challenge.LanguageDto;
 import com.gladias.coderithm.payload.challenge.ChallengeDto;
 import com.gladias.coderithm.payload.challenge.ChallengesRequest;
+import com.gladias.coderithm.payload.challenge.LanguageDto;
 import com.gladias.coderithm.payload.challenge.LanguagesAndTagsDto;
-import com.gladias.coderithm.payload.challenge.TagDto;
 import com.gladias.coderithm.payload.challenge.add.AddChallengeRequest;
 import com.gladias.coderithm.repository.ChallengeRepository;
 import com.gladias.coderithm.repository.LanguageRepository;
@@ -26,13 +25,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
