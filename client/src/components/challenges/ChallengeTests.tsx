@@ -58,14 +58,24 @@ const StyledChallengeTests = styled.div`
         .row {
           width: 90%;
           height: 15%;
-          color: black;
+          color: white;
           display: flex;
           justify-content: flex-start;
           width: 100%;
+          font-family: 'Meeralnimai RE';
+          font-size: 1.3rem;
 
           .cell {
             width: calc(100%/3);
           }
+        }
+
+        .correct {
+          color: #6AA31C;
+        }
+
+        .wrong {
+          color: #CA3C25;
         }
 
       .line-number {
@@ -95,7 +105,7 @@ const ChallengeTests: React.FC<IChallengeTests> = ({ testCases }) => {
           </div>
         </div>
         {testCases.map((test) => (
-          <div className="row">
+          <div className={`row ${test.output === test.userOutput ? 'correct' : 'wrong'}`}>
             <div className="cell">
               {test.input}
             </div>

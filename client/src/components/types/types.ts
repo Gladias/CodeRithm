@@ -41,7 +41,6 @@ type IChallengeTests = {
 }
 
 type ISolutionStatistics = {
-    dataSets: IDataSet[];
     tests: {
         limit: number;
         actual: number;
@@ -70,12 +69,6 @@ type IMultipleSelectOption = {
     name: string
 }
 
-type ISolutionStatisticsBase = {
-    linesLimit: number,
-    executionTimeLimitInSeconds: number,
-    testCasesNumber: number,
-}
-
 type IComment = {
     id: number,
     author: string,
@@ -89,5 +82,5 @@ type ILanguage = {
 }
 
 export type {
-  IAddChallengeInputs, IDataSet, ISolutionWindow, ISolutionRequest, IChallengeTests, ISolutionStatisticsBase, ILanguage, IMultipleSelectOption, IChallenge, IComment, ISolutionStatistics,
+  IAddChallengeInputs, IDataSet, ISolutionWindow, ISolutionRequest, IChallengeTests, ILanguage, IMultipleSelectOption, IChallenge, IComment, ISolutionStatistics,
 };

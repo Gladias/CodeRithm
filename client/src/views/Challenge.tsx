@@ -6,6 +6,7 @@ import React, { useEffect } from 'react';
 import '../assets/styles/Challenge.scss';
 import axios from 'axios';
 import { RouteComponentProps } from 'react-router-dom';
+import { number } from 'yup';
 import {
   AddComment,
   ChallengeDetails, ChallengeTests, CommentSection, SolutionStatistics, SolutionWindow,
@@ -34,8 +35,24 @@ const defaultChallenge:IChallenge = {
   testCases: [],
 };
 
+const defaultStatistics:ISolutionStatistics = {
+  tests: {
+    limit: 5,
+    actual: 0,
+  },
+  lines: {
+    limit: 150,
+    actual: 0,
+  },
+  executionTime: {
+    limit: 3,
+    actual: 0,
+  },
+};
+
 const Challenge: React.FC<Props> = ({ id }) => {
   const [challenge, setChallenge] = React.useState<IChallenge>(defaultChallenge);
+  const [statistics, setStatistics] = React.useState<ISolutionStatistics>(defaultStatistics);
   const [comments, setComments] = React.useState<IComment[]>();
   const [showComments, setShowComments] = React.useState(false);
   const [commentWarningMessage, setCommentWarningMessage] = React.useState('Rules: 1. Don’t Post spoilers 2. Swear words not allowed');
@@ -43,6 +60,20 @@ const Challenge: React.FC<Props> = ({ id }) => {
   useEffect(() => {
     axios.get(`http://localhost:8080/api/challenge/getOne?id=${id}`)
       .then((response) => {
+        setStatistics((prevState) => ({
+          executionTime: {
+            ...prevState.executionTime,
+            limit: response.data.executionTimeLimitInSeconds,
+          },
+          lines: {
+            ...prevState.lines,
+            limit: response.data.linesLimit,
+          },
+          tests: {
+            ...prevState.tests,
+            limit: response.data.testCases.length,
+          },
+        }));
         setChallenge(response.data);
       });
 
@@ -77,9 +108,29 @@ const Challenge: React.FC<Props> = ({ id }) => {
     axios.post('http://localhost:8080/api/solution/add', request)
       .then((response) => {
         console.log({ response });
-        challenge.testCases = response.data;
-        // TODO
-        setChallenge(challenge);
+        // challenge.testCases = response.data;
+        const passedTestsNumber = response.data.testResults.filter((tr: { passed: boolean; }) => tr.passed === true).length;
+        setStatistics((prevState) => ({
+          executionTime: {
+            ...prevState.executionTime,
+            actual: response.data.executionTime,
+          },
+          lines: {
+            ...prevState.lines,
+            actual: response.data.codeLines,
+          },
+          tests: {
+            ...prevState.tests,
+            actual: passedTestsNumber,
+          },
+        }));
+
+        setChallenge((prevState) => ({
+          ...prevState,
+          testCases: response.data.testResults,
+        }));
+
+        console.log({ challenge });
       });
   };
 
@@ -96,9 +147,9 @@ const Challenge: React.FC<Props> = ({ id }) => {
       <div className="row">
         { showComments ? <AddComment handleSubmit={addNewComment} warningMessage={commentWarningMessage} /> : (
           <SolutionStatistics
-            linesLimit={challenge.linesLimit}
-            executionTimeLimitInSeconds={challenge.executionTimeLimitInSeconds}
-            testCasesNumber={challenge.testCases.length}
+            tests={statistics.tests}
+            lines={statistics.lines}
+            executionTime={statistics.executionTime}
           />
         ) }
         <ChallengeTests testCases={challenge.testCases} />
