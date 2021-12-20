@@ -16,7 +16,12 @@ import { FunctionalArea } from '../components/profile';
 import { IProfile } from '../components/types/types';
 import axios from 'axios';
 
+type Props = {
+  id: string;
+}
+
 const defaultProfileData: IProfile = {
+  id: 1,
   username: '',
   challengesByDifficulty: {
     EASY: 0,
@@ -37,11 +42,11 @@ const defaultProfileData: IProfile = {
   },
 };
 
-const Profile: React.FC = () => {
+const Profile: React.FC<Props> = ({ id }) => {
   const [profileData, setProfileData] = React.useState<IProfile>(defaultProfileData);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/api/profile/getByToken')
+    axios.get(`http://localhost:8080/api/profile/getOne?id=${id}`)
       .then((response) => {
         console.log(response);
         setProfileData(response.data);
@@ -50,7 +55,7 @@ const Profile: React.FC = () => {
 
   return (
     <div className="profile-container">
-      <ImageArea caption={`hi, ${profileData.username}!`} image={profile} />
+      <ImageArea caption={`Profile ${profileData.username}`} image={profile} />
       <FunctionalArea {...profileData} />
     </div>
   );

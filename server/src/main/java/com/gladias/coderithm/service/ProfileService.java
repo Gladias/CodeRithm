@@ -4,15 +4,21 @@ import com.gladias.coderithm.model.DifficultyLevel;
 import com.gladias.coderithm.model.SolutionEntity;
 import com.gladias.coderithm.model.SolutionStatus;
 import com.gladias.coderithm.model.UserEntity;
+import com.gladias.coderithm.payload.challenge.ChallengeDto;
 import com.gladias.coderithm.payload.profile.ProfileResponse;
 import com.gladias.coderithm.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +27,19 @@ public class ProfileService {
     private final AuthService authService;
 
     public Page<ProfileResponse> getAllProfiles(Integer page, Integer size) {
-        return null;
+        Pageable pageable = PageRequest.of(page, size);
+        int positionCounter = 0;
+
+        List<ProfileResponse> profiles = userRepository
+                .findAll(pageable)
+                .stream()
+                .map(userEntity -> getProfileById(userEntity.getId()))
+                .collect(Collectors.toList());
+
+        for (ProfileResponse profile : profiles)
+            profile.setPosition(++positionCounter);
+
+        return new PageImpl<>(profiles);
     }
 
     public ProfileResponse getProfileByToken(String token) {
@@ -46,6 +64,7 @@ public class ProfileService {
         System.out.println(completedChallengesByLanguage);
 
         return new ProfileResponse(
+                id,
                 username,
                 null,
                 completedChallengesByDifficulty,

@@ -24,7 +24,7 @@ const App: React.FC = () => {
           </Route>
           <Route path="/addChallenge" component={AddChallenge} />
           <Route path="/challenge/:id" render={({ match }) => <Challenge id={match.params.id} />} />
-          <Route path="/profile" component={Profile} />
+          <Route path="/profile/:id" render={({ match }) => <Profile id={match.params.id} />} />
           <Route path="/ranking" component={Ranking} />
           <Route path="/study" component={Study} />
           <Route exact path={['/browseChallenges', '/']} component={BrowseChallenges} />

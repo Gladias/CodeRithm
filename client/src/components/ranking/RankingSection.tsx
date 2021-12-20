@@ -9,10 +9,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router';
-import { IChallenge } from '../types/types';
+import { IChallenge, IProfile } from '../types/types';
 import { ImageArea } from '../authentication';
 import ranking from '../../assets/images/ranking.svg';
 import RankingCard from './RankingCard';
+
+type Props = {
+  players: IProfile[];
+};
 
 const StyledRankingSection = styled.div`
   background-color: #252728;
@@ -61,51 +65,17 @@ const StyledRankingSection = styled.div`
   }
 `;
 
-const RankingSection: React.FC = () => {
+const RankingSection: React.FC<Props> = ({ players }) => {
   const history = useHistory();
 
-  const handleCardClick = (challengeId: number) => {
-    history.push(`/challenge/${challengeId}`);
+  const handleCardClick = (playerId: number) => {
+    history.push(`/profile/${playerId}`);
   };
-
-  const players = [
-    {
-      position: 1,
-      user: 'Gladias',
-      addedChallenges: 1,
-      solutions: 2,
-      comments: 3,
-    },
-    {
-      position: 2,
-      user: 'Admin',
-      addedChallenges: 3,
-      solutions: 4,
-      comments: 5,
-    },
-    {
-      position: 3,
-      user: 'Admin',
-      addedChallenges: 85,
-      solutions: 21,
-      comments: 62,
-    },
-    {
-      position: 4,
-      user: 'Admin',
-      addedChallenges: 85,
-      solutions: 21,
-      comments: 62,
-    },
-  ];
 
   return (
     <StyledRankingSection>
       <div className="image-section">
         <div className="caption">
-          <span>
-            Your position: 24
-          </span>
         </div>
         <div className="image">
           <img src={ranking} alt="" />
@@ -114,16 +84,12 @@ const RankingSection: React.FC = () => {
       <div className="cards-section">
         <div className="caption">
           <span>
-            Found
-            {' '}
-            {41}
-            {' '}
-            players
+            {`Found ${players.length} players`}
           </span>
         </div>
         <div className="body">
           {players.map((player) => (
-            <RankingCard {...player} key={player.position} />
+            <RankingCard clickHandler={() => handleCardClick(player.id)} player={player} key={player.id} />
           ))}
         </div>
       </div>

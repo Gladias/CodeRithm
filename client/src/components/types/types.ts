@@ -82,7 +82,9 @@ type ILanguage = {
 }
 
 type IProfile = {
+    id: number,
     username: string,
+    position?: number,
     challengesByDifficulty: {
         EASY: number,
         MEDIUM: number,

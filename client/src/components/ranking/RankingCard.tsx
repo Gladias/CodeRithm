@@ -11,14 +11,11 @@ import CommentIcon from '@mui/icons-material/Comment';
 import StarTwoToneIcon from '@mui/icons-material/StarTwoTone';
 import AddIcon from '@mui/icons-material/Add';
 import TaskIcon from '@mui/icons-material/Task';
-import { IChallenge } from '../types/types';
+import { IChallenge, IProfile } from '../types/types';
 
 type Props = {
-  position: number,
-  user: string,
-  addedChallenges: number,
-  solutions: number,
-  comments: number
+  player: IProfile;
+  clickHandler: React.MouseEventHandler<HTMLDivElement>,
 };
 
 const StyledRankingCard = styled.div`
@@ -101,17 +98,20 @@ const StyledRankingCard = styled.div`
 `;
 
 const RankingCard: React.FC<Props> = ({
-  position, user, addedChallenges, solutions, comments,
+  player: {
+    username, position, generalStats, challengesByDifficulty,
+  }, clickHandler,
 }) => {
-  const a = 'a';
+  const completedChallenges = challengesByDifficulty.EASY + challengesByDifficulty.MEDIUM
+    + challengesByDifficulty.HARD + challengesByDifficulty.CHALLENGING;
 
   return (
-    <StyledRankingCard>
+    <StyledRankingCard onClick={clickHandler}>
       <div className="main">
         <div className="title">
           <PersonIcon />
           <div>
-            {user}
+            {username}
           </div>
         </div>
         <div className="details-section">
@@ -120,7 +120,7 @@ const RankingCard: React.FC<Props> = ({
               <AddIcon />
             </div>
             <div className="quantity">
-              1
+              {generalStats.added}
             </div>
           </div>
           <div className="column">
@@ -128,7 +128,7 @@ const RankingCard: React.FC<Props> = ({
               <TaskIcon />
             </div>
             <div className="quantity">
-              2
+              {completedChallenges}
             </div>
           </div>
           <div className="column">
@@ -136,13 +136,13 @@ const RankingCard: React.FC<Props> = ({
               <CommentIcon />
             </div>
             <div>
-              3
+              {generalStats.commented}
             </div>
           </div>
         </div>
       </div>
       <div className="position">
-        5
+        {position}
       </div>
     </StyledRankingCard>
   );
