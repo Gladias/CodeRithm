@@ -17,11 +17,7 @@ import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
 import CommentIcon from '@mui/icons-material/Comment';
 import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 import { CommonButton } from '../common';
-import cpp from '../../assets/images/thumbnails/cpp.png';
-import java from '../../assets/images/thumbnails/java.png';
-import python from '../../assets/images/thumbnails/python.png';
-import algorithms from '../../assets/images/thumbnails/algorithms.png';
-import PythonNotes from '../../assets/pdfs/PythonNotes.pdf';
+import { INotesThumbnail } from '../types/types';
 
 const StyledStudySection = styled.div`
     height: 100%;
@@ -111,7 +107,7 @@ const StyledStudySection = styled.div`
 `;
 
 const StudySection: React.FC = () => {
-  const [document, setDocument] = useState(null);
+  const [document, setDocument] = useState('');
   const [pageNumber, setPageNumber] = useState(1);
 
   const changePageNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -119,14 +115,10 @@ const StudySection: React.FC = () => {
     setPageNumber(parseInt(value, 10));
   };
 
+  const BASE_NOTES_PATH = 'http://localhost:8080/notes';
+
   const changeDocument = (selected: string) => {
-    switch (selected) {
-      case 'algorithms':
-        setDocument(PythonNotes);
-        break;
-      default:
-        console.log('error');
-    }
+    setDocument(`${BASE_NOTES_PATH}/${selected}_notes.pdf`);
   };
 
   return (
@@ -140,10 +132,11 @@ const StudySection: React.FC = () => {
             Available documents
           </div>
           <div className="thumbnails">
-            <img onClick={() => changeDocument('algorithms')} src={algorithms} alt="Algorithms" />
-            <img src={python} alt="Python" />
-            <img src={cpp} alt="C++" />
-            <img src={java} alt="Java" />
+            <img onClick={() => changeDocument('python')} src={`${BASE_NOTES_PATH}/thumbnails/python.png`} alt="Python" />
+            <img onClick={() => changeDocument('csharp')} src={`${BASE_NOTES_PATH}/thumbnails/csharp.png`} alt="C#" />
+            <img onClick={() => changeDocument('java')} src={`${BASE_NOTES_PATH}/thumbnails/java.png`} alt="Java" />
+            <img onClick={() => changeDocument('javascript')} src={`${BASE_NOTES_PATH}/thumbnails/javascript.png`} alt="Javascript" />
+            <img onClick={() => changeDocument('algorithms')} src={`${BASE_NOTES_PATH}/thumbnails/algorithms.png`} alt="Algorithms" />
           </div>
         </div>
         <div className="pdf section">

@@ -14,8 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
-import javax.servlet.http.HttpServletResponse;
-
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -44,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/challenge/**").permitAll()
                 .antMatchers("/api/solution/**").permitAll()
                 .antMatchers("/api/profile/**").permitAll()
-                .antMatchers("/api/notes/**").permitAll()
+                .antMatchers("/notes/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/comment/**").permitAll()
                 .anyRequest().authenticated()
                 .and()

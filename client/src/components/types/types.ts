@@ -104,6 +104,12 @@ type IProfile = {
     }
 }
 
+type INotesThumbnail = {
+    id: number,
+    name: string,
+    thumbnail: string,
+}
+
 export type {
-  IAddChallengeInputs, IDataSet, ISolutionWindow, ISolutionRequest, IChallengeTests, ILanguage, IMultipleSelectOption, IChallenge, IComment, ISolutionStatistics, IProfile,
+  IAddChallengeInputs, IDataSet, ISolutionWindow, ISolutionRequest, IChallengeTests, ILanguage, IMultipleSelectOption, IChallenge, IComment, ISolutionStatistics, IProfile, INotesThumbnail
 };
