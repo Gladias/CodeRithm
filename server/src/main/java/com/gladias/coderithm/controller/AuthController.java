@@ -2,6 +2,7 @@ package com.gladias.coderithm.controller;
 
 import com.gladias.coderithm.exception.NoPasswordMatchException;
 import com.gladias.coderithm.exception.UserAlreadyExistsException;
+import com.gladias.coderithm.payload.auth.ChangePasswordRequest;
 import com.gladias.coderithm.payload.auth.RegisterRequest;
 import com.gladias.coderithm.payload.auth.UserDto;
 import com.gladias.coderithm.service.AuthService;
@@ -34,6 +35,15 @@ public class AuthController {
         try {
             authService.registerUserAccount(registerRequest);
         } catch (UserAlreadyExistsException | NoPasswordMatchException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }
+
+    @PostMapping("/changePassword")
+    public void changePassword(@CookieValue("token") String token, @RequestBody ChangePasswordRequest changePasswordRequest) {
+        try {
+            authService.changePassword(token, changePasswordRequest);
+        } catch (NoPasswordMatchException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }

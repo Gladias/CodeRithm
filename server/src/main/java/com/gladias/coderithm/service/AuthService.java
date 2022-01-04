@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.gladias.coderithm.exception.NoPasswordMatchException;
 import com.gladias.coderithm.exception.UserAlreadyExistsException;
 import com.gladias.coderithm.model.UserEntity;
+import com.gladias.coderithm.payload.auth.ChangePasswordRequest;
 import com.gladias.coderithm.payload.auth.RegisterRequest;
 import com.gladias.coderithm.payload.auth.UserDto;
 import com.gladias.coderithm.repository.UserRepository;
@@ -56,6 +57,19 @@ public class AuthService {
                 .build();
 
         userRepository.save(user);
+    }
+
+    public void changePassword(String token, ChangePasswordRequest changePasswordRequest) throws NoPasswordMatchException {
+        UserEntity user = getUserFromToken(token);
+        String requestOldPasswordHash = passwordEncoder.encode(changePasswordRequest.oldPassword());
+        String newPasswordHash = passwordEncoder.encode(changePasswordRequest.newPassword());
+
+        if (passwordEncoder.matches(requestOldPasswordHash, user.getPassword())) {
+            user.setPassword(newPasswordHash);
+            userRepository.save(user);
+        } else {
+            throw new NoPasswordMatchException("Old password is not correct");
+        }
     }
 
     public static String getUsernameFromToken(String jwtToken) {
