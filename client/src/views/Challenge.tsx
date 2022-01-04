@@ -96,6 +96,18 @@ const Challenge: React.FC<Props> = ({ id }) => {
       });
   };
 
+  const addRate = (rate: number) => {
+    axios.post(`http://localhost:8080/api/challenge/rate?id=${id}`, {
+      rate,
+    })
+      .then((response) => {
+        setChallenge(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const submitSolution = (language: string, code: string) => {
     const request:ISolutionRequest = {
       challengeId: challenge.id,
@@ -141,7 +153,7 @@ const Challenge: React.FC<Props> = ({ id }) => {
   return (
     <div className="container">
       <div className="row">
-        { showComments ? <CommentSection comments={comments!} onSwitchClick={handleSwitchClick} /> : <ChallengeDetails onSwitchClick={handleSwitchClick} challenge={challenge!} /> }
+        { showComments ? <CommentSection comments={comments!} onSwitchClick={handleSwitchClick} /> : <ChallengeDetails onSwitchClick={handleSwitchClick} handleAddRate={addRate} challenge={challenge!} /> }
         <SolutionWindow availableLanguages={challenge.availableLanguages} handleSubmit={submitSolution} />
       </div>
       <div className="row">

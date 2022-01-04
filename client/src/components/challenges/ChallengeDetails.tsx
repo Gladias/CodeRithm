@@ -14,6 +14,7 @@ import { CommonButton } from '../common';
 import { IChallenge } from '../types/types';
 
 type Props = {
+  handleAddRate: (rate: number) => void;
   onSwitchClick: React.MouseEventHandler<HTMLButtonElement>;
   challenge: IChallenge;
 };
@@ -138,14 +139,23 @@ const StyledChallengeCard = styled.div`
     .challenging {
       background-color: #985F99;
     }
+
+    .star:hover {
+      filter: brightness(70%);
+      cursor: pointer;
+    }
 `;
 
 const ChallengeDetails: React.FC<Props> = ({
   challenge: {
     title, description, author, averageRating, commentsNumber, difficultyLevel, tags,
-  }, onSwitchClick,
+  }, handleAddRate, onSwitchClick,
 }) => {
   const a = 'a';
+
+  const rateChallenge = (rate: number) => {
+    handleAddRate(rate);
+  };
 
   return (
     <StyledChallengeCard>
@@ -163,11 +173,11 @@ const ChallengeDetails: React.FC<Props> = ({
         </div>
         <div className="column rating">
           <div className="stars">
-            <StarTwoToneIcon />
-            <StarTwoToneIcon />
-            <StarTwoToneIcon />
-            <StarTwoToneIcon />
-            <StarTwoToneIcon />
+            <StarTwoToneIcon className="star" onClick={() => rateChallenge(1)} />
+            <StarTwoToneIcon className="star" onClick={() => rateChallenge(2)} />
+            <StarTwoToneIcon className="star" onClick={() => rateChallenge(3)} />
+            <StarTwoToneIcon className="star" onClick={() => rateChallenge(4)} />
+            <StarTwoToneIcon className="star" onClick={() => rateChallenge(5)} />
           </div>
           <div>
             {averageRating}

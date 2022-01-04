@@ -95,6 +95,8 @@ public class SolutionService {
                     .author(author)
                     .build();
             solutionRepository.save(solution);
+        } else {
+            // SOlution builder with status in progress
         }
 
         return new SolutionResponse(testResults, codeLines, executionTime);

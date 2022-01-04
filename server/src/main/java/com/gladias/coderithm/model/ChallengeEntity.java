@@ -55,7 +55,7 @@ public class ChallengeEntity {
     @OneToMany(mappedBy = "challenge")
     private Set<SolutionEntity> solutions;
 
-    @OneToMany(mappedBy = "challenge")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "challenge")
     private Set<RateEntity> rates;
 
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "challenge")

@@ -8,15 +8,11 @@ import com.gladias.coderithm.model.TestCaseEntity;
 import com.gladias.coderithm.model.UserEntity;
 import com.gladias.coderithm.repository.ChallengeRepository;
 import com.gladias.coderithm.repository.LanguageRepository;
-import com.gladias.coderithm.repository.NotesRepository;
 import com.gladias.coderithm.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
-import java.util.Base64;
 import java.util.Set;
 
 @Component
@@ -25,7 +21,6 @@ public class DataBaseLoader implements CommandLineRunner {
     private final UserRepository userRepository;
     private final ChallengeRepository challengeRepository;
     private final LanguageRepository languageRepository;
-    private final NotesRepository notesRepository;
 
     @Override
     public void run(String... args) throws Exception {

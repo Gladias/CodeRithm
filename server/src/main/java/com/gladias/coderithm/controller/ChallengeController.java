@@ -2,6 +2,7 @@ package com.gladias.coderithm.controller;
 
 import com.gladias.coderithm.model.UserEntity;
 import com.gladias.coderithm.payload.FiltersDto;
+import com.gladias.coderithm.payload.challenge.RateRequest;
 import com.gladias.coderithm.payload.challenge.add.AddChallengeRequest;
 import com.gladias.coderithm.payload.challenge.ChallengeDto;
 import com.gladias.coderithm.payload.challenge.ChallengesRequest;
@@ -9,6 +10,7 @@ import com.gladias.coderithm.payload.challenge.LanguagesAndTagsDto;
 import com.gladias.coderithm.payload.challenge.add.AddChallengeResponse;
 import com.gladias.coderithm.service.ChallengeService;
 import com.gladias.coderithm.service.AuthService;
+import com.gladias.coderithm.service.RateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -27,6 +29,7 @@ public class ChallengeController {
 
     private final ChallengeService challengeService;
     private final AuthService authService;
+    private final RateService rateService;
 
     @GetMapping("/getAll")
     public Page<ChallengeDto> getAllChallenges(@RequestParam(defaultValue = "0") Integer page,
@@ -50,6 +53,16 @@ public class ChallengeController {
         Long addedChallengeId = challengeService.addChallenge(request, author);
 
         return new AddChallengeResponse(addedChallengeId);
+    }
+
+    @PostMapping("/rate")
+    public ChallengeDto rateChallenge(@CookieValue("token") String token,
+                                      @RequestParam("id") Long challengeId,
+                                      @RequestBody RateRequest rateRequest) {
+        String username = AuthService.getUsernameFromToken(token);
+        rateService.addRate(username, challengeId, rateRequest);
+
+        return getChallengeById(challengeId);
     }
 
     @GetMapping("/tagsAndLanguages")
