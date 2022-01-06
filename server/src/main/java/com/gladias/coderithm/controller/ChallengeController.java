@@ -32,20 +32,23 @@ public class ChallengeController {
     private final RateService rateService;
 
     @GetMapping("/getAll")
-    public Page<ChallengeDto> getAllChallenges(@RequestParam(defaultValue = "0") Integer page,
-                                               @RequestParam(defaultValue = "20") Integer size) {
-        return challengeService.getAllChallenges(page, size);
+    public Page<ChallengeDto> getAllChallenges(
+            @CookieValue(value = "token", required = false) String token,
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "20") Integer size) {
+        return challengeService.getAllChallenges(token, page, size);
     }
 
     @GetMapping("/getOne")
-    public ChallengeDto getChallengeById(@RequestParam("id") Long id) {
-        return challengeService.getChallengeById(id);
+    public ChallengeDto getChallengeById(@CookieValue(value = "token", required = false) String token, @RequestParam("id") Long id) {
+        return challengeService.getChallengeById(token, id);
     }
 
+    /*
     @PostMapping("/get")
     public Page<ChallengeDto> getFilteredChallenges(@RequestBody ChallengesRequest request) {
         return challengeService.getFilteredChallenges(request);
-    }
+    }*/
 
     @PostMapping("/add")
     public AddChallengeResponse addChallenge(@RequestBody AddChallengeRequest request, @CookieValue("token") String token) {
@@ -62,7 +65,7 @@ public class ChallengeController {
         String username = AuthService.getUsernameFromToken(token);
         rateService.addRate(username, challengeId, rateRequest);
 
-        return getChallengeById(challengeId);
+        return getChallengeById(token, challengeId);
     }
 
     @GetMapping("/tagsAndLanguages")

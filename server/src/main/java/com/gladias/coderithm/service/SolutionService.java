@@ -29,6 +29,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -82,22 +83,38 @@ public class SolutionService {
         double executionTime = Duration.between(start, finish).toMillis() / (1000.0 * testCases.size());
         long codeLines = codeToExecute.content().chars().filter(ch -> ch == '\n').count() + 1;
 
+        SolutionStatus status;
+
         // If tests passed and limits like time not exceeded mark as done
         if (codeLines <= challengeEntity.getLinesLimit()
         && executionTime <= challengeEntity.getExecutionTimeLimitInSeconds()
         && testResults.stream().allMatch(tr -> Objects.equals(tr.output(), tr.userOutput()))) {
-            // TODO: create not only on finished but also on in progress
-            SolutionEntity solution = SolutionEntity.builder()
+            status = SolutionStatus.Completed;
+        } else {
+            status = SolutionStatus.InProgress;
+        }
+
+        Optional<SolutionEntity> previousSolution = solutionRepository.findByAuthorIdAndChallengeId(author.getId(), challengeEntity.getId());
+
+        SolutionEntity solution;
+
+        if (previousSolution.isPresent()) {
+            solution = previousSolution.get();
+            solution.setLanguage(languageEntity);
+            solution.setContent(codeToExecute.content());
+            solution.setStatus(status);
+
+        } else {
+            solution = SolutionEntity.builder()
                     .content(codeToExecute.content())
-                    .status(SolutionStatus.Completed)
+                    .status(status)
                     .language(languageEntity)
                     .challenge(challengeEntity)
                     .author(author)
                     .build();
-            solutionRepository.save(solution);
-        } else {
-            // SOlution builder with status in progress
         }
+
+        solutionRepository.save(solution);
 
         return new SolutionResponse(testResults, codeLines, executionTime);
     }

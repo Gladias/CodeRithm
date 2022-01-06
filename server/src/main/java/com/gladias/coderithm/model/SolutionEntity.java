@@ -33,9 +33,9 @@ public class SolutionEntity {
 
     private String content;
 
-    private Enum<SolutionStatus> status = SolutionStatus.New;
+    private SolutionStatus status = SolutionStatus.New;
 
-    public SolutionEntity(String content, Enum<SolutionStatus> status) {
+    public SolutionEntity(String content, SolutionStatus status) {
         this.content = content;
         this.status = status;
     }

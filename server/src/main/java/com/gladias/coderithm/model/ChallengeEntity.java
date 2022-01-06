@@ -37,7 +37,6 @@ public class ChallengeEntity {
     // TODO: maybe separate this stats to another entity
     private Integer linesLimit = 120;
     private Integer executionTimeLimitInSeconds = 3;
-    private SolutionStatus solutionStatus = SolutionStatus.New; //TODO: Change that cuz each user has different
 
     public ChallengeEntity(String title, String description, DifficultyLevel difficultyLevel) {
         this.title = title;
@@ -92,7 +91,7 @@ public class ChallengeEntity {
     }
 
     public String toString() {
-        return "ChallengeEntity(id=" + this.getId() + ", title=" + this.getTitle() + ", description=" + this.getDescription() + ", difficultyLevel=" + this.getDifficultyLevel() + ", linesLimit=" + this.getLinesLimit() + ", executionTimeLimitInSeconds=" + this.getExecutionTimeLimitInSeconds() + ", solutionStatus=" + this.getSolutionStatus() + ", author=" + this.getAuthor() + ", availableLanguages=" + this.getAvailableLanguages() + ", solutions=" + this.getSolutions() + ", rates=" + this.getRates() + ", comments=" + this.getComments() + ", testCases=" + this.getTestCases() + ", tags=" + this.getTags() + ")";
+        return "ChallengeEntity(id=" + this.getId() + ", title=" + this.getTitle() + ", description=" + this.getDescription() + ", difficultyLevel=" + this.getDifficultyLevel() + ", linesLimit=" + this.getLinesLimit() + ", executionTimeLimitInSeconds=" + this.getExecutionTimeLimitInSeconds() + ", author=" + this.getAuthor() + ", availableLanguages=" + this.getAvailableLanguages() + ", solutions=" + this.getSolutions() + ", rates=" + this.getRates() + ", comments=" + this.getComments() + ", testCases=" + this.getTestCases() + ", tags=" + this.getTags() + ")";
     }
 
     public static ChallengeEntity of(AddChallengeRequest request, Set<LanguageEntity> selectedLanguages, UserEntity author) {

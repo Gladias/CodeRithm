@@ -14,14 +14,14 @@ public record ChallengeDto(Long id, String title, String description, String aut
                            DifficultyLevel difficultyLevel, SolutionStatus solutionStatus,
                            int commentsNumber, double averageRating, Set<String> tags, Set<String> availableLanguages,
                            Set<TestCaseEntity> testCases, Integer linesLimit, Integer executionTimeLimitInSeconds) {
-    public static ChallengeDto of(ChallengeEntity challenge) {
+    public static ChallengeDto of(ChallengeEntity challenge, SolutionStatus solutionStatus) {
         return new ChallengeDto(
                 challenge.getId(),
                 challenge.getTitle(),
                 challenge.getDescription(),
                 challenge.getAuthor().getLogin(),
                 challenge.getDifficultyLevel(),
-                challenge.getSolutionStatus(),
+                solutionStatus,
                 challenge.getCommentsNumber(),
                 challenge.getAverageRating(),
                 challenge.getTagsValues(),

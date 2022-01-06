@@ -23,6 +23,10 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
 
     public UserEntity getUserFromToken(String token) {
+        if (token == null) {
+            return null;
+        }
+
         String login = getUsernameFromToken(token);
         return userRepository.findByLogin(login).get();
     }
