@@ -12,11 +12,10 @@ import com.gladias.coderithm.model.SolutionEntity;
 import com.gladias.coderithm.model.SolutionStatus;
 import com.gladias.coderithm.model.TagEntity;
 import com.gladias.coderithm.model.UserEntity;
-import com.gladias.coderithm.payload.FiltersDto;
 import com.gladias.coderithm.payload.challenge.ChallengeDto;
 import com.gladias.coderithm.payload.challenge.LanguageAndVersionDto;
 import com.gladias.coderithm.payload.challenge.LanguageDto;
-import com.gladias.coderithm.payload.challenge.LanguagesAndTagsDto;
+import com.gladias.coderithm.payload.challenge.LanguagesAndTagsAndSortingOptionsDto;
 import com.gladias.coderithm.payload.challenge.TagDto;
 import com.gladias.coderithm.payload.challenge.add.AddChallengeRequest;
 import com.gladias.coderithm.repository.ChallengeRepository;
@@ -142,38 +141,14 @@ public class ChallengeService {
         return savedEntity.getId();
     }
 
-    /*
-    public Page<ChallengeDto> getFilteredChallenges(ChallengesRequest request) {
-        List<ChallengeEntity> allChallenges = challengeRepository.findAll();
+    public LanguagesAndTagsAndSortingOptionsDto getAvailableLanguagesAndTags() {
+        List<String> tagDtos = tagRepository.findAll().stream().map(TagEntity::getValue).distinct().collect(Collectors.toList());
 
-        System.out.println(allChallenges);
-        BaseChallengeFilter filterChain = new LanguageChallengeFilter(request.selectedLanguageEntity());
-        filterChain.addToChain(new DifficultyChallengeFilter(request.difficultyLevels()));
-
-        List<ChallengeDto> filteredChallenges = filterChain
-                .filter(allChallenges)
-                .stream()
-                .map(ChallengeDto::of)
-                .collect(Collectors.toList());
-
-        Pageable pageable = PageRequest.of(request.page(), request.size());
-
-        System.out.println(filteredChallenges);
-        return new PageImpl<>(filteredChallenges, pageable, filteredChallenges.size());
-    }*/
-
-    public LanguagesAndTagsDto getAvailableLanguagesAndTags() {
-        List<String> tagDtos = tagRepository.findAll().stream().map(TagEntity::getValue).collect(Collectors.toList());
         List<LanguageAndVersionDto> languageAndVersionDtos = languageRepository.findAll().stream()
-                .map(LanguageAndVersionDto::of).collect(Collectors.toList());
+                .map(LanguageAndVersionDto::of).distinct().collect(Collectors.toList());
 
-        return new LanguagesAndTagsDto(languageAndVersionDtos, tagDtos);
-    }
+        Set<ChallengesSortingOption> availableSortingOptions = Set.of(ChallengesSortingOption.values());
 
-    public FiltersDto getAvailableFilterOptions() {
-        List<ChallengesSortingOption> availableSortingOptions = List.of(ChallengesSortingOption.values());
-
-        return new FiltersDto(new LinkedHashSet<>(Collections.singleton(new LanguageAndVersionDto("Python", "3.10.0"))),
-                new LinkedHashSet<>(availableSortingOptions));
+        return new LanguagesAndTagsAndSortingOptionsDto(languageAndVersionDtos, tagDtos, availableSortingOptions);
     }
 }

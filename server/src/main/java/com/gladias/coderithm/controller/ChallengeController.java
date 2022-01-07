@@ -3,13 +3,12 @@ package com.gladias.coderithm.controller;
 import com.gladias.coderithm.model.ChallengesSortingOption;
 import com.gladias.coderithm.model.DifficultyLevel;
 import com.gladias.coderithm.model.UserEntity;
-import com.gladias.coderithm.payload.FiltersDto;
 import com.gladias.coderithm.payload.challenge.LanguageDto;
 import com.gladias.coderithm.payload.challenge.RateRequest;
 import com.gladias.coderithm.payload.challenge.TagDto;
 import com.gladias.coderithm.payload.challenge.add.AddChallengeRequest;
 import com.gladias.coderithm.payload.challenge.ChallengeDto;
-import com.gladias.coderithm.payload.challenge.LanguagesAndTagsDto;
+import com.gladias.coderithm.payload.challenge.LanguagesAndTagsAndSortingOptionsDto;
 import com.gladias.coderithm.payload.challenge.add.AddChallengeResponse;
 import com.gladias.coderithm.service.ChallengeService;
 import com.gladias.coderithm.service.AuthService;
@@ -54,12 +53,6 @@ public class ChallengeController {
         return challengeService.getChallengeById(token, id);
     }
 
-    /*
-    @PostMapping("/get")
-    public Page<ChallengeDto> getFilteredChallenges(@RequestBody ChallengesRequest request) {
-        return challengeService.getFilteredChallenges(request);
-    }*/
-
     @PostMapping("/add")
     public AddChallengeResponse addChallenge(@RequestBody AddChallengeRequest request, @CookieValue("token") String token) {
         UserEntity author = authService.getUserFromToken(token);
@@ -78,13 +71,8 @@ public class ChallengeController {
         return getChallengeById(token, challengeId);
     }
 
-    @GetMapping("/tagsAndLanguages")
-    public LanguagesAndTagsDto getTagsAndLanguages() {
+    @GetMapping("/tagsAndLanguagesAndSortingOptions")
+    public LanguagesAndTagsAndSortingOptionsDto getTagsAndLanguages() {
         return challengeService.getAvailableLanguagesAndTags();
-    }
-
-    @GetMapping("/filters")
-    public FiltersDto getAvailableFilterOptions() {
-        return challengeService.getAvailableFilterOptions();
     }
 }

@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable no-unused-vars */
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import {
   Box,
@@ -14,9 +15,13 @@ import {
   TextField,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { ILanguage } from '../types/types';
 
 type Props = {
-
+  languages: ILanguage[],
+  tags: string[],
+  sortingOptions: string[]
+  fetchingHandler: (arg0: string, arg1: string[], arg3: string, arg4: string) => void
 };
 
 const StyledFilterSection = styled.div`
@@ -212,10 +217,13 @@ type ITagsOptions = {
   challenging: boolean,
 }
 
-const FilterSection: React.FC<Props> = () => {
-  const [tags, setTags] = React.useState<string[]>([]);
-  const [language, setLanguage] = React.useState<string>('Any');
-  const [sortOption, setSortOption] = React.useState<string>('Most solutions');
+const FilterSection: React.FC<Props> = ({
+  languages, tags, sortingOptions, fetchingHandler,
+}) => {
+  const [title, setTitle] = React.useState<string>('');
+  const [selectedTags, setSelectedTags] = React.useState<string[]>([]);
+  const [selectedLanguage, setSelectedLanguage] = React.useState<string>('Any');
+  const [selectedSortingOption, setSelectedSortingOption] = React.useState<string>('Any');
   const [difficulties, setDifficulties] = React.useState<ITagsOptions>({
     easy: true,
     medium: true,
@@ -223,48 +231,16 @@ const FilterSection: React.FC<Props> = () => {
     challenging: true,
   });
 
-  const languages = [
-    {
-      value: 'Any',
-    },
-    {
-      value: 'Python',
-    },
-    {
-      value: 'C++',
-    },
-    {
-      value: 'Java',
-    },
-  ];
-
-  const sortOptions = [
-    {
-      value: 'Most solutions',
-    },
-    {
-      value: 'Least solutions',
-    },
-    {
-      value: 'Rating',
-    },
-    {
-      value: 'Most commented',
-    },
-  ];
-
-  const availableTags = [
-    'Sorting',
-    'Lists',
-    'Algorithm',
-    'Threads',
-  ];
+  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    setTitle(value);
+  };
 
   const handleTagsChange = (event: SelectChangeEvent<typeof tags>) => {
     const {
       target: { value },
     } = event;
-    setTags(
+    setSelectedTags(
       typeof value === 'string' ? value.split(',') : value,
     );
   };
@@ -277,12 +253,21 @@ const FilterSection: React.FC<Props> = () => {
   };
 
   const handleLanguageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLanguage(event.target.value);
+    setSelectedLanguage(event.target.value);
   };
 
   const handleSortChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSortOption(event.target.value);
+    setSelectedSortingOption(event.target.value);
   };
+
+  useEffect(() => {
+    let selSort = selectedSortingOption;
+    if (selectedSortingOption === 'Any') {
+      selSort = '';
+    }
+
+    fetchingHandler(title, selectedTags, selectedLanguage, selSort);
+  }, [title, selectedTags, selectedLanguage, selectedSortingOption, difficulties]);
 
   return (
     <StyledFilterSection>
@@ -303,6 +288,8 @@ const FilterSection: React.FC<Props> = () => {
               id="search"
               type="text"
               size="small"
+              value={title}
+              onChange={handleTitleChange}
               startAdornment={(
                 <InputAdornment position="start">
                   <SearchIcon />
@@ -317,7 +304,7 @@ const FilterSection: React.FC<Props> = () => {
             <Select
               id="tags-select"
               multiple
-              value={tags}
+              value={selectedTags}
               onChange={handleTagsChange}
               input={<OutlinedInput id="tags-select-inner" />}
               renderValue={(selected) => (
@@ -328,7 +315,7 @@ const FilterSection: React.FC<Props> = () => {
                 </Box>
               )}
             >
-              {availableTags.map((tag) => (
+              {tags.map((tag) => (
                 <MenuItem
                   key={tag}
                   value={tag}
@@ -364,14 +351,14 @@ const FilterSection: React.FC<Props> = () => {
           </span>
           <TextField
             id="language"
-            value={language}
+            value={selectedLanguage}
             onChange={handleLanguageChange}
             size="small"
             select
           >
             {languages.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.value}
+              <MenuItem key={option.name} value={option.name}>
+                {option.name}
               </MenuItem>
             ))}
           </TextField>
@@ -382,14 +369,17 @@ const FilterSection: React.FC<Props> = () => {
           </span>
           <TextField
             id="sort"
-            value={sortOption}
+            value={selectedSortingOption}
             onChange={handleSortChange}
             size="small"
             select
           >
-            {sortOptions.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.value}
+            {sortingOptions.map((option) => (
+              <MenuItem
+                key={option}
+                value={option}
+              >
+                {option}
               </MenuItem>
             ))}
           </TextField>
