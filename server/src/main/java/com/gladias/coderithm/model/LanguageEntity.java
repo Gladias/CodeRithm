@@ -1,6 +1,6 @@
 package com.gladias.coderithm.model;
 
-import com.gladias.coderithm.payload.challenge.LanguageDto;
+import com.gladias.coderithm.payload.challenge.LanguageAndVersionDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import java.util.Set;
 
 @Data
@@ -35,10 +34,10 @@ public class LanguageEntity {
     @ManyToMany(mappedBy = "availableLanguages")
     private Set<ChallengeEntity> challenges;
 
-    public static LanguageEntity of(LanguageDto languageDto) {
+    public static LanguageEntity of(LanguageAndVersionDto languageAndVersionDto) {
         return LanguageEntity.builder()
-                .name(languageDto.name())
-                .version(languageDto.version())
+                .name(languageAndVersionDto.name())
+                .version(languageAndVersionDto.version())
                 .build();
     }
 }

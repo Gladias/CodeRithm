@@ -14,6 +14,10 @@ public class DifficultyChallengeFilter extends BaseChallengeFilter {
 
     @Override
     public List<ChallengeEntity> filter(List<ChallengeEntity> challenges) {
+        if (selectedDifficulties == null) {
+            return passToNextFilter(challenges);
+        }
+
         List<ChallengeEntity> filteredChallenges = challenges
                 .stream()
                 .filter(challenge -> selectedDifficulties

@@ -1,18 +1,20 @@
 package com.gladias.coderithm.controller;
 
+import com.gladias.coderithm.model.ChallengesSortingOption;
+import com.gladias.coderithm.model.DifficultyLevel;
 import com.gladias.coderithm.model.UserEntity;
 import com.gladias.coderithm.payload.FiltersDto;
+import com.gladias.coderithm.payload.challenge.LanguageDto;
 import com.gladias.coderithm.payload.challenge.RateRequest;
+import com.gladias.coderithm.payload.challenge.TagDto;
 import com.gladias.coderithm.payload.challenge.add.AddChallengeRequest;
 import com.gladias.coderithm.payload.challenge.ChallengeDto;
-import com.gladias.coderithm.payload.challenge.ChallengesRequest;
 import com.gladias.coderithm.payload.challenge.LanguagesAndTagsDto;
 import com.gladias.coderithm.payload.challenge.add.AddChallengeResponse;
 import com.gladias.coderithm.service.ChallengeService;
 import com.gladias.coderithm.service.AuthService;
 import com.gladias.coderithm.service.RateService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +22,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.Set;
 
 
 @RequiredArgsConstructor
@@ -32,11 +37,16 @@ public class ChallengeController {
     private final RateService rateService;
 
     @GetMapping("/getAll")
-    public Page<ChallengeDto> getAllChallenges(
+    public List<ChallengeDto> getAllChallenges(
             @CookieValue(value = "token", required = false) String token,
-            @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "20") Integer size) {
-        return challengeService.getAllChallenges(token, page, size);
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) Set<TagDto> tags,
+            @RequestParam(required = false) Set<DifficultyLevel> difficultyLevels,
+            @RequestParam(required = false) LanguageDto language,
+            @RequestParam(required = false) boolean hideCompleted,
+            @RequestParam(required = false) ChallengesSortingOption sortingOption) {
+        return challengeService.getAllChallenges(token, title,
+            tags, difficultyLevels, language, hideCompleted, sortingOption);
     }
 
     @GetMapping("/getOne")

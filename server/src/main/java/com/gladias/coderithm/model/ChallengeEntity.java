@@ -76,13 +76,7 @@ public class ChallengeEntity {
         return tags.stream().map(TagEntity::getValue).collect(Collectors.toSet());
     }
 
-    public void addNewComment(CommentEntity commentEntity) {
-        System.out.println(comments.size());
-        comments.add(commentEntity);
-    }
-
     public int getCommentsNumber() {
-        System.out.println(comments);
         return comments != null ? comments.size() : 0;
     }
 
@@ -111,7 +105,8 @@ public class ChallengeEntity {
                 .author(author)
                 .build();
     }
-    /*
-    TODO: look through solutions to generate status of challenge for logged user
-    */
+
+    public Set<String> getAvailableLanguagesNames() {
+        return availableLanguages.stream().map(LanguageEntity::getName).collect(Collectors.toSet());
+    }
 }

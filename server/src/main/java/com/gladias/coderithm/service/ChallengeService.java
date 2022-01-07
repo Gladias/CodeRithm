@@ -3,33 +3,31 @@ package com.gladias.coderithm.service;
 import com.gladias.coderithm.filter.BaseChallengeFilter;
 import com.gladias.coderithm.filter.DifficultyChallengeFilter;
 import com.gladias.coderithm.filter.LanguageChallengeFilter;
+import com.gladias.coderithm.filter.TagChallengeFilter;
 import com.gladias.coderithm.model.ChallengeEntity;
+import com.gladias.coderithm.model.ChallengesSortingOption;
+import com.gladias.coderithm.model.DifficultyLevel;
 import com.gladias.coderithm.model.LanguageEntity;
 import com.gladias.coderithm.model.SolutionEntity;
 import com.gladias.coderithm.model.SolutionStatus;
-import com.gladias.coderithm.model.SortingOption;
 import com.gladias.coderithm.model.TagEntity;
 import com.gladias.coderithm.model.UserEntity;
 import com.gladias.coderithm.payload.FiltersDto;
 import com.gladias.coderithm.payload.challenge.ChallengeDto;
-import com.gladias.coderithm.payload.challenge.ChallengesRequest;
+import com.gladias.coderithm.payload.challenge.LanguageAndVersionDto;
 import com.gladias.coderithm.payload.challenge.LanguageDto;
 import com.gladias.coderithm.payload.challenge.LanguagesAndTagsDto;
+import com.gladias.coderithm.payload.challenge.TagDto;
 import com.gladias.coderithm.payload.challenge.add.AddChallengeRequest;
 import com.gladias.coderithm.repository.ChallengeRepository;
 import com.gladias.coderithm.repository.LanguageRepository;
 import com.gladias.coderithm.repository.SolutionRepository;
 import com.gladias.coderithm.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
@@ -46,7 +44,15 @@ public class ChallengeService {
     private final SolutionRepository solutionRepository;
     private final AuthService authService;
 
-    public Page<ChallengeDto> getAllChallenges(String token, Integer page, Integer size) {
+    public List<ChallengeDto> getAllChallenges(String token, String title, Set<TagDto> tags,
+                                               Set<DifficultyLevel> difficultyLevels, LanguageDto languageDto,
+                                               boolean hideCompleted, ChallengesSortingOption sortingOption) {
+
+        System.out.println("Title: " + title);
+        System.out.println("Tags: " + tags);
+        System.out.println("difficultyLevels: " + difficultyLevels);
+        System.out.println("languageDto: " + languageDto);
+
         // If token is passed and correct user is authenticated, so we can fetch
         // his solution status for each challenge
         // For not logged users return Status NEW
@@ -54,17 +60,51 @@ public class ChallengeService {
 
         UserEntity user = authService.getUserFromToken(token);
 
-        Pageable pageable = PageRequest.of(page, size);
-        Page<ChallengeEntity> allChallenges = challengeRepository.findAll(pageable);
-        List<ChallengeDto> challengeDtos;
+        List<ChallengeEntity> allChallenges;
 
+        if (title != null) {
+            allChallenges = challengeRepository.findAllByTitleContainingIgnoreCase(title);
+        } else {
+            allChallenges = challengeRepository.findAll();
+        }
+
+        // Filter
+        BaseChallengeFilter filterChain = new LanguageChallengeFilter(languageDto);
+        filterChain
+                .addToChain(new DifficultyChallengeFilter(difficultyLevels))
+                .addToChain(new TagChallengeFilter(tags));
+
+        allChallenges = filterChain.filter(allChallenges);
+
+        // Sort
+        if (sortingOption != null) {
+            if (sortingOption == ChallengesSortingOption.HIGHEST_RATING) {
+                allChallenges.sort(Comparator.comparing(ChallengeEntity::getAverageRating));
+            } else if (sortingOption == ChallengesSortingOption.MOST_COMMENTED) {
+                allChallenges.sort(Comparator.comparing(ChallengeEntity::getCommentsNumber));
+            } else if (sortingOption == ChallengesSortingOption.MOST_SOLUTIONS) {
+                allChallenges.sort(Comparator.comparing(challenge -> challenge.getSolutions().size()));
+            }
+        }
+
+        // Make dtos and check challenge status
+        List<ChallengeDto> challengeDtos;
         challengeDtos = allChallenges
                 .stream()
                 .map(challenge ->
                         ChallengeDto.of(challenge, findSolutionStatusForChallenge(challenge, user)))
                 .collect(Collectors.toList());
 
-        return new PageImpl<>(challengeDtos);
+        // Hide Completed
+        if (hideCompleted) {
+            challengeDtos =
+                challengeDtos
+                        .stream()
+                        .filter(challengeDto -> challengeDto.solutionStatus() != SolutionStatus.Completed)
+                        .collect(Collectors.toList());
+        }
+
+        return challengeDtos;
     }
 
     private SolutionStatus findSolutionStatusForChallenge(ChallengeEntity challenge, UserEntity user) {
@@ -124,16 +164,16 @@ public class ChallengeService {
 
     public LanguagesAndTagsDto getAvailableLanguagesAndTags() {
         List<String> tagDtos = tagRepository.findAll().stream().map(TagEntity::getValue).collect(Collectors.toList());
-        List<LanguageDto> languageDtos = languageRepository.findAll().stream()
-                .map(LanguageDto::of).collect(Collectors.toList());
+        List<LanguageAndVersionDto> languageAndVersionDtos = languageRepository.findAll().stream()
+                .map(LanguageAndVersionDto::of).collect(Collectors.toList());
 
-        return new LanguagesAndTagsDto(languageDtos, tagDtos);
+        return new LanguagesAndTagsDto(languageAndVersionDtos, tagDtos);
     }
 
     public FiltersDto getAvailableFilterOptions() {
-        List<SortingOption> availableSortingOptions = List.of(SortingOption.values());
+        List<ChallengesSortingOption> availableSortingOptions = List.of(ChallengesSortingOption.values());
 
-        return new FiltersDto(new LinkedHashSet<>(Collections.singleton(new LanguageDto("Python", "3.10.0"))),
+        return new FiltersDto(new LinkedHashSet<>(Collections.singleton(new LanguageAndVersionDto("Python", "3.10.0"))),
                 new LinkedHashSet<>(availableSortingOptions));
     }
 }
