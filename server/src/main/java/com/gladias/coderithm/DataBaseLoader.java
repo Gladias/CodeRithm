@@ -24,8 +24,39 @@ public class DataBaseLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        //Set<LanguageEntity> languages = addLanguages();
-        addChallenges();
+
+        addChallenges("Simple remove duplicates",
+                "Remove the duplicates from a list of integers, keeping the last ( rightmost ) occurrence of each element.\n" +
+                "\n" +
+                "Example:\n" +
+                "For input: [3, 4, 4, 3, 6, 3]\n" +
+                "\n" +
+                "remove the 3 at index 0\n" +
+                "remove the 4 at index 1\n" +
+                "remove the 3 at index 3\n" +
+                "Expected output: [4, 6, 3]\n" +
+                "\n" +
+                "More examples can be found in the test cases.\n" +
+                "\n" +
+                "Good luck!", DifficultyLevel.EASY, Set.of(new TagEntity("Arrays"), new TagEntity("Sorting")));
+
+        addChallenges("Small enough? - Beginner",
+                "You will be given an array and a limit value. You must check that all values in the array are below or equal to the limit value. If they are, return true. Else, return false.\n" +
+                        "\n" +
+                        "You can assume all values in the array are numbers.",
+                DifficultyLevel.MEDIUM, Set.of(new TagEntity("Numbers")));
+
+        addChallenges("Alternate case",
+                "Write function alternateCase which switch every letter in string from upper to lower and from lower to upper. E.g: Hello World -> hELLO wORLD",
+                DifficultyLevel.HARD, Set.of(new TagEntity("Fundamentals")));
+
+        addChallenges("Vowel Count",
+                "Return the number (count) of vowels in the given string.\n" +
+                        "\n" +
+                        "We will consider a, e, i, o, u as vowels for this Kata (but not y).\n" +
+                        "\n" +
+                        "The input string will only consist of lower case letters and/or spaces.",
+                DifficultyLevel.CHALLENGING, Set.of(new TagEntity("Arrays")));
     }
 
     private void addUsers() {
@@ -36,9 +67,9 @@ public class DataBaseLoader implements CommandLineRunner {
         //return user;
     }
 
-    private void addChallenges() {
-        ChallengeEntity challenge = new ChallengeEntity( "Placeholder", "desc desc desc", DifficultyLevel.MEDIUM);
-        challenge.setTestCases(Set.of(new TestCaseEntity("abc", "def"), new TestCaseEntity("gyh", "jul")));
+    private void addChallenges(String title, String description, DifficultyLevel difficultyLevel, Set<TagEntity> tags) {
+        ChallengeEntity challenge = new ChallengeEntity(title, description, difficultyLevel);
+        challenge.setTestCases(Set.of(new TestCaseEntity("aaa", "bbb"), new TestCaseEntity("ccc", "ccc")));
 
         LanguageEntity python = new LanguageEntity("python", "3.10.0");
         LanguageEntity java = new LanguageEntity("java", "15.0.2");
@@ -47,9 +78,7 @@ public class DataBaseLoader implements CommandLineRunner {
 
         challenge.setAvailableLanguages(Set.of(python, java, csharp, javaScript));
 
-        TagEntity tag1 = new TagEntity("Arrays");
-        TagEntity tag2 = new TagEntity("Sorting");
-        challenge.setTags(Set.of(tag1, tag2));
+        challenge.setTags(tags);
 
         UserEntity user = new UserEntity("coderithm", "$2a$10$OUGjnlCtM5se5zf6z41sXeGbN1Gq/.VETWd2JAm.uM7oZu570s8P.", "test.test@test.com");
 

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -32,7 +33,10 @@ public class ChallengeEntity {
     private Long id;
 
     private String title;
+
+    @Column(length = 1024)
     private String description;
+
     private DifficultyLevel difficultyLevel;
     // TODO: maybe separate this stats to another entity
     private Integer linesLimit = 120;
