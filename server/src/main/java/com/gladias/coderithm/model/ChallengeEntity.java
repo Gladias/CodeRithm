@@ -68,8 +68,7 @@ public class ChallengeEntity {
     @JoinColumn(name = "testcase_id")
     private Set<TestCaseEntity> testCases;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "tag_id")
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private Set<TagEntity> tags;
 
     public Set<String> getTagsValues() {

@@ -2,7 +2,6 @@ package com.gladias.coderithm.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,10 +32,6 @@ public class CommentEntity {
 
     @CreationTimestamp
     private LocalDateTime creationTime;
-
-    public CommentEntity(String content) {
-        this.content = content;
-    }
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "author_id")
