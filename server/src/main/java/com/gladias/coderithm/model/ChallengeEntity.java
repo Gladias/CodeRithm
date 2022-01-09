@@ -91,12 +91,15 @@ public class ChallengeEntity {
         return "ChallengeEntity(id=" + this.getId() + ", title=" + this.getTitle() + ", description=" + this.getDescription() + ", difficultyLevel=" + this.getDifficultyLevel() + ", linesLimit=" + this.getLinesLimit() + ", executionTimeLimitInSeconds=" + this.getExecutionTimeLimitInSeconds() + ", author=" + this.getAuthor() + ", availableLanguages=" + this.getAvailableLanguages() + ", solutions=" + this.getSolutions() + ", rates=" + this.getRates() + ", comments=" + this.getComments() + ", testCases=" + this.getTestCases() + ", tags=" + this.getTags() + ")";
     }
 
-    public static ChallengeEntity of(AddChallengeRequest request, Set<LanguageEntity> selectedLanguages, UserEntity author) {
+    public static ChallengeEntity of(AddChallengeRequest request,
+                                     Set<LanguageEntity> selectedLanguages,
+                                     Set<TagEntity> selectedTags,
+                                     UserEntity author) {
         return ChallengeEntity.builder()
                 .title(request.title())
                 .description(request.description())
                 .difficultyLevel(request.difficultyLevel())
-                .tags(request.tags().stream().map(TagEntity::of).collect(Collectors.toSet()))
+                .tags(selectedTags)
                 .availableLanguages(selectedLanguages)
                 .linesLimit(request.linesLimit())
                 .executionTimeLimitInSeconds(request.executionTimeLimitInSeconds())

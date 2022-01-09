@@ -18,7 +18,7 @@ public class CommentServiceTest {
     @Test
     void testGetSwearWordsInComment() throws IOException {
         // given
-        String firstCommentWithSwearWords = "Swear words varations: ns-?!-fw, fuuck, how? to* kkkill";
+        String firstCommentWithSwearWords = "Swear words varations: ns-?!-fw,  how? to* kkkill";
         String secondCommentWithoutSwearWords = "I really liked that challenge, good job :)";
 
         // when
@@ -26,10 +26,10 @@ public class CommentServiceTest {
         List<String> listOfSecondCommentSwearWords = commentService.getSwearWordsInComment(secondCommentWithoutSwearWords);
 
         // then
-        Assertions.assertEquals(3, listOfFirstCommentSwearWords.size());
+        Assertions.assertEquals(2, listOfFirstCommentSwearWords.size());
         Assertions.assertEquals(0, listOfSecondCommentSwearWords.size());
 
-        Assertions.assertEquals(List.of("fuck", "how to kill", "nsfw"), listOfFirstCommentSwearWords);
+        Assertions.assertEquals(List.of("how to kill", "nsfw"), listOfFirstCommentSwearWords);
     }
 
     @Test

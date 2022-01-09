@@ -9,7 +9,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public class DifficultyChallengeFilter extends BaseChallengeFilter {
+public class DifficultyFilter extends BaseChallengeFilter {
     private final Set<DifficultyLevel> selectedDifficulties;
 
     @Override

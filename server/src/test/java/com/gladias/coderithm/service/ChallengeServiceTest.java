@@ -46,7 +46,6 @@ public class ChallengeServiceTest {
         LanguagesAndTagsAndSortingOptionsDto result = challengeService.getAvailableLanguagesAndTags();
         assertEquals(1, result.languages().size());
         assertEquals(2, result.tags().size());
-        assertEquals(3, result.sortingOptions().size());
 
         assertEquals("python", result.languages().get(0).name());
         assertEquals("3.7", result.languages().get(0).version());

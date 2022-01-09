@@ -38,17 +38,19 @@ public class DataBaseLoader implements CommandLineRunner {
                 "\n" +
                 "More examples can be found in the test cases.\n" +
                 "\n" +
-                "Good luck!", DifficultyLevel.EASY, Set.of(new TagEntity("Arrays"), new TagEntity("Sorting")));
+                "Good luck!", DifficultyLevel.EASY, Set.of(new TagEntity("Sorting")));
 
         addChallenges("Small enough? - Beginner",
                 "You will be given an array and a limit value. You must check that all values in the array are below or equal to the limit value. If they are, return true. Else, return false.\n" +
                         "\n" +
                         "You can assume all values in the array are numbers.",
-                DifficultyLevel.MEDIUM, Set.of(new TagEntity("Numbers")));
+                DifficultyLevel.MEDIUM, Set.of(new TagEntity("Numbers"), new TagEntity("Mathematics")));
 
         addChallenges("Alternate case",
                 "Write function alternateCase which switch every letter in string from upper to lower and from lower to upper. E.g: Hello World -> hELLO wORLD",
-                DifficultyLevel.HARD, Set.of(new TagEntity("Fundamentals")));
+                DifficultyLevel.HARD,
+                Set.of(new TagEntity("Data types"),
+                        new TagEntity("Strings")));
 
         addChallenges("Vowel Count",
                 "Return the number (count) of vowels in the given string.\n" +
@@ -56,7 +58,7 @@ public class DataBaseLoader implements CommandLineRunner {
                         "We will consider a, e, i, o, u as vowels for this Kata (but not y).\n" +
                         "\n" +
                         "The input string will only consist of lower case letters and/or spaces.",
-                DifficultyLevel.CHALLENGING, Set.of(new TagEntity("Arrays")));
+                DifficultyLevel.CHALLENGING, Set.of(new TagEntity("Arrays"), new TagEntity("Regular expressions")));
     }
 
     private void addUsers() {

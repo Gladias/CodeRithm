@@ -14,7 +14,7 @@ const AddChallenge: React.FC = () => {
   const [availableTags, setAvailableTags] = React.useState<string[]>([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/api/challenge/tagsAndLanguages')
+    axios.get('http://localhost:8080/api/challenge/tagsAndLanguagesAndSortingOptions')
       .then((response) => {
         console.log(response);
         setAvailableLanguages(response.data.languages);

@@ -1,9 +1,9 @@
 package com.gladias.coderithm.service;
 
 import com.gladias.coderithm.filter.BaseChallengeFilter;
-import com.gladias.coderithm.filter.DifficultyChallengeFilter;
-import com.gladias.coderithm.filter.LanguageChallengeFilter;
-import com.gladias.coderithm.filter.TagChallengeFilter;
+import com.gladias.coderithm.filter.DifficultyFilter;
+import com.gladias.coderithm.filter.LanguageFilter;
+import com.gladias.coderithm.filter.TagFilter;
 import com.gladias.coderithm.model.ChallengeEntity;
 import com.gladias.coderithm.model.ChallengesSortingOption;
 import com.gladias.coderithm.model.DifficultyLevel;
@@ -25,14 +25,13 @@ import com.gladias.coderithm.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("ALL")
 @Service
 @RequiredArgsConstructor
 public class ChallengeService {
@@ -67,12 +66,13 @@ public class ChallengeService {
             allChallenges = challengeRepository.findAll();
         }
 
-        // Filter
-        BaseChallengeFilter filterChain = new LanguageChallengeFilter(languageDto);
+        // Tworzenie łańcucha filtrów
+        BaseChallengeFilter filterChain = new LanguageFilter(languageDto);
         filterChain
-                .addToChain(new DifficultyChallengeFilter(difficultyLevels))
-                .addToChain(new TagChallengeFilter(tags));
+                .addToChain(new DifficultyFilter(difficultyLevels))
+                .addToChain(new TagFilter(tags));
 
+        // Przekazanie listy zadań do filtrowania
         allChallenges = filterChain.filter(allChallenges);
 
         // Sort
@@ -135,7 +135,8 @@ public class ChallengeService {
         System.out.println(request);
 
         Set<LanguageEntity> languages = request.languages().stream().map(languageRepository::findByName).collect(Collectors.toSet());
-        ChallengeEntity requestEntity = ChallengeEntity.of(request, languages, author);
+        Set<TagEntity> tags = request.tags().stream().map(tagRepository::findByValue).collect(Collectors.toSet());
+        ChallengeEntity requestEntity = ChallengeEntity.of(request, languages, tags, author);
         ChallengeEntity savedEntity = challengeRepository.save(requestEntity);
 
         return savedEntity.getId();
